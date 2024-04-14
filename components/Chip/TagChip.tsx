@@ -16,8 +16,7 @@ const TagChip = ({ size, children, color }: Props) => {
     brown: 'bg-[#F9EEE3]  text-[#D58D49]',
   };
   return (
-    <div
-      className={`${fontSizeSelect[size]} ${randomColor[color]} flex items-center  px-2 py-1 gap-1.5 rounded bg-tp-violet_100 text-tp-violet_900`}>
+    <div className={`${fontSizeSelect[size]} ${randomColor[color]} flex items-center  px-2 py-1 gap-1.5 rounded  `}>
       <div>{children}</div>
     </div>
   );

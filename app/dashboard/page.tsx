@@ -1,3 +1,4 @@
+import ProgressChip from '@/components/Chip/ProgressChip';
 import TagChip from '@/components/Chip/TagChip';
 
 const Dashboard = () => {
@@ -15,6 +16,7 @@ const Dashboard = () => {
       <TagChip color='brown' size='large'>
         갈색
       </TagChip>
+      <ProgressChip size='large' title='To Do' />
     </main>
   );
 };
