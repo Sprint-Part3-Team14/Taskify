@@ -1,12 +1,20 @@
-import ProgressChip from '@/components/Chip/ProgressChip';
 import TagChip from '@/components/Chip/TagChip';
 
 const Dashboard = () => {
   return (
     <main className='flex justify-center items-center min-h-screen gap-5 '>
-      <TagChip>백엔드</TagChip>
-      <TagChip>프론트엔드</TagChip>
-      <TagChip>색이 자동으로 변해야 한다?</TagChip>
+      <TagChip color='blue' size='large'>
+        파란색
+      </TagChip>
+      <TagChip color='red' size='large'>
+        빨강
+      </TagChip>
+      <TagChip color='green' size='large'>
+        녹
+      </TagChip>
+      <TagChip color='brown' size='large'>
+        갈색
+      </TagChip>
     </main>
   );
 };
