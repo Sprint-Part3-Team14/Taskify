@@ -4,8 +4,8 @@ import { StaticImageData } from 'next/image';
 import CALENDER from '@/public/icon/calendar_today.svg';
 
 interface Props {
-  image: StaticImageData;
-  alt: string;
+  image?: StaticImageData;
+  alt?: string;
   title: string;
   tag: React.ReactNode[];
   date: string;
@@ -14,7 +14,7 @@ interface Props {
 
 const Card = ({ image, alt = '', title, tag, date, user }: Props) => {
   return (
-    <div className='flex flex-col gap-2.5 p-5 border border-solid border-tp-gray_700 rounded-md'>
+    <div className='flex flex-col gap-2.5 p-5 w-96 border border-solid border-tp-gray_700 rounded-md'>
       {image && <Image className='w-full rounded-md' src={image} alt={alt} width={270} height={160} />}
       <div className=' font-semibold text-base'>{title}</div>
       <div className='flex gap-1.5'>
