@@ -1,7 +1,7 @@
 import ModalLayout from './ModalLayout';
 
 // 반응형이 적용이 안됨
-const CreateColumn = () => {
+const CreateColumnModal = () => {
   return (
     <ModalLayout title='새 컬럼 생성'>
       <form className='flex flex-col'>
@@ -29,4 +29,4 @@ const CreateColumn = () => {
   );
 };
 
-export default CreateColumn;
+export default CreateColumnModal;
