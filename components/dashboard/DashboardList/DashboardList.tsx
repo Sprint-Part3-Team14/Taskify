@@ -1,7 +1,7 @@
 import AddButton from '../AddButton/AddButton';
 import DashboardTitle from '../DashboardTitle/DashboardTitle';
 
-import { CardProps } from '@/app/dashboard/[id]/page';
+import { CardProps } from '@/app/(dashboard)/dashboard/[id]/page';
 import Card from '@/components/Card/Card';
 
 //타입수정
