@@ -28,7 +28,7 @@ const Dashboard = () => {
               <DashboardList key={index} title={list.title} cardDatas={list.cards} />
             ))}
             <div className='w-fit grow py-16 px-5'>
-              <AddButton />
+              <AddButton>새로운 컬럼 추가하기</AddButton>
             </div>
           </div>
         </div>
