@@ -3,8 +3,8 @@ import type { Config } from 'tailwindcss';
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
 const BACKGROUND_WIDTH = {
-  mobile: '375px',
-  tablet: '768px',
+  mb: '375px',
+  tb: '768px',
   pc: '1024px',
 };
 
@@ -63,6 +63,7 @@ module.exports = {
       width: { ...BACKGROUND_WIDTH },
     },
     fontFamily: {
+      GS: ['GS'],
       pretendard: ['Pretendard', ...fontFamily.sans],
     },
   },
