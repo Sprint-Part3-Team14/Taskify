@@ -4,27 +4,23 @@ import { useState } from 'react';
 
 import { LIST } from './mock';
 
-import NumberChip from '@/components/Chip/NumberChip';
-import TagChip from '@/components/Chip/TagChip';
 import AddButton from '@/components/dashboard/AddButton/AddButton';
 import DashboardList from '@/components/dashboard/DashboardList/DashboardList';
 import TempMdoal from '@/components/dashboard/TempModal';
-import TEMP from '@/public/image/desktop.jpg'; //임시 이미지
 
 const Dashboard = () => {
-  const [listTitle, setListTitle] = useState('');
+  let tableTitle = '';
   const [cardlists, setCardlists] = useState(LIST);
 
-  const handleListTitle = (value: string) => {
-    setListTitle(value);
-    listTitle;
+  const handleTableTitle = (value: string) => {
+    tableTitle = value;
   };
 
-  const handleAddList = () => {
+  const handleNewTable = () => {
     setCardlists(prevCardlists => [
       ...prevCardlists,
       {
-        title: listTitle,
+        title: tableTitle,
         cards: [],
       },
     ]);
@@ -33,11 +29,11 @@ const Dashboard = () => {
   return (
     <div className='flex '>
       {cardlists.map(({ title, cards }, index) => (
-        <DashboardList key={index} title={title} cardDatas={cards || null} />
+        <DashboardList key={index} title={title} cardDatas={cards} />
       ))}
       <div className='w-fit grow py-16 px-5'>
         <AddButton>새로운 컬럼 추가하기</AddButton>
-        <TempMdoal onChange={handleListTitle} onClick={handleAddList} />
+        <TempMdoal onChange={handleTableTitle} onClick={handleNewTable} />
       </div>
     </div>
   );
