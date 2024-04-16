@@ -7,7 +7,7 @@ import Footer from '@/components/landing/footer';
 import Header from '@/components/landing/header';
 import MainSection from '@/components/landing/mainSection';
 // import ModalDescription from '@/components/landing/modalDescription';
-// import SubArticle from '@/components/landing/subarticle';
+import SubArticle from '@/components/landing/subarticle';
 
 const Home = () => {
   // const router = useRouter();
@@ -25,9 +25,9 @@ const Home = () => {
         <Header />
         <MainSection />
         <Article />
-        {/* <SubArticle />
+        <SubArticle />
         <p className='text-20 font-bold tablet:text-[36px]'>생산성을 높이는 다양한 설정 ⚡</p>
-        <ModalDescription /> */}
+        {/* <ModalDescription /> */}
         <Footer />
       </div>
     </RootLayout>
