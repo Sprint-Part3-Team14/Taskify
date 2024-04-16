@@ -1,13 +1,9 @@
 import Image from 'next/image';
 
+import { I_ProgressChip } from '@/interface/Chip';
 import ELLIPSE from '@/public/icon/ellipse.svg';
 
-interface Props {
-  title: 'To Do' | 'On Progress' | 'Done';
-  size: 'large' | 'small';
-}
-
-const ProgressChip = ({ size, title }: Props) => {
+const ProgressChip = ({ size = 'large', title }: I_ProgressChip) => {
   const fontSizeSelect = {
     large: 'text-xs',
     small: 'text-[10px]',

@@ -6,8 +6,8 @@ import TEMP from '@/public/image/desktop.jpg'; //임시 이미지
 const Dashboard = () => {
   return (
     <div className='flex '>
-      {cardlists.map((list, index) => (
-        <DashboardList key={index} title={list.title} cardDatas={list.cards} />
+      {cardlists.map(({ title, cards }, index) => (
+        <DashboardList key={index} title={title} cardDatas={cards} />
       ))}
       <div className='w-fit grow py-16 px-5'>
         <AddButton>새로운 컬럼 추가하기</AddButton>
@@ -22,7 +22,8 @@ export default Dashboard;
 
 const cardlists = [
   {
-    title: 'To 1',
+    title: 'To DO 1',
+
     cards: [
       {
         title: 'Task 1',
@@ -56,7 +57,8 @@ const cardlists = [
     ],
   },
   {
-    title: 'To 2',
+    title: 'PROGRESSSSSSS 2',
+
     cards: [
       {
         title: 'Task 4',
@@ -77,7 +79,8 @@ const cardlists = [
     ],
   },
   {
-    title: 'To 3',
+    title: 'Done 3',
+
     cards: [
       {
         title: 'Task 6',
