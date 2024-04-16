@@ -17,6 +17,11 @@ module.exports = {
     './utils/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      mb: '375px',
+      tb: '768px',
+      pc: '1024px',
+    },
     extend: {
       animation: {
         buttonHover: 'buttonHover 0.3s ease forwards',

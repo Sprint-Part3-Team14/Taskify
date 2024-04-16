@@ -4,9 +4,8 @@ import RootLayout from './layout';
 
 import Footer from '@/components/landing/footer';
 import Header from '@/components/landing/header';
-
 // import Article from '@/components/landing/article';
-// import MainSection from '@/components/landing/mainSection';
+import MainSection from '@/components/landing/mainSection';
 // import ModalDescription from '@/components/landing/modalDescription';
 // import SubArticle from '@/components/landing/subarticle';
 
@@ -22,10 +21,10 @@ const Home = () => {
 
   return (
     <RootLayout>
-      <div className='flex-center flex-col gap-90 bg-white'>
+      <div className='flex flex-center flex-col gap-24 bg-white'>
         <Header />
-        {/* <MainSection />
-        <Article />
+        <MainSection />
+        {/* <Article />
         <SubArticle />
         <p className='text-20 font-bold tablet:text-[36px]'>생산성을 높이는 다양한 설정 ⚡</p>
         <ModalDescription /> */}
