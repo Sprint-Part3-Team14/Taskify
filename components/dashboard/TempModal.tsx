@@ -8,7 +8,7 @@ const TempModal = ({ onChange, onClick }: { onChange: (value: string) => void; o
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target.value;
-    setDisableButton(target === '');
+    setDisableButton(target.trim() === '');
     setValue(target);
   };
 

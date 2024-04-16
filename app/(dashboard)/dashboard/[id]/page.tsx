@@ -17,6 +17,12 @@ const Dashboard = () => {
   };
 
   const handleNewTable = () => {
+    const isDuplicate = cardlists.some(cardlist => cardlist.title === tableTitle);
+    if (isDuplicate) {
+      alert('중복된 컬럼 이름입니다.');
+      return;
+    }
+
     setCardlists(prevCardlists => [
       ...prevCardlists,
       {
