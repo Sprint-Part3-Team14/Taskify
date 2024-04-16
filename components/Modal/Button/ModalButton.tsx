@@ -2,10 +2,12 @@ const ModalButton = ({
   buttonType,
   firstButton,
   secondButton,
+  singleButton,
 }: {
-  buttonType: 'double' | 'single';
+  buttonType: 'double' | 'half' | 'single';
   firstButton?: string;
   secondButton?: string;
+  singleButton?: string;
 }) => {
   switch (buttonType) {
     case 'double':
@@ -23,7 +25,7 @@ const ModalButton = ({
           </button>
         </div>
       );
-    case 'single':
+    case 'half':
       return (
         <div className='flex gap-3 justify-end'>
           {firstButton && (
@@ -40,6 +42,16 @@ const ModalButton = ({
               {secondButton}
             </button>
           )}
+        </div>
+      );
+    case 'single':
+      return (
+        <div className='flex gap-3 justify-end'>
+          <button
+            className='text-tp-violet_900 px-8 py-2.5 border border-solid border-tp-gray_700 text-xs rounded-lg active:bg-slate-50'
+            type='button'>
+            {singleButton}
+          </button>
         </div>
       );
   }

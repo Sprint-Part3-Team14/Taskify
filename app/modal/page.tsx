@@ -12,7 +12,7 @@ const modalTest = () => {
   return (
     <>
       <ModalDropdown title='상태' />
-      <WrongPasswordModal handleModal={() => {}} />
+      <ModalButton buttonType='single' singleButton='입력' />
     </>
   );
 };
