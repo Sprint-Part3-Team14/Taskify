@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import NumberChip from './NumberChip'; //임시 컴포넌트
+import NumberChip from '../../Chip/NumberChip'; //임시 컴포넌트
 
 import SETTING from '@/public/icon/setting.svg';
 
