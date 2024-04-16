@@ -5,9 +5,10 @@ import Card from '@/components/Card/Card';
 import { I_CardList } from '@/interface/Dashboard';
 
 const DashboardList = ({ cardDatas, title }: I_CardList) => {
+  console.log(cardDatas.length);
   return (
     <div className='flex flex-col border border-r-[1px] border-dotted  gap-4 w-96  min-h-screen p-5 '>
-      <DashboardTitle title={title} />
+      <DashboardTitle title={title} count={cardDatas.length} />
       <AddButton />
       {cardDatas.map((card, index) => (
         <Card
