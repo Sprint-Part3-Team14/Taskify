@@ -8,7 +8,7 @@ const list = ['To Do', 'On Progress', 'Done'];
   /** 담당자 같은 경우는 서버에서 데이터 받아온 걸로 돌리고 */
 }
 
-const ModalDropdown = () => {
+const ModalDropdown = ({ title }: { title: string }) => {
   const [openList, setOpenList] = useState(false);
   const [selectItem, setSelectItem] = useState('To Do');
 
@@ -23,13 +23,13 @@ const ModalDropdown = () => {
 
   return (
     <div className='relative'>
-      <h3>상태</h3>
+      <h3 className='text-lg mb-2.5 font-extrabold'>{title}</h3>
       <button
         onClick={handleOpenDropDown}
         type='button'
-        className='w-[13.6rem] inline-flex justify-between rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
+        className='w-[13.6rem] inline-flex justify-between rounded-md bg-white px-3 py-2  shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
         {/** <ProgressChip size="large" title={selectItem}>*/}
-        To Do
+        {selectItem}
         <div className='w-6 h-6 relative'>
           <Image fill src='/icon/arrow_drop_down.svg' alt='상태 선택' />
         </div>
