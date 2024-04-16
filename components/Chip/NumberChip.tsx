@@ -3,5 +3,3 @@ const NumberChip = ({ count }: { count: number }) => {
 };
 
 export default NumberChip;
-
-// Chip 컴포넌트로 이동예정

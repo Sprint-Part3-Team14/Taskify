@@ -6,7 +6,7 @@ import ELLIPSE from '@/public/icon/ellipse.svg';
 const ProgressChip = ({ size = 'large', title }: I_ProgressChip) => {
   const fontSizeSelect = {
     large: 'text-xs',
-    small: 'text-[10px]',
+    small: 'text-[0.625rem]',
   };
   return (
     <div

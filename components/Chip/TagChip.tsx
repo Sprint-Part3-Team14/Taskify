@@ -1,13 +1,9 @@
-interface Props {
-  children: React.ReactNode;
-  size: 'large' | 'small';
-  color: 'blue' | 'red' | 'green' | 'brown';
-}
+import { I_TagChip } from '@/interface/Chip';
 
-const TagChip = ({ size, children, color }: Props) => {
+const TagChip = ({ size, name, color }: I_TagChip) => {
   const fontSizeSelect = {
     large: 'text-xs',
-    small: 'text-[10px]',
+    small: 'text-[0.625rem]',
   };
   const randomColor = {
     blue: 'bg-[#DBE6F7] text-[#4981D5]',
@@ -17,7 +13,7 @@ const TagChip = ({ size, children, color }: Props) => {
   };
   return (
     <div className={`${fontSizeSelect[size]} ${randomColor[color]} flex items-center  px-2 py-1 gap-1.5 rounded  `}>
-      <div>{children}</div>
+      {name}
     </div>
   );
 };
