@@ -1,11 +1,11 @@
 import AddButton from '../AddButton/AddButton';
 import DashboardTitle from '../DashboardTitle/DashboardTitle';
 
-import { CardProps } from '@/app/(dashboard)/dashboard/[id]/page';
 import Card from '@/components/Card/Card';
+import { I_CardList } from '@/interface/Dashboard';
 
 //타입수정
-const DashboardList = ({ cardDatas, title }: { title: string; cardDatas: CardProps[] }) => {
+const DashboardList = ({ cardDatas, title }: I_CardList) => {
   return (
     <div className='flex flex-col border border-r-[1px] border-dotted  gap-4 w-96  min-h-screen p-5 '>
       <DashboardTitle title={title} />

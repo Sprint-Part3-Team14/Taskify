@@ -1,20 +1,9 @@
-import { StaticImageData } from 'next/image';
-
 import AddButton from '@/components/dashboard/AddButton/AddButton';
 import DashboardList from '@/components/dashboard/DashboardList/DashboardList';
 import NumberChip from '@/components/dashboard/DashboardTitle/NumberChip'; // 임시 컴포넌트
 import TEMP from '@/public/image/desktop.jpg'; //임시 이미지
 
 // interface폳더로 옮길 dashboardProps
-
-export interface CardProps {
-  image?: StaticImageData;
-  alt?: string;
-  title: string;
-  tag: React.ReactNode[];
-  date: string;
-  user: JSX.Element;
-}
 
 const Dashboard = () => {
   return (
