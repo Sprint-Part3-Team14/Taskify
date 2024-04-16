@@ -6,7 +6,7 @@ import Desktop from '@/public/image/desktop.jpg';
 
 const MainSection = () => {
   return (
-    <div className='flex-center mb-100 flex-col tb:justify-center'>
+    <div className='flex-center mb-100 flex-col tb:justify-center mb-24'>
       <div className='flex justify-center items-center'>
         <Image src={Desktop} alt='Illustration' width={722} height={422.761} />
       </div>
