@@ -1,12 +1,4 @@
-import type { Config } from 'tailwindcss';
-
 const { fontFamily } = require('tailwindcss/defaultTheme');
-
-const BACKGROUND_WIDTH = {
-  mobile: '375px',
-  tablet: '768px',
-  pc: '1024px',
-};
 
 module.exports = {
   content: [
@@ -58,9 +50,11 @@ module.exports = {
           },
         };
       },
-      maxWidth: { ...BACKGROUND_WIDTH },
-      minWidth: { ...BACKGROUND_WIDTH },
-      width: { ...BACKGROUND_WIDTH },
+      screens: {
+        mb: '375px',
+        tb: '768px',
+        pc: '1024px',
+      },
     },
     fontFamily: {
       pretendard: ['Pretendard', ...fontFamily.sans],
