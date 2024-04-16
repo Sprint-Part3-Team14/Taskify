@@ -1,14 +1,18 @@
 'use client';
 
 import ModalButton from '@components/Modal/Button/ModalButton';
+import CreateColumnModal from '@components/Modal/CreateColumnModal';
+import DeleteAllCardModal from '@components/Modal/DeleteAllCardModal';
+import EditColumnModal from '@components/Modal/EditColumnModal';
 import ModalDropdown from '@components/Modal/Input/ModalDropdown';
+import InviteModal from '@components/Modal/InviteModal';
+import WrongPasswordModal from '@components/Modal/WrongPasswordModal';
 
 const modalTest = () => {
   return (
     <>
       <ModalDropdown title='상태' />
-      <ModalButton buttonType='double' singleButton='취소' secondButton='생성' />
-      <ModalButton buttonType='single' singleButton='입력' />
+      <WrongPasswordModal handleModal={() => {}} />
     </>
   );
 };

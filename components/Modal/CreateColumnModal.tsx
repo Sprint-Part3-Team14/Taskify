@@ -1,7 +1,7 @@
+import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
 
-// 반응형이 적용이 안됨
 const CreateColumnModal = ({ handleModal }: I_ModalToggle) => {
   return (
     <ModalLayout handleModal={handleModal} title='새 컬럼 생성'>
@@ -13,18 +13,7 @@ const CreateColumnModal = ({ handleModal }: I_ModalToggle) => {
           placeholder='새로운 프로젝트'
         />
 
-        <div className='flex gap-3 justify-end'>
-          <button
-            className='font-medium text-tp-gray_900 px-[2.9rem] py-3.5 border border-solid border-tp-gray_700 text-base rounded-lg mb:px-14 mb:py-3'
-            type='button'>
-            취소
-          </button>
-          <button
-            className='font-medium text-white bg-tp-violet_900 px-[2.9rem] py-3.5 text-base rounded-lg'
-            type='button'>
-            변경
-          </button>
-        </div>
+        <ModalButton buttonType='double' firstButton='취소' secondButton='변경' />
       </form>
     </ModalLayout>
   );
