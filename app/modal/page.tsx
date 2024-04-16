@@ -1,13 +1,14 @@
 'use client';
 
-import ModalDoubleButton from '@/components/Modal/ModalButton';
-import ModalDropdown from '@/components/Modal/input/ModalDropdown';
+import ModalButton from '@components/Modal/Button/ModalButton';
+import ModalDropdown from '@components/Modal/Input/ModalDropdown';
 
 const modalTest = () => {
   return (
     <>
       <ModalDropdown title='상태' />
-      <ModalDoubleButton leftButton='취소' rightButton='생성' />
+      <ModalButton buttonType='double' singleButton='취소' secondButton='생성' />
+      <ModalButton buttonType='single' singleButton='입력' />
     </>
   );
 };
