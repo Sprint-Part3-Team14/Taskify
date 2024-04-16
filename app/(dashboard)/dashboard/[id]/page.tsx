@@ -32,6 +32,10 @@ const Dashboard = () => {
     ]);
   };
 
+  if (cardlists.length > 10) {
+    alert('칼럼은 최대 10개 까지 생성 가능합니다.');
+  }
+
   return (
     <div className='flex '>
       {cardlists.map(({ title, cards }, index) => (
