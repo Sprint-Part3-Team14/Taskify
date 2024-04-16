@@ -1,9 +1,10 @@
 import ModalLayout from './ModalLayout';
+import { I_ModalToggle } from './ModalType';
 
 // 반응형이 적용이 안됨
-const InviteModal = () => {
+const InviteModal = ({ handleModal }: I_ModalToggle) => {
   return (
-    <ModalLayout title='초대하기'>
+    <ModalLayout handleModal={handleModal} title='초대하기'>
       <form className='flex flex-col gap-1.5 '>
         <label>이메일</label>
         <input

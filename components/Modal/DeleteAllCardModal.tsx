@@ -1,10 +1,11 @@
 import ModalLayout from './ModalLayout';
+import { I_ModalToggle } from './ModalType';
 import { ModalComments } from './constant';
 
 // 반응형이 적용이 안됨
-const DeleteAllCardModal = () => {
+const DeleteAllCardModal = ({ handleModal }: I_ModalToggle) => {
   return (
-    <ModalLayout>
+    <ModalLayout handleModal={handleModal}>
       <p className='text-center pt-[6.8rem] px-[10rem] pb-[7.5rem] text-black font-extrabold mb:px-[4rem] mb:pt-5 mb:text-base mb:'>
         {ModalComments.deleteAllColumn}
       </p>

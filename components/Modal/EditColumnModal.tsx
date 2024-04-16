@@ -1,9 +1,10 @@
 import ModalLayout from './ModalLayout';
+import { I_ModalToggle } from './ModalType';
 
 // 반응형이 적용이 안됨
-const EditColumnModal = () => {
+const EditColumnModal = ({ handleModal }: I_ModalToggle) => {
   return (
-    <ModalLayout title='컬럼 관리'>
+    <ModalLayout handleModal={handleModal} title='컬럼 관리'>
       <form className='flex flex-col'>
         <label className='text-lg'>이름</label>
         <input
