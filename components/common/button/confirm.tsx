@@ -5,9 +5,9 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonColor?: 'confirm' | 'reject';
 }
 
-function ConfirmButton({ children, onClick, disabled, buttonColor, ...rest }: Props) {
+const ConfirmButton = ({ children, onClick, disabled, buttonColor, ...rest }: Props) => {
   let buttonClassName =
-    'w-[109px] h-[28px] tb:w-[72px] tb:h-[30px] pc:w-[84px] pc:h-[32px] font-normal flex-center rounded disabled:bg-gray-400';
+    'w-[109px] h-[28px] tb:w-[72px] tb:h-[30px] pc:w-[84px] pc:h-[32px] font-bold flex-center rounded disabled:bg-gray-400';
   buttonColor === 'confirm'
     ? (buttonClassName += ' bg-tp-violet_900 text-white')
     : (buttonClassName += ' bg-tp-white text-tp-violet_900 border border-tp-violet_900');
@@ -17,6 +17,6 @@ function ConfirmButton({ children, onClick, disabled, buttonColor, ...rest }: Pr
       {children}
     </button>
   );
-}
+};
 
 export default ConfirmButton;
