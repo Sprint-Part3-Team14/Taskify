@@ -10,6 +10,7 @@ import TempMdoal from '@/components/dashboard/TempModal';
 
 const Dashboard = () => {
   let tableTitle = '';
+
   const [cardlists, setCardlists] = useState(LIST);
 
   const handleTableTitle = (value: string) => {
