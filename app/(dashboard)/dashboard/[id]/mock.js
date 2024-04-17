@@ -10,8 +10,6 @@ export const LIST = [
       {
         title: 'Task 1',
         date: '2024-04-13',
-        userCount: 5,
-        image: TEMP,
         tag: [<TagChip key={1} name='백엔드' size='large' color='red' />],
         user: <NumberChip count={5} />,
       },
