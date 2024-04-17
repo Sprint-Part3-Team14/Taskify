@@ -1,6 +1,7 @@
 import RootLayout from './layout';
 
-import MainButton from '@/components/common/button/loginButton';
+import ConfirmButton from '@/components/common/button/confirm';
+import MainButton from '@/components/common/button/login';
 
 const Home = () => {
   // const router = useRouter();
@@ -15,7 +16,7 @@ const Home = () => {
   return (
     <RootLayout>
       <div>
-        <MainButton>어무이</MainButton>
+        <ConfirmButton buttonColor='reject'>거절</ConfirmButton>
       </div>
     </RootLayout>
   );
