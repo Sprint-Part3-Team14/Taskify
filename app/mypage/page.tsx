@@ -13,7 +13,7 @@ const MyPage = () => {
           돌아가기
         </button>
       </Link>
-      <div className='flex flex-col w-[rem38.75] bg-white p-8 rounded-lg mb-2.5 shadow-sm'>
+      <div className='flex flex-col w-[38.75rem] bg-white p-8 rounded-lg mb-2.5 shadow-sm'>
         <h1 className='text-2xl font-bold text-tp-black_700'>프로필</h1>
         <div className='mt-7 mb-6 flex gap-4 items-center'>
           <InputImageButton size='large' />
