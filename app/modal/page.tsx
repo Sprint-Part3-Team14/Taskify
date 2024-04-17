@@ -2,7 +2,7 @@
 
 import ModalButton from '@components/Modal/Button/ModalButton';
 import CreateColumnModal from '@components/Modal/CreateColumnModal';
-import CreateWorkModal from '@components/Modal/CreateWorkModal';
+import CreateWorkModal from '@components/WorkModal/CreateWorkModal';
 import DeleteAllCardModal from '@components/Modal/DeleteAllCardModal';
 import EditColumnModal from '@components/Modal/EditColumnModal';
 import ModalDropdown from '@components/Modal/Input/ModalDropdown';
@@ -16,7 +16,7 @@ const modalTest = () => {
       <ModalDropdown title='상태' />
       <ModalButton buttonType='single' singleButton='입력' />
       <ModalTextarea />
-      <CreateWorkModal />
+      <CreateWorkModal handleModal={() => {}} />
     </>
   );
 };
