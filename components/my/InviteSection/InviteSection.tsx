@@ -1,5 +1,5 @@
-import EmptyMessage from '../EmptyMessage/EmptyMessage';
-import InviteList from '../InviteList/InviteList';
+import EmptyMessage from '../../mydashboard/EmptyMessage/EmptyMessage';
+import InviteList from '../../mydashboard/InviteList/InviteList';
 import SearchBar from '../SearchBar/SearchBar';
 
 const InviteSection = () => {
