@@ -9,7 +9,7 @@ const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
         <div className='w-72 bg-slate-500'>사이드바 임시 공간...</div>
         <div className='w-full '>
           <div className=' h-20 bg-slate-400'>헤더 임시 공간 ...</div>
-          <div className='p-5 bg-[#fafafa]'>
+          <div className='p-5 bg-[#fafafa] min-h-screen'>
             <Link href='/boardid'>
               <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
                 <div className='w-5 h-5 relative'>
