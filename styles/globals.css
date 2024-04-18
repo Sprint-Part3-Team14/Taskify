@@ -5,17 +5,17 @@
 @layer base {
   @font-face {
     font-family: 'GS';
-    src: url('../fonts/GmarketSansTTFMedium.ttf') format('ttf');
+    src: url('/fonts/GmarketSansTTFMedium.ttf') format('ttf');
     font-display: swap;
   }
   @font-face {
     font-family: 'GS_Light';
-    src: url('../fonts/GmarketSansTTFLight.ttf') format('ttf');
+    src: url('/fonts/GmarketSansTTFLight.ttf') format('ttf');
     font-display: swap;
   }
   @font-face {
     font-family: 'GS_Bold';
-    src: url('../fonts/GmarketSansTTFBold.ttf') format('ttf');
+    src: url('/fonts/GmarketSansTTFBold.ttf') format('ttf');
     font-display: swap;
   }
 

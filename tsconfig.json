@@ -16,10 +16,19 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     },
     "strict": false
+      "@public/images/*": ["public/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@app/*": ["app/*"],
+      "@interface/*": ["interface/*"],
+      "@utils/*": ["utils/*"],
+      "@styles/*": ["styles/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

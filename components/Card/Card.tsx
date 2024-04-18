@@ -22,6 +22,7 @@ interface I_Card {
 const Card = ({ card, index }: I_Card) => {
   const isDragDisabled = card.id === '';
   return (
+
     <Draggable draggableId={card.id} index={index} isDragDisabled={isDragDisabled}>
       {provided => (
         <div
@@ -47,6 +48,7 @@ const Card = ({ card, index }: I_Card) => {
               <div>{card.content.user}</div>
             </div>
           </div>
+
         </div>
       )}
     </Draggable>
