@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import logo from '../../public/logo/logo_large.jpg';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -9,7 +10,9 @@ const Header = () => {
         <Image src={logo} alt='Logo' width={121} height={39} />
       </div>
       <div className='flex gap-5 tb:gap-9'>
-        <button>로그인</button>
+        <Link href='/signin'>
+          <button>로그인</button>
+        </Link>
         <button>회원가입</button>
       </div>
     </div>

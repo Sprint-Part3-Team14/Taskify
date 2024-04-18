@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import NumberChip from '../../Chip/NumberChip';
 
 import { I_DashboardTitle } from '@/interface/Dashboard';
-import ELLIPSE from '@/public/icon/ellipse.svg';
-import SETTING from '@/public/icon/setting.svg';
+const ELLIPSE = '/icon/ellipse.svg';
+const SETTING = '/icon/setting.svg';
 
 const DashboardTitle = ({ title, count }: I_DashboardTitle) => {
   const path = usePathname();

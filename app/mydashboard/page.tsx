@@ -1,6 +1,6 @@
-import ChangeDashBoardName from '@components/ChangeDashBoardName/ChangeDashBoardName';
-import InvitationHistory from '@components/Table/InvitationHistory';
-import MemberTable from '@components/Table/MemberTable';
+import ChangeDashBoardName from '@/components/ChangeDashBoardName/ChangeDashBoardName';
+import InvitationHistory from '@/components/Table/InvitationHistory';
+import MemberTable from '@/components/Table/MemberTable';
 
 const MydashBoard = () => {
   return (

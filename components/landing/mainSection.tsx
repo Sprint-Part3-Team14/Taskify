@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // import { Button } from '@/components/common/button';
-import Desktop from '@/public/image/desktop.jpg';
+const Desktop = '/image/desktop.jpg';
 
 const MainSection = () => {
   return (
