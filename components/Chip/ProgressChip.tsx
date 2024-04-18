@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { I_ProgressChip } from '@/interface/Chip';
-import ELLIPSE from '@/public/icon/ellipse.svg';
+const ELLIPSE = '/icon/ellipse.svg';
 
 const ProgressChip = ({ size = 'large', title }: I_ProgressChip) => {
   const fontSizeSelect = {

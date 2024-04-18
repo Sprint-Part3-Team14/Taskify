@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import Image from 'next/image';
 
-import PLUS_BLUE from '@/public/icon/plus_blue.svg';
+const PLUS_BLUE = '/icon/plus_blue.svg';
 
 const AddButton = ({ children }: PropsWithChildren) => {
   return (

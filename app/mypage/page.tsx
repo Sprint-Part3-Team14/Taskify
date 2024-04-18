@@ -1,4 +1,4 @@
-import InputImageButton from '@components/Modal/Button/InputImageButton';
+import InputImageButton from '@/components/Modal/Button/InputImageButton';
 import Image from 'next/image';
 import Link from 'next/link';
 

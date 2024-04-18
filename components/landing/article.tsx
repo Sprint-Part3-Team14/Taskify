@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import DashBoardImage from '@/public/image/landing1.jpg';
+const DashBoardImage = '/image/landing1.jpg';
 
 const MainSection = () => {
   return (

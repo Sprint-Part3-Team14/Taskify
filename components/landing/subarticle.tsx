@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import DashBoardImage from '@/public/image/landing2.jpg';
+const DashBoardImage = '/image/landing2.jpg';
 
 const SubArticle = () => {
   return (

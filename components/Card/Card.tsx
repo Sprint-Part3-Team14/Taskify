@@ -3,7 +3,7 @@ import React from 'react';
 import { Draggable } from '@hello-pangea/dnd';
 import Image, { StaticImageData } from 'next/image';
 
-import CALENDAR from '@/public/icon/calendar_today.svg';
+const CALENDAR = '/icon/calendar_today.svg';
 
 interface I_Card {
   card: {
@@ -22,7 +22,6 @@ interface I_Card {
 const Card = ({ card, index }: I_Card) => {
   const isDragDisabled = card.id === '';
   return (
-
     <Draggable draggableId={card.id} index={index} isDragDisabled={isDragDisabled}>
       {provided => (
         <div
@@ -48,7 +47,6 @@ const Card = ({ card, index }: I_Card) => {
               <div>{card.content.user}</div>
             </div>
           </div>
-
         </div>
       )}
     </Draggable>

@@ -5,8 +5,6 @@ import React, { useCallback, useState } from 'react';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import { StaticImageData } from 'next/image';
 
-import { initialData } from './initial-data';
-
 import AddButton from '@/components/dashboard/AddButton/AddButton';
 import Column from '@/components/dashboard/Column/Column';
 
@@ -15,7 +13,7 @@ interface I_Data {
     [key: string]: {
       id: string;
       content: {
-        image?: StaticImageData;
+        image?: any;
         title: string;
         tag: React.ReactNode[];
         date: string;
@@ -30,7 +28,7 @@ interface I_Data {
 }
 
 const Dashboard = () => {
-  const [data, setData] = useState<I_Data>(initialData);
+  const [data, setData] = useState<I_Data>();
   const onDragEnd = useCallback(
     (result: DropResult) => {
       const { destination, source, draggableId, type } = result;
