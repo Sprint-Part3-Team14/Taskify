@@ -1,7 +1,9 @@
 import RootLayout from './layout';
 
+import AddButton from '@/components/common/button/add';
 import ConfirmButton from '@/components/common/button/confirm';
 import MainButton from '@/components/common/button/login';
+import Pagenation from '@/components/common/button/pagenation';
 
 const Home = () => {
   // const router = useRouter();
@@ -16,7 +18,9 @@ const Home = () => {
   return (
     <RootLayout>
       <div>
-        <ConfirmButton buttonColor='reject'>거절</ConfirmButton>
+        {/* <AddButton /> */}
+        <br />
+        <Pagenation />
       </div>
     </RootLayout>
   );

@@ -1,5 +1,10 @@
+'use client';
+
 import { ButtonHTMLAttributes } from 'react';
 
+import Image from 'next/image';
+
+import IconArrowExport from '@/public/icon/arrow_drop_down.svg';
 import IconArrowForward from '@/public/icon/arrow_forward.svg';
 
 const ARROW_COLOR = {
@@ -14,7 +19,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   rightDisabled?: boolean;
 }
 
-const Pagenation = ({ onLeftClick, onRightClick, leftDisabled, rightDisabled }: Props) => {
+const Pagination = ({ onLeftClick, onRightClick, leftDisabled, rightDisabled }: Props) => {
   const leftArrowColor = leftDisabled ? ARROW_COLOR.disabled : ARROW_COLOR.enabled;
   const rightArrowColor = rightDisabled ? ARROW_COLOR.disabled : ARROW_COLOR.enabled;
 
@@ -23,17 +28,17 @@ const Pagenation = ({ onLeftClick, onRightClick, leftDisabled, rightDisabled }: 
       <button
         onClick={onLeftClick}
         disabled={leftDisabled}
-        className='border-solid-gray flex-center h-[40px] w-[40px] rounded-l-sm'>
-        <IconArrowForward fill={leftArrowColor} />
+        className='flex border-solid-gray justify-center items-center h-[40px] w-[40px] rounded-l-sm'>
+        <Image src={IconArrowForward} alt='arrowleft' />
       </button>
       <button
         onClick={onRightClick}
         disabled={rightDisabled}
-        className='border-solid-gray flex-center h-[40px] w-[40px] rounded-l-sm'>
-        <IconArrowForward fill={rightArrowColor} />
+        className='flex border-solid-gray justify-center items-center h-[40px] w-[40px] rounded-l-sm'>
+        <Image src={IconArrowExport} alt='arrowright' width={20} height={20} />
       </button>
     </div>
   );
 };
 
-export default Pagenation;
+export default Pagination;
