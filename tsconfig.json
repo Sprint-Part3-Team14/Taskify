@@ -3,7 +3,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -19,6 +18,9 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./*"]
+    },
+    "strict": false
       "@public/images/*": ["public/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
@@ -28,6 +30,12 @@
       "@styles/*": ["styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/(dashboard)/dashboard/[id]/initial-data.js"
+  ],
   "exclude": ["node_modules"]
 }

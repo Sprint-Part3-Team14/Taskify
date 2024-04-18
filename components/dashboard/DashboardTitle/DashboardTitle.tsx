@@ -1,18 +1,27 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import NumberChip from './NumberChip'; //임시 컴포넌트
+import NumberChip from '../../Chip/NumberChip';
 
+import { I_DashboardTitle } from '@/interface/Dashboard';
+import ELLIPSE from '@/public/icon/ellipse.svg';
 import SETTING from '@/public/icon/setting.svg';
 
-const DashboardTitle = ({ title }: { title: string }) => {
+const DashboardTitle = ({ title, count }: I_DashboardTitle) => {
+  const path = usePathname();
+  const dashboardId = path.split('/')[2];
+
   return (
     <div className='flex justify-between items-center '>
-      <div className='flex items-center gap-3  w-36 text-lg font-bold'>
-        <div>C</div>
-        <div>{title}</div>
-        <NumberChip count={3} />
+      <div className='flex items-center gap-3  text-lg font-bold'>
+        <Image src={ELLIPSE} alt='ellipse' width={8} height={8} />
+        <div className='text-lg text-tp-black_700'>{title}</div>
+        <NumberChip count={count} />
       </div>
-      <Image src={SETTING} alt='setting' width={24} height={24} />
+      <Link href={`/dashboard/${dashboardId}/edit`}>
+        <Image src={SETTING} alt='setting' width={24} height={24} />
+      </Link>
     </div>
   );
 };
