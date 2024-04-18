@@ -2,6 +2,7 @@ import RootLayout from './layout';
 
 import AddButton from '@/components/common/button/add';
 import AddColumnButton from '@/components/common/button/addColumn';
+import AddDashboardButton from '@/components/common/button/addDashboard';
 import ConfirmButton from '@/components/common/button/confirm';
 import MainButton from '@/components/common/button/login';
 import Pagenation from '@/components/common/button/pagenation';
@@ -27,6 +28,8 @@ const Home = () => {
         <AddColumnButton />
         <br />
         <RemoveButton />
+        <br />
+        <AddDashboardButton />
       </div>
     </RootLayout>
   );
