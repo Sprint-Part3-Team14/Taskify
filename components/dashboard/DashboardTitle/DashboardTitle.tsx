@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import NumberChip from '../../Chip/NumberChip';
+import NumberChip from '../../common/Chip/NumberChip';
 
 import { I_DashboardTitle } from '@/interface/Dashboard';
 const ELLIPSE = '/icon/ellipse.svg';

@@ -1,5 +1,5 @@
-import NumberChip from '@/components/Chip/NumberChip';
-import TagChip from '@/components/Chip/TagChip';
+import NumberChip from '@/components/common/Chip/NumberChip';
+import TagChip from '@/components/common/Chip/TagChip';
 
 const TEMP = '/image/desktop.jpg';
 

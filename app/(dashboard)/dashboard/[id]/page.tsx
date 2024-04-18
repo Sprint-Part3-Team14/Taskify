@@ -3,9 +3,8 @@
 import React, { useCallback, useState } from 'react';
 
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
-import { StaticImageData } from 'next/image';
 
-import AddButton from '@/components/dashboard/AddButton/AddButton';
+import AddButton from '@/components/common/button/add';
 import Column from '@/components/dashboard/Column/Column';
 import { initialData } from './initial-data';
 
