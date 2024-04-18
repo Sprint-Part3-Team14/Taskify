@@ -26,7 +26,7 @@ const Column = ({ column, cards, index }: I_Column) => {
     <Draggable draggableId={column.id} index={index}>
       {provided => (
         <div
-          className='flex flex-col border border-r-[1px] border-dotted gap-4 w-96  min-h-screen p-5 '
+          className='flex flex-col border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 w-96  min-h-screen p-5 '
           ref={provided.innerRef}
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>

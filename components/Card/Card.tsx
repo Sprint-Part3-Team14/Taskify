@@ -25,7 +25,7 @@ const Card = ({ card, index }: I_Card) => {
     <Draggable draggableId={card.id} index={index} isDragDisabled={isDragDisabled}>
       {provided => (
         <div
-          className='flex flex-col gap-2.5 p-5 border border-solid border-tp-gray_700 rounded-md'
+          className='flex flex-col gap-2.5 p-5 border border-solid border-tp-gray_700 bg-tp-gray_500 rounded-md'
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}>

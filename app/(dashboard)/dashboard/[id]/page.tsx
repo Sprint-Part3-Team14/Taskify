@@ -102,7 +102,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className='flex flex-row w-full'>
+    <div className='flex flex-row w-full bg-tp-gray_500'>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId='all-columns' direction='horizontal' type='column'>
           {provided => (
