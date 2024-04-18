@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import SEARCH_ICON from '@/public/icon/search.svg';
+const SEARCH_ICON = '/icon/search.svg';
 
 const SearchBar = () => {
   return (
