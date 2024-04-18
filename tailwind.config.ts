@@ -3,8 +3,8 @@ import type { Config } from 'tailwindcss';
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
 const BACKGROUND_WIDTH = {
-  mobile: '375px',
-  tablet: '768px',
+  mb: '375px',
+  tb: '768px',
   pc: '1024px',
 };
 
@@ -17,6 +17,11 @@ module.exports = {
     './utils/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      mb: '375px',
+      tb: '768px',
+      pc: '1024px',
+    },
     extend: {
       animation: {
         buttonHover: 'buttonHover 0.3s ease forwards',
@@ -63,6 +68,7 @@ module.exports = {
       width: { ...BACKGROUND_WIDTH },
     },
     fontFamily: {
+      GS: ['GS'],
       pretendard: ['Pretendard', ...fontFamily.sans],
     },
   },
