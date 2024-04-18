@@ -58,9 +58,11 @@ module.exports = {
           },
         };
       },
-      maxWidth: { ...BACKGROUND_WIDTH },
-      minWidth: { ...BACKGROUND_WIDTH },
-      width: { ...BACKGROUND_WIDTH },
+      screens: {
+        mb: '375px',
+        tb: '768px',
+        pc: '1024px',
+      },
     },
     fontFamily: {
       pretendard: ['Pretendard', ...fontFamily.sans],

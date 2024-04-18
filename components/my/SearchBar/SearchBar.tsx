@@ -7,7 +7,7 @@ const SearchBar = () => {
     <div className='px-7'>
       <div className='flex w-full px-4 py-2 gap-2 border border-solid rounded-md border-tp-gray_700'>
         <Image src={SEARCH_ICON} alt='search' width={24} height={24} />
-        <input className='w-full text-base placeholder:text-tp-gray_800' placeholder='검색' />
+        <input className='w-full mb:text-sm tb:text-base placeholder:text-tp-gray_800' placeholder='검색' />
       </div>
     </div>
   );
