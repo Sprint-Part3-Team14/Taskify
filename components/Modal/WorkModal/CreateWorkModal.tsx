@@ -70,14 +70,14 @@ const CreateWorkModal = ({ handleModal }: { handleModal: () => void }) => {
           <p className='flex gap-1 font-extrabold text-lg'>이미지</p>
           <label htmlFor='image-upload' className='flex flex-col gap-2.5 font-extrabold text-lg'>
             {!selectImage ? (
-              <div className='bg-[#f5f5f5] rounded-md flex justify-center items-center p-6 w-[4.75rem] h-[4.75rem] cursor-pointer'>
+              <div className='bg-[#f5f5f5] rounded-md flex justify-center items-center p-6 w-[4.75rem] h-[4.75rem]'>
                 <div className='relative w-7 h-7'>
                   <Image fill src='/icon/violet_plus.svg' alt='이미지 추가하기' id='input-image' />
                 </div>
               </div>
             ) : (
               <>
-                <div className='relative w-[4.75rem] h-[4.75rem] rounded-md overflow-hidden cursor-pointer'>
+                <div className='relative w-[4.75rem] h-[4.75rem] rounded-md overflow-hidden'>
                   <div className='w-[1.4375rem] h-[1.4375rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20'>
                     <Image fill src='/icon/edit.svg' alt='이미지 변경하기' />
                   </div>
