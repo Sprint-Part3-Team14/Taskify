@@ -5,6 +5,7 @@ import AddColumnButton from '@/components/common/button/addColumn';
 import ConfirmButton from '@/components/common/button/confirm';
 import MainButton from '@/components/common/button/login';
 import Pagenation from '@/components/common/button/pagenation';
+import RemoveButton from '@/components/common/button/remove';
 
 const Home = () => {
   // const router = useRouter();
@@ -24,6 +25,8 @@ const Home = () => {
         <Pagenation />
         <br />
         <AddColumnButton />
+        <br />
+        <RemoveButton />
       </div>
     </RootLayout>
   );
