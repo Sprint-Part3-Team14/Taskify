@@ -13,6 +13,7 @@ const modalTest = () => {
       <ModalTextarea />
       <MemberTable />
       <InvitationHistory />
+      <CreateWorkModal handleModal={() => {}} />
     </div>
   );
 };
