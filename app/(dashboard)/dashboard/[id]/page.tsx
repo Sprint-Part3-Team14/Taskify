@@ -101,7 +101,6 @@ const Dashboard = () => {
     [data]
   );
 
-  console.log(data);
   return (
     <div className='flex flex-row w-full'>
       <DragDropContext onDragEnd={onDragEnd}>
