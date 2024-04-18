@@ -1,12 +1,16 @@
+
+// import { useRouter } from 'next/navigation';
+
 import RootLayout from './layout';
 
-import AddButton from '@/components/common/button/add';
-import AddColumnButton from '@/components/common/button/addColumn';
-import AddDashboardButton from '@/components/common/button/addDashboard';
-import ConfirmButton from '@/components/common/button/confirm';
-import MainButton from '@/components/common/button/login';
-import Pagenation from '@/components/common/button/pagenation';
-import RemoveButton from '@/components/common/button/remove';
+import Article from '@/components/landing/article';
+import Footer from '@/components/landing/footer';
+import Header from '@/components/landing/header';
+import MainSection from '@/components/landing/mainSection';
+import SettingSection from '@/components/landing/settingSection';
+// import ModalDescription from '@/components/landing/modalDescription';
+import SubArticle from '@/components/landing/subarticle';
+
 
 const Home = () => {
   // const router = useRouter();
@@ -20,16 +24,16 @@ const Home = () => {
 
   return (
     <RootLayout>
-      <div>
-        <AddButton />
-        <br />
-        <Pagenation />
-        <br />
-        <AddColumnButton />
-        <br />
-        <RemoveButton />
-        <br />
-        <AddDashboardButton />
+
+      <div className='flex flex-center flex-col gap-24 bg-white'>
+        <Header />
+        <MainSection />
+        <Article />
+        <SubArticle />
+        <p className='flex justify-center text-20 font-bold tb:text-[36px]'>생산성을 높이는 다양한 설정 ⚡</p>
+        <SettingSection />
+        <Footer />
+
       </div>
     </RootLayout>
   );
