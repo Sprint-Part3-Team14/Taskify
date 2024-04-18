@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 
 type Size = 'small' | 'large';
 
-const InputImageFile = ({ size }: { size: Size }) => {
+const InputImageFile = ({ size, title }: { size: Size; title?: string }) => {
   // const InputSize = size=== 'small' ? width : '4.75rem', height: '4.75rem' : width : '11.375rem', height : '11.375rem';
   const [selectImage, setSelectImage] = useState('');
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +18,7 @@ const InputImageFile = ({ size }: { size: Size }) => {
   };
   return (
     <div className='flex flex-col gap-2.5 '>
-      <p className='flex gap-1 font-extrabold text-lg'>이미지</p>
+      {title && <p className='flex gap-1 font-extrabold text-lg'>{title}</p>}
       <label htmlFor='image-upload' className='flex flex-col gap-2.5 font-extrabold text-lg'>
         {!selectImage ? (
           <div
