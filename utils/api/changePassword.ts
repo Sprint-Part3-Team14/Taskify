@@ -1,17 +1,21 @@
 import { ACCESS_TOKEN } from '../temporaryToken';
 
 export interface PasswordData {
-  password : string;
-  newPassword : string;
+  password: string;
+  newPassword: string;
 }
 
-export const changePassWord = async ({changePasswordValue} : {changePasswordValue : PasswordData} ) => {
+export const changePassWord = async ({ changePasswordValue }: { changePasswordValue: PasswordData }) => {
   const response = await fetch(`https://sp-taskify-api.vercel.app/14/auth/password`, {
     method: 'PUT',
-    body : JSON.stringify(changePasswordValue),
+    body: JSON.stringify(changePasswordValue),
     headers: {
       'Content-Type': 'application/json',
       Authorization: ACCESS_TOKEN,
     },
   });
+
+  const result = response.json();
+
+  return result;
 };
