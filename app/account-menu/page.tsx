@@ -1,5 +1,5 @@
-import ChangePassword from '@components/MyDashBoard Page/accountMenu/ChangePassword';
-import EditProfile from '@components/MyDashBoard Page/accountMenu/EditProfile';
+import ChangePassword from '@/components/MyDashBoard Page/accountMenu/ChangePassword';
+import EditProfile from '@/components/MyDashBoard Page/accountMenu/EditProfile';
 
 const AccountMenu = () => {
   return (

@@ -1,5 +1,5 @@
 'use client';
-import InputImageFile from '@components/InputImage/InputImage';
+import InputImageFile from '@/components/InputImage/InputImage';
 
 const EditProfile = () => {
   return (
@@ -9,6 +9,7 @@ const EditProfile = () => {
       <h2 className='text-2xl text-tp-black_700 font-bold mb-8'>프로필</h2>
       <form role='edit-profile' className='flex items-center gap-4'>
         <InputImageFile size='large' />
+
         <div role='email-nickname-input-container' className='flex flex-col gap-5'>
           <div role='email-box' className='flex flex-col gap-2.5'>
             <label htmlFor='email' className='text-lg text-tp-black_700'>
