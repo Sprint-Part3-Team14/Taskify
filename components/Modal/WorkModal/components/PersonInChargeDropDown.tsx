@@ -1,5 +1,5 @@
 'use client';
-import { DEFAULT_PROFILE_IMAGE } from '@components/Table/constant';
+import { DEFAULT_PROFILE_IMAGE } from '@/components/Table/constant';
 import Image from 'next/image';
 import { MouseEvent, useState } from 'react';
 

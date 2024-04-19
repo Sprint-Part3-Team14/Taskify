@@ -1,16 +1,21 @@
+'use client';
+
+import { useState } from 'react';
+import EditColumnModal from '@/components/Modal/EditColumnModal';
+
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import NumberChip from '../../common/Chip/NumberChip';
 
 import { I_DashboardTitle } from '@/interface/Dashboard';
-const ELLIPSE = '/icon/ellipse.svg';
-const SETTING = '/icon/setting.svg';
+import { ELLIPSE, SETTING } from '../constants';
 
 const DashboardTitle = ({ title, count }: I_DashboardTitle) => {
-  const path = usePathname();
-  const dashboardId = path.split('/')[2];
+  const [isToggledEditColumnMdoal, setIsToggledEditColumnModal] = useState(false);
+
+  const handleEditColumnModal = () => {
+    setIsToggledEditColumnModal(!isToggledEditColumnMdoal);
+  };
 
   return (
     <div className='flex justify-between items-center '>
@@ -19,9 +24,8 @@ const DashboardTitle = ({ title, count }: I_DashboardTitle) => {
         <div className='text-lg text-tp-black_700'>{title}</div>
         <NumberChip count={count} />
       </div>
-      <Link href={`/dashboard/${dashboardId}/edit`}>
-        <Image src={SETTING} alt='setting' width={24} height={24} />
-      </Link>
+      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleEditColumnModal} />
+      {isToggledEditColumnMdoal && <EditColumnModal handleModal={handleEditColumnModal} />}
     </div>
   );
 };

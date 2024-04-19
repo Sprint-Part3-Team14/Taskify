@@ -1,9 +1,15 @@
+'use client';
+
+import { useState } from 'react';
+
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { StaticImageData } from 'next/image';
 
 import AddButton from '@/components/common/button/add';
 import DashboardTitle from '../DashboardTitle/DashboardTitle';
 import Card from '../Card/Card';
+
+import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
 
 interface I_Column {
   column: { id: string; title: string; cardIds: string[] };
@@ -21,6 +27,12 @@ interface I_Column {
 }
 
 const Column = ({ column, cards, index }: I_Column) => {
+  const [isToggledCreateWorkModal, setIsToggledCreateWorkModal] = useState(false);
+
+  const handleIstoggledCreateWorkModal = () => {
+    setIsToggledCreateWorkModal(!isToggledCreateWorkModal);
+  };
+
   return (
     <Draggable draggableId={column.id} index={index}>
       {provided => (
@@ -30,7 +42,8 @@ const Column = ({ column, cards, index }: I_Column) => {
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
             <DashboardTitle title={column.title} count={cards.length} />
-            <AddButton />
+            <AddButton onClick={handleIstoggledCreateWorkModal}></AddButton>
+            {isToggledCreateWorkModal && <CreateWorkModal handleModal={handleIstoggledCreateWorkModal} />}
           </div>
           <Droppable droppableId={column.id} type='card'>
             {provided => (

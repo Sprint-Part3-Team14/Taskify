@@ -3,7 +3,7 @@ import Image from 'next/image';
 const PLUS_VIOLET = '/icon/plus_violet.svg';
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onClick: () => void;
 }
 

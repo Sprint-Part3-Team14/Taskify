@@ -6,6 +6,7 @@ import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 
 import AddButton from '@/components/common/button/add';
 import Column from '@/components/Dashboard/Column/Column';
+import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 
 import { initialData } from './initial-data';
 
@@ -30,6 +31,12 @@ interface I_Data {
 }
 
 const Dashboard = () => {
+  const [isToggledCreatedColumnModal, setIsToggledCreatedColumnModal] = useState(false);
+
+  const handleCreateColumnModal = () => {
+    setIsToggledCreatedColumnModal(!isToggledCreatedColumnModal);
+  };
+
   const [data, setData] = useState<I_Data>(initialData);
   const onDragEnd = useCallback(
     (result: DropResult) => {
@@ -102,25 +109,28 @@ const Dashboard = () => {
   );
 
   return (
-    <div className='flex flex-row w-full bg-tp-gray_500'>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId='all-columns' direction='horizontal' type='column'>
-          {provided => (
-            <div className='flex w-full' {...provided.droppableProps} ref={provided.innerRef}>
-              {data.columnOrder.map((columnId, index) => {
-                const column = data.columns[columnId];
-                const cards = column.cardIds.map(cardId => data.cards[cardId]);
-                return <Column column={column} cards={cards} key={column.id} index={index} />;
-              })}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <div className='w-fit grow py-16 px-5'>
-        <AddButton>새로운 컬럼 추가하기</AddButton>
+    <>
+      <div className='flex flex-row w-full bg-tp-gray_500'>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId='all-columns' direction='horizontal' type='column'>
+            {provided => (
+              <div className='flex w-full' {...provided.droppableProps} ref={provided.innerRef}>
+                {data.columnOrder.map((columnId, index) => {
+                  const column = data.columns[columnId];
+                  const cards = column.cardIds.map(cardId => data.cards[cardId]);
+                  return <Column column={column} cards={cards} key={column.id} index={index} />;
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <div className='w-fit grow py-16 px-5'>
+          <AddButton onClick={handleCreateColumnModal}>새로운 컬럼 추가하기</AddButton>
+        </div>
       </div>
-    </div>
+      {isToggledCreatedColumnModal && <CreateColumnModal handleModal={handleCreateColumnModal} />}
+    </>
   );
 };
 
