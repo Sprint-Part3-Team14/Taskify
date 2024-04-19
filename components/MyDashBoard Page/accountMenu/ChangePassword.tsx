@@ -37,7 +37,7 @@ const ChangePassword = () => {
           <input
             type='text'
             id='current-password'
-            placeholder='현재 비밀번호 입력'
+            placeholder='현재 비밀번호를 입력해 주세요'
             className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
             {...register('currentPassword', {
               required: {
@@ -56,7 +56,7 @@ const ChangePassword = () => {
           <input
             type='password'
             id='new-password'
-            placeholder='새 비밀번호 입력'
+            placeholder='8자 이상 입력해 주세요'
             className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
             {...register('newPassword', {
               required: {
@@ -75,7 +75,7 @@ const ChangePassword = () => {
           <input
             type='password'
             id='new-password-check'
-            placeholder='현재 비밀번호 입력'
+            placeholder='새 비밀번호를 입력해 주세요'
             className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
             {...register('checkNewPassword', {
               required: {
