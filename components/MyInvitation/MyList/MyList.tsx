@@ -27,8 +27,8 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
         <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
         {/* 모달 변경 */}
         {isToggledModal && <EditColumnModal handleModal={handleToggledMdoal} />}
-        {myDashboards.map(({ title, color, userId, createdByMe }, index) => (
-          <Link key={index} href={`dashboard/${userId}`}>
+        {myDashboards.map(({ title, color, id, createdByMe }, index) => (
+          <Link key={index} href={`dashboard/${id}`}>
             <div className='flex justify-between items-center gap-2.5 px-5  min-w-[284px] tb:w-[544px] pc:w-[333px] h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
               <div className='flex items-center gap-4'>
                 <div>
@@ -49,7 +49,11 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
           {totalPage} 페이지 중 {currentPage}
         </div>
         <div className='flex'>
-          <MyPagination onLeftClick={onClickPrevPage} onRightClick={onClickNextPage} />
+          <MyPagination
+            onLeftClick={onClickPrevPage}
+            onRightClick={onClickNextPage}
+            rightDisabled={totalPage <= currentPage}
+          />
         </div>
       </div>
     </div>
