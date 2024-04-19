@@ -11,7 +11,7 @@ const InvitationList = ({ invitationList, handleAccept, handleReject }: I_MYInvi
 
   return (
     <>
-      {invitationDashboard.map(({ dashboard, inviter }, index) => (
+      {invitationDashboard.map(({ dashboard, inviter, id }, index) => (
         <div
           key={index}
           className='mb:hidden tb:grid grid-cols-3 px-7 py-7 text-base border-b-[1px] border-bg-tp-gray_600'>
@@ -21,14 +21,14 @@ const InvitationList = ({ invitationList, handleAccept, handleReject }: I_MYInvi
             <button
               className='w-[5.25rem] h-8 bg-tp-violet_900 rounded text-tp-white text-sm font-medium'
               onClick={() => {
-                handleAccept(dashboard.id);
+                handleAccept(id);
               }}>
               수락
             </button>
             <button
               className='w-[5.25rem] h-8 text-tp-violet_900 rounded bg-tp-white border boder-solid border-tp-gray_700 text-sm font-medium'
               onClick={() => {
-                handleReject(dashboard.id);
+                handleReject(id);
               }}>
               거절
             </button>
