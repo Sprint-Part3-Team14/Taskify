@@ -5,7 +5,8 @@ import React, { useCallback, useState } from 'react';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 
 import AddButton from '@/components/common/button/add';
-import Column from '@/components/dashboard/Column/Column';
+import Column from '@/components/Dashboard/Column/Column';
+
 import { initialData } from './initial-data';
 
 interface I_Data {
@@ -21,6 +22,7 @@ interface I_Data {
       };
     };
   };
+
   columns: {
     [key: string]: { id: string; title: string; cardIds: string[] };
   };

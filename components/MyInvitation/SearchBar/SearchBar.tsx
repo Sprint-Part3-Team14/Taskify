@@ -3,13 +3,11 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { I_SearchBarProps } from '@/interface/myInvitation';
+
 const SEARCH_ICON = '/icon/search.svg';
 
-interface SearchBarProps {
-  onSearch: (keyword: string) => void;
-}
-
-const SearchBar = ({ onSearch }: SearchBarProps) => {
+const SearchBar = ({ onSearch }: I_SearchBarProps) => {
   const [keyword, setKeyword] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

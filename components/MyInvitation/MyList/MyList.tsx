@@ -5,23 +5,14 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import AddButton from '@/components/common/button/add';
-import Pagination from '@/components/common/button/pagenation';
-import EditColumnModal from '@/components/Modal/EditColumnModal';
+import AddButton from 'components/common/button/add';
+import MyPagination from '../MyPagenation';
+import EditColumnModal from 'components/Modal/EditColumnModal';
+import { I_MyDashboardList } from 'interface/myInvitation';
 
-const ARROW = '/icon/arrow_backward.svg';
+import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
 
-interface DashboardItem {
-  title: string;
-  image: string;
-  id: number;
-}
-
-interface Props {
-  dashboardList: DashboardItem[];
-}
-
-const MyList = ({ dashboardList }: Props) => {
+const MyList = ({ myDashboards }: I_MyDashboardList) => {
   const [isToggledModal, setIsToggledModal] = useState(false);
 
   const handleToggledMdoal = () => {
@@ -29,19 +20,20 @@ const MyList = ({ dashboardList }: Props) => {
   };
 
   return (
-    <div className='flex flex-col gap-1 max-w-[63.875rem]  '>
+    <div className='flex flex-col gap-1 max-w-[63.875rem]'>
       <div className='flex flex-wrap mb:justify-center pc:justify-start gap-3 tb:gap-[0.625rem] tb:flex-wrap'>
         <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
         {/* 모달 변경 */}
         {isToggledModal && <EditColumnModal handleModal={handleToggledMdoal} />}
-        {dashboardList.map(({ title, image, id }, index) => (
-          <Link key={index} href={`dashboard/${id}`}>
+        {myDashboards.map(({ title, color, userId, createdByMe }, index) => (
+          <Link key={index} href={`dashboard/${userId}`}>
             <div className='flex justify-between items-center gap-2.5 px-5  min-w-[284px] tb:w-[544px] pc:w-[333px] h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
               <div className='flex gap-4'>
-                <div className='w-2 h-2'>{image}</div>
+                <div className='w-2 h-2'>{color}</div> {/* 이미지 태그로 변경 */}
                 <div className='text-lg font-bold '>{title}</div>
+                {createdByMe && <Image src={MADE_BY_ME_CROWN} alt='byme' width={20} height={16} />}
               </div>
-              <Image src={ARROW} alt='arrow' width={18} height={18} />
+              <Image src={LINK_DASHBOARD_ARROW} alt='arrow' width={18} height={18} />
             </div>
           </Link>
         ))}
@@ -49,7 +41,7 @@ const MyList = ({ dashboardList }: Props) => {
       <div className='flex justify-end items-center w-full gap-4'>
         <div className='mb:text-xs tb:text-sm'>1 페이지 중 1</div>
         <div className='flex'>
-          <Pagination />
+          <MyPagination />
         </div>
       </div>
     </div>
