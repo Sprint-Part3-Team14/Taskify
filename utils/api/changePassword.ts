@@ -15,6 +15,10 @@ export const changePassWord = async ({ changePasswordValue }: { changePasswordVa
     },
   });
 
+  if (response.status === 204) {
+    return 'success';
+  }
+
   const result = response.json();
 
   return result;

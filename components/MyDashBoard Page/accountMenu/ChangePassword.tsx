@@ -1,3 +1,4 @@
+import SuccessPasswordChangeModal from '@/components/Modal/SuccessPasswordChangeModal';
 import WrongPasswordModal from '@/components/Modal/WrongPasswordModal';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { changePassWord } from '@/utils/api/changePassword';
@@ -11,6 +12,7 @@ type Inputs = {
 
 const ChangePassword = () => {
   const wrongPassword = useHandleModal();
+  const successChanged = useHandleModal();
   const {
     register,
     handleSubmit,
@@ -29,8 +31,12 @@ const ChangePassword = () => {
       };
       try {
         const result = await changePassWord({ changePasswordValue: tryChangePassword });
-        if (result.message === '현재 비밀번호가 틀렸습니다.') {
+
+        if (result.message && result.message === '현재 비밀번호가 틀렸습니다.') {
           wrongPassword.handleToggleModal();
+        }
+        if (result === 'success') {
+          successChanged.handleToggleModal();
         }
       } catch (error: any) {
         console.error(error.message);
@@ -40,6 +46,7 @@ const ChangePassword = () => {
 
   return (
     <>
+      {successChanged.isShowModal && <SuccessPasswordChangeModal handleModal={successChanged.handleToggleModal} />}
       {wrongPassword.isShowModal && <WrongPasswordModal handleModal={wrongPassword.handleToggleModal} />}
       <form
         onSubmit={handleSubmit(onSubmit)}
