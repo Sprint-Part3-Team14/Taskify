@@ -1,4 +1,8 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+
+import EditWorkMdoal from 'components/Modal/WorkModal/CreateWorkModal';
 
 import { Draggable } from '@hello-pangea/dnd';
 import Image, { StaticImageData } from 'next/image';
@@ -20,6 +24,12 @@ interface I_Card {
 }
 
 const Card = ({ card, index }: I_Card) => {
+  const [isToggledEditWorkModal, setIsToggledEditWorkModal] = useState(false);
+
+  const handleToggledEditWorkModal = () => {
+    setIsToggledEditWorkModal(!isToggledEditWorkModal);
+  };
+
   const isDragDisabled = card.id === '';
   return (
     <Draggable draggableId={card.id} index={index} isDragDisabled={isDragDisabled}>
@@ -29,7 +39,7 @@ const Card = ({ card, index }: I_Card) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}>
-          <div className='flex flex-col gap-[10px]'>
+          <div className='flex flex-col gap-[10px]' onClick={handleToggledEditWorkModal}>
             {card?.content.image && (
               <Image className='w-full rounded-md' src={card?.content.image} alt='card' width={270} height={160} />
             )}
@@ -47,6 +57,7 @@ const Card = ({ card, index }: I_Card) => {
               <div>{card.content.user}</div>
             </div>
           </div>
+          {isToggledEditWorkModal && <EditWorkMdoal handleModal={handleToggledEditWorkModal} />}
         </div>
       )}
     </Draggable>
