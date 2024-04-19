@@ -105,12 +105,12 @@ const ChangePassword = () => {
               })}
               aria-invalid={errors.checkNewPassword ? 'true' : 'false'}
             />
-            {errors.checkNewPassword && <p className='text-sm text-red-500'>{errors.currentPassword.message}</p>}
+            {errors.checkNewPassword && <p className='text-sm text-red-500'>{errors.checkNewPassword.message}</p>}
           </div>
         </div>
         <button
           type='submit'
-          className='self-end px-7 py-2 bg-tp-violet_900 rounded-md text-white active:bg-violet-900'>
+          className='self-end px-7 py-2 bg-tp-violet_900 rounded-md text-white active:bg-violet-900 disabled:bg-tp-gray_700'>
           저장
         </button>
       </form>
