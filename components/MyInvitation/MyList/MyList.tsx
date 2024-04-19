@@ -12,7 +12,7 @@ import { I_MyDashboardList } from 'interface/myInvitation';
 
 import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
 
-const MyList = ({ myDashboards, totalCount }: I_MyDashboardList) => {
+const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
   const [isToggledModal, setIsToggledModal] = useState(false);
 
   let totalPage = Math.ceil(totalCount / 5);
@@ -45,9 +45,11 @@ const MyList = ({ myDashboards, totalCount }: I_MyDashboardList) => {
         ))}
       </div>
       <div className='flex justify-end items-center w-full gap-4'>
-        <div className='mb:text-xs tb:text-sm'>{totalPage} 페이지 중 1</div>
+        <div className='mb:text-xs tb:text-sm'>
+          {totalPage} 페이지 중 {currentPage}
+        </div>
         <div className='flex'>
-          <MyPagination />
+          <MyPagination onLeftClick={onClickPrevPage} onRightClick={onClickNextPage} />
         </div>
       </div>
     </div>

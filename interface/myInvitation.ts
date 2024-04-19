@@ -12,6 +12,9 @@ export interface I_MyDashboardList {
   myDashboards: I_MyDashboardListItem[];
   cursorId?: number;
   totalCount?: number;
+  currentPage: number;
+  onClickNextPage: () => void;
+  onClickPrevPage: () => void;
 }
 
 export interface I_SearchBarProps {
