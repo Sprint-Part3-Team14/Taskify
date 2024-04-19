@@ -1,11 +1,16 @@
-export const changeUserProfileImage = async ({ imageURL }: { imageURL: string }) => {
+import { ACCESS_TOKEN } from '../temporaryToken';
+
+export const changeUserProfileImage = async ({ file }: { file: File }) => {
+  const formData = new FormData();
+  formData.append('imageFile', file);
+
   const response = await fetch(`https://sp-taskify-api.vercel.app/14/users/me/image`, {
     method: 'POST',
-    body: JSON.stringify(imageURL),
+    body: formData,
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
+  const result = await response.json();
   return result;
 };

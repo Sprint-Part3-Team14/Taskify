@@ -1,13 +1,33 @@
+import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 
 type Size = 'small' | 'large';
 
-const InputImageFile = ({ size, title }: { size: Size; title?: string }) => {
+const InputImageFile = ({
+  size,
+  title,
+  handleImageFile,
+}: {
+  size: Size;
+  title?: string;
+  handleImageFile?: (imageFormData) => void;
+}) => {
   const [selectImage, setSelectImage] = useState('');
+
+  const handleUploadProfileImage = async ({ file }) => {
+    try {
+      const result = await changeUserProfileImage({ file });
+      console.log('result : ', result);
+    } catch (error: any) {
+      console.error('Error uploading Image : ', error);
+    }
+  };
+
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      handleUploadProfileImage({ file: file });
       const reader = new FileReader();
       reader.onload = () => {
         setSelectImage(reader.result as string);
@@ -15,6 +35,7 @@ const InputImageFile = ({ size, title }: { size: Size; title?: string }) => {
       reader.readAsDataURL(file);
     }
   };
+
   return (
     <div className='flex flex-col gap-2.5 '>
       {title && <p className='flex gap-1 font-extrabold text-lg'>{title}</p>}

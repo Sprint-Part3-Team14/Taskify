@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN } from '@utils/temporaryToken';
+import { ACCESS_TOKEN } from '@/utils/temporaryToken';
 
 export const getLoginUserProfile = async () => {
   const response = await fetch('https://sp-taskify-api.vercel.app/14/users/me', {

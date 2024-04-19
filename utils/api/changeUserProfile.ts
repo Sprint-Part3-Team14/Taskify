@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN } from '@utils/temporaryToken';
+import { ACCESS_TOKEN } from '../temporaryToken';
 
 interface NewProfileProps {
   nickname: string;
