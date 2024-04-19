@@ -47,7 +47,7 @@ const ChangePassword = () => {
         className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-md w-[38.75rem]'>
         <h2 className='text-2xl text-tp-black_700 font-bold mb-8'>비밀번호 변경</h2>
         <div role='password-change-input-container' className='flex flex-col gap-5 mb-6'>
-          <div className='flex flex-col gap-2.5'>
+          <div className='flex flex-col gap-2.5 h-[7rem]'>
             <label htmlFor='current-password' className='text-lg text-tp-black_700'>
               현재 비밀번호
             </label>
@@ -55,7 +55,8 @@ const ChangePassword = () => {
               type='text'
               id='current-password'
               placeholder='현재 비밀번호를 입력해 주세요'
-              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
+              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900'
+              style={errors.currentPassword && { border: '1px solid red' }}
               {...register('currentPassword', {
                 required: {
                   value: true,
@@ -64,9 +65,9 @@ const ChangePassword = () => {
               })}
               aria-invalid={errors.currentPassword ? 'true' : 'false'}
             />
-            {errors.currentPassword && <h2>{errors.currentPassword.message}</h2>}
+            {errors.currentPassword && <p className='text-sm text-red-500'>{errors.currentPassword.message}</p>}
           </div>
-          <div className='flex flex-col gap-2.5'>
+          <div className='flex flex-col gap-2.5 h-[7rem]'>
             <label htmlFor='new-password' className='text-lg text-tp-black_700'>
               새 비밀번호
             </label>
@@ -74,7 +75,8 @@ const ChangePassword = () => {
               type='password'
               id='new-password'
               placeholder='8자 이상 입력해 주세요'
-              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
+              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 '
+              style={errors.newPassword && { border: '1px solid red' }}
               {...register('newPassword', {
                 required: {
                   value: true,
@@ -83,9 +85,9 @@ const ChangePassword = () => {
               })}
               aria-invalid={errors.newPassword ? 'true' : 'false'}
             />
-            {errors.newPassword && <h2>{errors.newPassword.message}</h2>}
+            {errors.newPassword && <p className='text-sm text-red-500'>{errors.newPassword.message}</p>}
           </div>
-          <div className='flex flex-col gap-2.5'>
+          <div className='flex flex-col gap-2.5 h-[7rem]'>
             <label htmlFor='new-password-check' className='text-lg text-tp-black_700'>
               새 비밀번호 확인
             </label>
@@ -93,7 +95,8 @@ const ChangePassword = () => {
               type='password'
               id='new-password-check'
               placeholder='새 비밀번호를 입력해 주세요'
-              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 disabled:bg-white'
+              className='p-4 w-[22.875rem] rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900'
+              style={errors.checkNewPassword && { border: '1px solid red' }}
               {...register('checkNewPassword', {
                 required: {
                   value: true,
@@ -102,7 +105,7 @@ const ChangePassword = () => {
               })}
               aria-invalid={errors.checkNewPassword ? 'true' : 'false'}
             />
-            {errors.checkNewPassword && <h2>{errors.currentPassword.message}</h2>}
+            {errors.checkNewPassword && <p className='text-sm text-red-500'>{errors.currentPassword.message}</p>}
           </div>
         </div>
         <button
