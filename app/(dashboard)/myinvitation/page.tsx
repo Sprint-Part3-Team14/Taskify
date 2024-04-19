@@ -14,7 +14,7 @@ const MyInvitation = () => {
 
   useEffect(() => {
     setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUyNTU1MywiaXNzIjoic3AtdGFza2lmeSJ9.2kheeUfADWooyZ3NbAjEXFC950TeM3zRlamHVMACSto'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
     const myDashboardData = async () => {
       try {
