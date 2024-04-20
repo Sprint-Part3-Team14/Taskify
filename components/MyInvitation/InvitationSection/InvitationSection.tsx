@@ -17,7 +17,7 @@ const InvitationSection = () => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
-    const getMyInvitationData = async () => {
+    const getMyInvitationList = async () => {
       try {
         const accessToken = getAccessToken();
         const response = await fetch('https://sp-taskify-api.vercel.app/4-14/invitations?size=10', {
@@ -26,14 +26,14 @@ const InvitationSection = () => {
           },
         });
         const responseData = await response.json();
-        const myInvitationListData = responseData.invitations;
-        setInvitationList(myInvitationListData);
-        setFilteredInvitationList(myInvitationListData);
+        const myInvitationList = responseData.invitations;
+        setInvitationList(myInvitationList);
+        setFilteredInvitationList(myInvitationList);
       } catch (error) {
         console.error(error);
       }
     };
-    getMyInvitationData();
+    getMyInvitationList();
   }, []);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const InvitationSection = () => {
     setHasInvitaion(countInvitation);
   }, [invitationList]);
 
-  const handleAccept = async (id: number) => {
+  const handleAcceptInvitation = async (id: number) => {
     try {
       const accessToken = getAccessToken();
       const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
@@ -59,11 +59,11 @@ const InvitationSection = () => {
         setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
       }
     } catch (error) {
-      console.error('Error accepting invitation:', error);
+      console.error(error);
     }
   };
 
-  const handleReject = async (id: number) => {
+  const handleRejectInvitation = async (id: number) => {
     try {
       const accessToken = getAccessToken();
       const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
@@ -80,13 +80,13 @@ const InvitationSection = () => {
         setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
       }
     } catch (error) {
-      console.error('Error accepting invitation:', error);
+      console.error(error);
     }
     setInvitationList(prevList => prevList.filter(list => list.id !== id));
     setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
   };
 
-  const handleSearch = (keyword: string) => {
+  const handleSearchInvitation = (keyword: string) => {
     if (keyword.trim() === '') {
       setFilteredInvitationList(invitationList);
     } else {
@@ -102,7 +102,7 @@ const InvitationSection = () => {
       <div className='px-7 pt-8 mb:text-xl tb:text-2xl font-bold'>초대 받은 대시보드</div>
       {hasInviation ? (
         <>
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearchInvitation} />
           <div className='flex flex-col'>
             <div className='tb:grid grid-cols-3 px-7 pb-1 text-tp-gray_800 mb:text-sm tb:text-base mb:hidden '>
               <h2>이름</h2>
@@ -111,8 +111,8 @@ const InvitationSection = () => {
             </div>
             <InvitationList
               invitationList={filteredInvitationList}
-              handleAccept={handleAccept}
-              handleReject={handleReject}
+              handleAccept={handleAcceptInvitation}
+              handleReject={handleRejectInvitation}
             />
           </div>
         </>
