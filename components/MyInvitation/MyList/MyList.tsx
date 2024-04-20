@@ -1,19 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Image from 'next/image';
 import Link from 'next/link';
 
 import AddButton from 'components/common/button/add';
 import MyPagination from '../MyPagenation';
-import EditColumnModal from 'components/Modal/EditColumnModal';
+import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
 import { I_MyDashboardList } from 'interface/myInvitation';
+import { getAccessToken, setAccessToken } from '@/utils/handleToken';
 
 import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
 
 const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
   const [isToggledModal, setIsToggledModal] = useState(false);
+  const [createDashboardTitle, setCraeteDashboardTitle] = useState<string>('');
+  const [selectColor, setSelectColor] = useState('');
+  const route = useRouter();
 
   let totalPage = Math.ceil(totalCount / 5);
 
@@ -21,12 +26,63 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
     setIsToggledModal(!isToggledModal);
   };
 
+  const handleClosedModal = () => {
+    handleToggledMdoal();
+  };
+
+  const handleDashbaordTItle = (title: string) => {
+    setCraeteDashboardTitle(title);
+  };
+
+  const handleSelectColor = (color: string) => {
+    setSelectColor(color);
+  };
+
+  console.log(createDashboardTitle);
+  console.log(selectColor);
+
+  const handleCreateDashboard = async () => {
+    setAccessToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
+    );
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          title: createDashboardTitle,
+          color: selectColor.toString(),
+        }),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        const createdDashboardId = responseData.id;
+        setCraeteDashboardTitle('');
+        setSelectColor('#7AC555');
+        route.push(`/dashboard/${createdDashboardId}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className='flex flex-col gap-1 max-w-[63.875rem]'>
       <div className='flex flex-wrap mb:justify-center pc:justify-start gap-3 tb:gap-[0.625rem] tb:flex-wrap'>
         <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
-        {/* 모달 변경 */}
-        {isToggledModal && <EditColumnModal handleModal={handleToggledMdoal} />}
+        {isToggledModal && (
+          <CreateDashboardModal
+            handleModal={handleToggledMdoal}
+            onClickFirstButton={handleClosedModal}
+            onClickSecondButton={handleCreateDashboard}
+            onSelectColor={handleSelectColor}
+            onChange={handleDashbaordTItle}
+          />
+        )}
         {myDashboards.map(({ title, color, id, createdByMe }, index) => (
           <Link key={index} href={`dashboard/${id}`}>
             <div className='flex justify-between items-center gap-2.5 px-5  min-w-[284px] tb:w-[544px] pc:w-[333px] h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>

@@ -11,10 +11,12 @@
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
+    "form": "^0.2.4",
     "next": "^14.2.1-canary.6",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
+    "react-hook": "^0.0.1",
     "react-hook-form": "^7.51.3"
   },
   "devDependencies": {
