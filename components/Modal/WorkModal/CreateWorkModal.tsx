@@ -1,11 +1,8 @@
 import { ChangeEvent, useState } from 'react';
-import InputImageButton from '../Button/InputImageButton';
-import ModalDropdown from '../Input/ModalDropdown';
 import ModalLayout from '../ModalLayout';
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 import ProgressDropDown from './components/ProgressDropDown';
-import Image from 'next/image';
-import InputImageFile from '@components/InputImage/InputImage';
+import InputImageFile from '@/components/InputImage/InputImage';
 
 const CreateWorkModal = ({ handleModal }: { handleModal: () => void }) => {
   const [selectImage, setSelectImage] = useState('');
