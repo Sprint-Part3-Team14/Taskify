@@ -8,17 +8,20 @@ const InputImageFile = ({
   size,
   title,
   handleImageFile,
+  defaultImg,
 }: {
   size: Size;
   title?: string;
   handleImageFile?: (imageFormData) => void;
+  defaultImg?: string;
 }) => {
-  const [selectImage, setSelectImage] = useState('');
+  const [selectImage, setSelectImage] = useState(defaultImg ? defaultImg : '');
 
   const handleUploadProfileImage = async ({ file }) => {
     try {
-      const result = await changeUserProfileImage({ file });
-      console.log('result : ', result);
+      const { profileImageUrl } = await changeUserProfileImage({ file });
+      handleImageFile(profileImageUrl);
+      console.log('profileImg : ', profileImageUrl);
     } catch (error: any) {
       console.error('Error uploading Image : ', error);
     }
@@ -74,7 +77,10 @@ const InputImageFile = ({
                     : 'bg-tp-black_900 w-[11.375rem] h-[11.375rem] absolute z-10 opacity-40'
                 }
               />
-              <Image fill src={selectImage} alt='이미지 추가하기' />
+              <img
+                src='https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/profile_image/14_1680_1713607610274.jpeg'
+                alt='이미지 추가하기'
+              />
             </div>
           </>
         )}
