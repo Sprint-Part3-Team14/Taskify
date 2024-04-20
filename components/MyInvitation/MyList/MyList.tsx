@@ -7,17 +7,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import AddButton from 'components/common/button/add';
-import MyPagination from '../MyPagenation';
 import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
 import { I_MyDashboardList } from 'interface/myInvitation';
-import { getAccessToken, setAccessToken } from '@/utils/handleToken';
+import { getAccessToken, setAccessToken } from 'utils/handleToken';
 
+import MyPagination from '../MyPagenation';
 import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
 
 const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
-  const [isToggledModal, setIsToggledModal] = useState(false);
-  const [createDashboardTitle, setCraeteDashboardTitle] = useState<string>('');
-  const [selectColor, setSelectColor] = useState('');
+  const [isToggledModal, setIsToggledModal] = useState<boolean>(false);
+  const [newDashboardTitle, setNewDashBoardTitle] = useState<string>('');
+  const [selectColor, setSelectColor] = useState<string>('');
   const route = useRouter();
 
   let totalPage = Math.ceil(totalCount / 5);
@@ -30,16 +30,13 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
     handleToggledMdoal();
   };
 
-  const handleDashbaordTItle = (title: string) => {
-    setCraeteDashboardTitle(title);
+  const handleDashboardNewTitle = (title: string) => {
+    setNewDashBoardTitle(title);
   };
 
   const handleSelectColor = (color: string) => {
     setSelectColor(color);
   };
-
-  console.log(createDashboardTitle);
-  console.log(selectColor);
 
   const handleCreateDashboard = async () => {
     setAccessToken(
@@ -54,16 +51,16 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          title: createDashboardTitle,
+          title: newDashboardTitle,
           color: selectColor.toString(),
         }),
       });
       if (response.ok) {
         const responseData = await response.json();
-        const createdDashboardId = responseData.id;
-        setCraeteDashboardTitle('');
+        const newDashboardId = responseData.id;
+        setNewDashBoardTitle('');
         setSelectColor('#7AC555');
-        route.push(`/dashboard/${createdDashboardId}`);
+        route.push(`/dashboard/${newDashboardId}`);
       }
     } catch (error) {
       console.error(error);
@@ -80,7 +77,7 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
             onClickFirstButton={handleClosedModal}
             onClickSecondButton={handleCreateDashboard}
             onSelectColor={handleSelectColor}
-            onChange={handleDashbaordTItle}
+            onChange={handleDashboardNewTitle}
           />
         )}
         {myDashboards.map(({ title, color, id, createdByMe }, index) => (

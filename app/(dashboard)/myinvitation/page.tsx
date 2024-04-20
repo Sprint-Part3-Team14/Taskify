@@ -16,7 +16,7 @@ const MyInvitation = () => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
-    const myDashboardData = async () => {
+    const getMyDashboardList = async () => {
       try {
         const accessToken = getAccessToken();
         const response = await fetch(
@@ -28,14 +28,14 @@ const MyInvitation = () => {
           }
         );
         const responseData = await response.json();
-        const myDashboardListData = responseData.dashboards;
-        setMyDashboardList(myDashboardListData);
+        const myDashboardList = responseData.dashboards;
+        setMyDashboardList(myDashboardList);
         setMyDashboradCount(responseData.totalCount);
       } catch (error) {
         console.error(error);
       }
     };
-    myDashboardData();
+    getMyDashboardList();
   }, [currentPage]);
 
   const handleNextPage = () => {
