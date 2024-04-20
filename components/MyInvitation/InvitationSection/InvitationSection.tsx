@@ -6,12 +6,35 @@ import EmptyMessage from '../EmptyMessage/EmptyMessage';
 import InvitationList from '../InvitationList/InvitationList';
 import SearchBar from '../SearchBar/SearchBar';
 
-import { TEMPORARY_INVITATION_DATA } from '../constants';
+import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 
 const InvitationSection = () => {
-  const [invitationList, setInvitationList] = useState(TEMPORARY_INVITATION_DATA);
+  const [invitationList, setInvitationList] = useState([]);
   const [filteredInvitationList, setFilteredInvitationList] = useState([...invitationList]);
   const [hasInviation, setHasInvitaion] = useState<boolean>(false);
+
+  useEffect(() => {
+    setAccessToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
+    );
+    const getMyInvitationList = async () => {
+      try {
+        const accessToken = getAccessToken();
+        const response = await fetch('https://sp-taskify-api.vercel.app/4-14/invitations?size=10', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const responseData = await response.json();
+        const myInvitationList = responseData.invitations;
+        setInvitationList(myInvitationList);
+        setFilteredInvitationList(myInvitationList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getMyInvitationList();
+  }, []);
 
   useEffect(() => {
     let count: number = invitationList.length;
@@ -19,17 +42,51 @@ const InvitationSection = () => {
     setHasInvitaion(countInvitation);
   }, [invitationList]);
 
-  const handleAccept = (id: number) => {
+  const handleAcceptInvitation = async (id: number) => {
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ inviteAccepted: true }),
+      });
+
+      if (response.ok) {
+        setInvitationList(prevList => prevList.filter(list => list.id !== id));
+        setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRejectInvitation = async (id: number) => {
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ inviteAccepted: false }),
+      });
+
+      if (response.ok) {
+        setInvitationList(prevList => prevList.filter(list => list.id !== id));
+        setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setInvitationList(prevList => prevList.filter(list => list.id !== id));
     setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
   };
 
-  const handleReject = (id: number) => {
-    setInvitationList(prevList => prevList.filter(list => list.id !== id));
-    setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
-  };
-
-  const handleSearch = (keyword: string) => {
+  const handleSearchInvitation = (keyword: string) => {
     if (keyword.trim() === '') {
       setFilteredInvitationList(invitationList);
     } else {
@@ -45,7 +102,7 @@ const InvitationSection = () => {
       <div className='px-7 pt-8 mb:text-xl tb:text-2xl font-bold'>초대 받은 대시보드</div>
       {hasInviation ? (
         <>
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearchInvitation} />
           <div className='flex flex-col'>
             <div className='tb:grid grid-cols-3 px-7 pb-1 text-tp-gray_800 mb:text-sm tb:text-base mb:hidden '>
               <h2>이름</h2>
@@ -54,8 +111,8 @@ const InvitationSection = () => {
             </div>
             <InvitationList
               invitationList={filteredInvitationList}
-              handleAccept={handleAccept}
-              handleReject={handleReject}
+              handleAccept={handleAcceptInvitation}
+              handleReject={handleRejectInvitation}
             />
           </div>
         </>

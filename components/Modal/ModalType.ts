@@ -14,4 +14,8 @@ export type I_ModalTitle = '초대하기' | '컬럼 관리' | '할 일 생성' |
 
 export interface I_ModalToggle {
   handleModal: (event: MouseEvent<HTMLElement>) => void;
+  onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
+  onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
+  onSelectColor: (color: string) => void;
+  onChange: (title: string) => void;
 }

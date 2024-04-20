@@ -1,35 +1,95 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Image from 'next/image';
 import Link from 'next/link';
 
 import AddButton from 'components/common/button/add';
-import MyPagination from '../MyPagenation';
-import CreateDashboardModal from 'components/Modal/InviteModal';
-import { I_MyDashboardList } from 'interface/myInvitation';
 
+import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
+import { I_MyDashboardList } from 'interface/myInvitation';
+import { getAccessToken, setAccessToken } from 'utils/handleToken';
+
+import MyPagination from '../MyPagenation';
 import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
 
-const MyList = ({ myDashboards }: I_MyDashboardList) => {
-  const [isToggledModal, setIsToggledModal] = useState(false);
+const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
+  const [isToggledModal, setIsToggledModal] = useState<boolean>(false);
+  const [newDashboardTitle, setNewDashBoardTitle] = useState<string>('');
+  const [selectColor, setSelectColor] = useState<string>('');
+  const route = useRouter();
+
+  let totalPage = Math.ceil(totalCount / 5);
 
   const handleToggledMdoal = () => {
     setIsToggledModal(!isToggledModal);
+  };
+
+  const handleClosedModal = () => {
+    handleToggledMdoal();
+  };
+
+  const handleDashboardNewTitle = (title: string) => {
+    setNewDashBoardTitle(title);
+  };
+
+  const handleSelectColor = (color: string) => {
+    setSelectColor(color);
+  };
+
+  const handleCreateDashboard = async () => {
+    setAccessToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
+    );
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          title: newDashboardTitle,
+          color: selectColor.toString(),
+        }),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        const newDashboardId = responseData.id;
+        setNewDashBoardTitle('');
+        setSelectColor('#7AC555');
+        route.push(`/dashboard/${newDashboardId}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className='flex flex-col gap-1 max-w-[63.875rem]'>
       <div className='flex flex-wrap mb:justify-center pc:justify-start gap-3 tb:gap-[0.625rem] tb:flex-wrap'>
         <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
-        {/* 모달 변경 */}
-        {isToggledModal && <CreateDashboardModal handleModal={handleToggledMdoal} />}
-        {myDashboards.map(({ title, color, userId, createdByMe }, index) => (
-          <Link key={index} href={`dashboard/${userId}`}>
+        {isToggledModal && (
+          <CreateDashboardModal
+            handleModal={handleToggledMdoal}
+            onClickFirstButton={handleClosedModal}
+            onClickSecondButton={handleCreateDashboard}
+            onSelectColor={handleSelectColor}
+            onChange={handleDashboardNewTitle}
+          />
+        )}
+        {myDashboards.map(({ title, color, id, createdByMe }, index) => (
+          <Link key={index} href={`dashboard/${id}`}>
             <div className='flex justify-between items-center gap-2.5 px-5  min-w-[284px] tb:w-[544px] pc:w-[333px] h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
-              <div className='flex gap-4'>
-                <div className='w-2 h-2'>{color}</div> {/* 이미지 태그로 변경 */}
+              <div className='flex items-center gap-4'>
+                <div>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6' fill={color}>
+                    <circle cx='3' cy='3' r='3' fill={color} />
+                  </svg>
+                </div>
                 <div className='text-lg font-bold '>{title}</div>
                 {createdByMe && <Image src={MADE_BY_ME_CROWN} alt='byme' width={20} height={16} />}
               </div>
@@ -39,9 +99,15 @@ const MyList = ({ myDashboards }: I_MyDashboardList) => {
         ))}
       </div>
       <div className='flex justify-end items-center w-full gap-4'>
-        <div className='mb:text-xs tb:text-sm'>1 페이지 중 1</div>
+        <div className='mb:text-xs tb:text-sm'>
+          {totalPage} 페이지 중 {currentPage}
+        </div>
         <div className='flex'>
-          <MyPagination />
+          <MyPagination
+            onLeftClick={onClickPrevPage}
+            onRightClick={onClickNextPage}
+            rightDisabled={totalPage <= currentPage}
+          />
         </div>
       </div>
     </div>
