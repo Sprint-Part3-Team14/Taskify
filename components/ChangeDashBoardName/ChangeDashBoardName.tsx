@@ -22,6 +22,7 @@ const ChangeDashBoardName = () => {
     title: '',
     color: '',
   });
+  const [oldDashBoardName, setOldDashBoardName] = useState('');
   const newDashBoardName = useInputValue();
   const selectColorList = ['#7AC555', '#760DDE', '#FFA500', '#76A5EA', '#E876EA'];
 
@@ -32,7 +33,8 @@ const ChangeDashBoardName = () => {
 
   const handleLoadDashBoard = async dashBoardId => {
     try {
-      const result = await getDashBoardData(dashBoardId);
+      const { title } = await getDashBoardData(dashBoardId);
+      setOldDashBoardName(title);
     } catch (error: any) {
       console.error(error);
     }
@@ -61,7 +63,7 @@ const ChangeDashBoardName = () => {
       role='table-Container'
       className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm w-[38.75rem] gap-8'>
       <div role='header' className='flex justify-between'>
-        <h1 className='text-[1.25rem] font-bold text-tp-black_700'>{mockData.title}</h1>
+        <h1 className='text-[1.25rem] font-bold text-tp-black_700'>{oldDashBoardName}</h1>
         <div className='flex items-center gap-2.5'>
           {selectColorList.map(color => {
             return (
@@ -89,8 +91,8 @@ const ChangeDashBoardName = () => {
         <input
           id='change-dashboard-title'
           type='text'
-          className='p-4 w-[35.25rem] rounded-md border border-solid border-tp-gray_700'
-          placeholder={mockData.title}
+          className='p-4 w-[35.25rem] rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900'
+          placeholder={oldDashBoardName}
           onChange={newDashBoardName.onChange}
           value={newDashBoardName.inputValue}
         />
@@ -101,7 +103,6 @@ const ChangeDashBoardName = () => {
         className='py-1.5 px-7 rounded-md bg-tp-violet_900 self-end text-white'>
         변경
       </button>
-      {/** 버튼 컴포넌트로 변경 예정 */}
     </form>
   );
 };
