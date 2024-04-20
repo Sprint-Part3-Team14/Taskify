@@ -1,6 +1,6 @@
 import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 type Size = 'small' | 'large';
 
@@ -15,13 +15,12 @@ const InputImageFile = ({
   handleImageFile?: (imageFormData) => void;
   defaultImg?: string;
 }) => {
-  const [selectImage, setSelectImage] = useState(defaultImg ? defaultImg : '');
+  const [selectImage, setSelectImage] = useState('');
 
   const handleUploadProfileImage = async ({ file }) => {
     try {
       const { profileImageUrl } = await changeUserProfileImage({ file });
       handleImageFile(profileImageUrl);
-      console.log('profileImg : ', profileImageUrl);
     } catch (error: any) {
       console.error('Error uploading Image : ', error);
     }
@@ -38,6 +37,12 @@ const InputImageFile = ({
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    if (defaultImg) {
+      setSelectImage(defaultImg);
+    }
+  }, [defaultImg]);
 
   return (
     <div className='flex flex-col gap-2.5 '>
@@ -77,10 +82,7 @@ const InputImageFile = ({
                     : 'bg-tp-black_900 w-[11.375rem] h-[11.375rem] absolute z-10 opacity-40'
                 }
               />
-              <img
-                src='https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/profile_image/14_1680_1713607610274.jpeg'
-                alt='이미지 추가하기'
-              />
+              <img src={selectImage} alt='이미지 추가하기' />
             </div>
           </>
         )}

@@ -54,7 +54,6 @@ const EditProfile = () => {
       <form role='edit-profile' className='flex items-center gap-4' onSubmit={changeProfile}>
         <InputImageFile size='large' handleImageFile={handleImageFile} defaultImg={userData.profileImageUrl} />
         <div role='email-nickname-input-container' className='flex flex-col gap-5'>
-          ``
           <div role='email-box' className='flex flex-col gap-2.5'>
             <label htmlFor='email' className='text-lg text-tp-black_700'>
               이메일
