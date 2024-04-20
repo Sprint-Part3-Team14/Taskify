@@ -89,6 +89,10 @@ const ChangePassword = () => {
                   value: true,
                   message: '새 비밀번호를 입력해 주세요.',
                 },
+                minLength: {
+                  value: 8,
+                  message: '8자 이상 입력해 주세요',
+                },
               })}
               aria-invalid={errors.newPassword ? 'true' : 'false'}
             />
