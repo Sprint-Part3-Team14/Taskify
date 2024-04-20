@@ -1,18 +1,9 @@
 'use client';
+import { useInputValue } from '@/hooks/useInputValue';
+import { changeDashBoard } from '@/utils/api/changeDashBoard';
+import { getDashBoardData } from '@/utils/api/getDashBoardData';
 import Image from 'next/image';
-import { MouseEvent, useEffect, useState } from 'react';
-
-interface DataForm {
-  data: {
-    id: number;
-    title: string;
-    color: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: number;
-    createdByMe: boolean;
-  };
-}
+import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 
 const mockData = {
   id: 5946,
@@ -27,6 +18,11 @@ const mockData = {
 
 const ChangeDashBoardName = () => {
   const [selectColor, setSelectColor] = useState('#7AC555');
+  const [changeDashBoardData, setChangeDashBoardData] = useState({
+    title: '',
+    color: '',
+  });
+  const newDashBoardName = useInputValue();
   const selectColorList = ['#7AC555', '#760DDE', '#FFA500', '#76A5EA', '#E876EA'];
 
   const handleSelectColor = (event: MouseEvent<HTMLButtonElement>) => {
@@ -34,8 +30,34 @@ const ChangeDashBoardName = () => {
     setSelectColor(event.currentTarget.id);
   };
 
+  const handleLoadDashBoard = async dashBoardId => {
+    try {
+      const result = await getDashBoardData(dashBoardId);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleChangeDashBoard = async (event: FormEvent<HTMLElement>) => {
+    event.preventDefault();
+    setChangeDashBoardData({
+      title: newDashBoardName.inputValue,
+      color: selectColor,
+    });
+    try {
+      const result = changeDashBoard({ dashBoardId: 5946, changeData: changeDashBoardData });
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleLoadDashBoard(5946);
+  }, []);
+
   return (
     <form
+      onSubmit={handleChangeDashBoard}
       role='table-Container'
       className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm w-[38.75rem] gap-8'>
       <div role='header' className='flex justify-between'>
@@ -69,9 +91,14 @@ const ChangeDashBoardName = () => {
           type='text'
           className='p-4 w-[35.25rem] rounded-md border border-solid border-tp-gray_700'
           placeholder={mockData.title}
+          onChange={newDashBoardName.onChange}
+          value={newDashBoardName.inputValue}
         />
       </div>
-      <button type='submit' className='py-1.5 px-7 rounded-md bg-tp-violet_900 self-end text-white'>
+      <button
+        type='submit'
+        onSubmit={handleChangeDashBoard}
+        className='py-1.5 px-7 rounded-md bg-tp-violet_900 self-end text-white'>
         변경
       </button>
       {/** 버튼 컴포넌트로 변경 예정 */}
