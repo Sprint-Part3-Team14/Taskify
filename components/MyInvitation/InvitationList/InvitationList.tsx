@@ -11,9 +11,9 @@ const InvitationList = ({ invitationList, handleAccept, handleReject }: I_MYInvi
 
   return (
     <>
-      {invitationDashboard.map(({ dashboard, inviter, id }) => (
+      {invitationDashboard.map(({ dashboard, inviter, id }, index) => (
         <div
-          key={id}
+          key={index}
           className='mb:hidden tb:grid grid-cols-3 px-7 py-7 text-base border-b-[1px] border-bg-tp-gray_600'>
           <div className='pl-6'>{dashboard.title}</div>
           <div>{inviter.nickname}</div>
@@ -36,8 +36,10 @@ const InvitationList = ({ invitationList, handleAccept, handleReject }: I_MYInvi
         </div>
       ))}
 
-      {invitationDashboard.map(({ dashboard, inviter, id }) => (
-        <div key={id} className='tb:hidden flex justify-center flex-col gap-4 p-4 border-b-[1px] border-bg-tp-gray_600'>
+      {invitationDashboard.map(({ dashboard, inviter, id }, index) => (
+        <div
+          key={index}
+          className='tb:hidden flex justify-center flex-col gap-4 p-4 border-b-[1px] border-bg-tp-gray_600'>
           <div className='flex flex-col gap-[0.625rem]'>
             <div className='flex gap-4 text-sm'>
               <div className='text-tp-gray_800'>이름</div>

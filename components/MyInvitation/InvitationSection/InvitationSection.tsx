@@ -6,12 +6,35 @@ import EmptyMessage from '../EmptyMessage/EmptyMessage';
 import InvitationList from '../InvitationList/InvitationList';
 import SearchBar from '../SearchBar/SearchBar';
 
-import { TEMPORARY_INVITATION_DATA } from '../constants';
+import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 
 const InvitationSection = () => {
-  const [invitationList, setInvitationList] = useState(TEMPORARY_INVITATION_DATA);
+  const [invitationList, setInvitationList] = useState([]);
   const [filteredInvitationList, setFilteredInvitationList] = useState([...invitationList]);
   const [hasInviation, setHasInvitaion] = useState<boolean>(false);
+
+  useEffect(() => {
+    setAccessToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
+    );
+    const myInvitationData = async () => {
+      try {
+        const accessToken = getAccessToken();
+        const response = await fetch('https://sp-taskify-api.vercel.app/4-14/invitations?size=10', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const responseData = await response.json();
+        const myInvitationListData = responseData.invitations;
+        setInvitationList(myInvitationListData);
+        setFilteredInvitationList(myInvitationListData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    myInvitationData();
+  }, []);
 
   useEffect(() => {
     let count: number = invitationList.length;
@@ -19,12 +42,46 @@ const InvitationSection = () => {
     setHasInvitaion(countInvitation);
   }, [invitationList]);
 
-  const handleAccept = (id: number) => {
-    setInvitationList(prevList => prevList.filter(list => list.id !== id));
-    setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
+  const handleAccept = async (id: number) => {
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ inviteAccepted: true }),
+      });
+
+      if (response.ok) {
+        setInvitationList(prevList => prevList.filter(list => list.id !== id));
+        setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
+      }
+    } catch (error) {
+      console.error('Error accepting invitation:', error);
+    }
   };
 
-  const handleReject = (id: number) => {
+  const handleReject = async (id: number) => {
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ inviteAccepted: false }),
+      });
+
+      if (response.ok) {
+        setInvitationList(prevList => prevList.filter(list => list.id !== id));
+        setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
+      }
+    } catch (error) {
+      console.error('Error accepting invitation:', error);
+    }
     setInvitationList(prevList => prevList.filter(list => list.id !== id));
     setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
   };
