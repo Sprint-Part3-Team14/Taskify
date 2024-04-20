@@ -11,7 +11,7 @@ const WrongPasswordModal = ({ handleModal }: I_ModalToggle) => {
       <p className='text-center pt-[6.8rem] px-[10rem] pb-11 text-black font-extrabold'>
         {ModalComments.wrongPassword}
       </p>
-      <ModalButton buttonType='half' secondButton='확인' />
+      <ModalButton buttonType='half' secondButton='확인' onClick={handleModal} />
     </ModalLayout>
   );
 };
