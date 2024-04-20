@@ -17,7 +17,7 @@ const InvitationSection = () => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
-    const myInvitationData = async () => {
+    const getMyInvitationData = async () => {
       try {
         const accessToken = getAccessToken();
         const response = await fetch('https://sp-taskify-api.vercel.app/4-14/invitations?size=10', {
@@ -33,7 +33,7 @@ const InvitationSection = () => {
         console.error(error);
       }
     };
-    myInvitationData();
+    getMyInvitationData();
   }, []);
 
   useEffect(() => {
