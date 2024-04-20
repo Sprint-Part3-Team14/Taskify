@@ -28,7 +28,7 @@ const CreateDashboardModal = ({
   };
   return (
     <ModalLayout handleModal={handleModal} title='컬럼 관리'>
-      <form className='flex flex-col h-[11.25rem]'>
+      <form className='flex flex-col h-[14.5rem]'>
         <label className='text-lg'>새로운 대시 보드</label>
         <input
           className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-[30.0rem]'
@@ -37,7 +37,7 @@ const CreateDashboardModal = ({
           value={inputValue}
           onChange={handleInputChange}
         />
-        <div className='flex items-center gap-2.5'>
+        <div className='flex items-center gap-2.5 mb-7'>
           {selectColorList.map(color => {
             return (
               <button
