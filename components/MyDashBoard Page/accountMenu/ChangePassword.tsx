@@ -16,6 +16,7 @@ const ChangePassword = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>({ mode: 'onBlur' });
 
@@ -42,6 +43,11 @@ const ChangePassword = () => {
         console.error(error.message);
       }
     }
+  };
+
+  const checkNewPassword = newPasswordRepeat => {
+    const newPasswordValue = getValues('newPassword');
+    return newPasswordValue === newPasswordRepeat ? true : '비밀번호가 일치하지 않아요.';
   };
 
   return (
@@ -111,7 +117,11 @@ const ChangePassword = () => {
               {...register('checkNewPassword', {
                 required: {
                   value: true,
-                  message: '새 비밀번호를 입력해 주세요.',
+                  message: '비밀번호가 일지하지 않아요.',
+                },
+                validate: value => {
+                  const result = checkNewPassword(value);
+                  return result;
                 },
               })}
               aria-invalid={errors.checkNewPassword ? 'true' : 'false'}
