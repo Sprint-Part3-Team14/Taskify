@@ -11,9 +11,9 @@ const ModalLayout = ({
   children: ReactNode;
 }) => {
   return (
-    <div className='flex justify-center '>
-      <div onClick={handleModal} className='bg-tp-black_800 opacity-70 fixed top-0 left-0 right-0 bottom-0 ' />
-      <div className='bg-white px-7 py-8 rounded-lg flex flex-col gap-8 absolute top-1/2 translate-y-[-50%]'>
+    <div className='flex justify-center fixed top-0 left-0 right-0 bottom-0'>
+      <div onClick={handleModal} className='bg-tp-black_800 opacity-70  fixed top-0 left-0 right-0 bottom-0' />
+      <div className='bg-white px-7 py-8 rounded-lg flex flex-col gap-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
         {title && <h1 className='text-2xl font-bold'>{title}</h1>}
         {children}
       </div>
