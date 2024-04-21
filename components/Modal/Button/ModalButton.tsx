@@ -15,7 +15,7 @@ const ModalButton = ({
   singleButton?: string;
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
-  onClick: (event: MouseEvent<HTMLElement>) => void;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
 }) => {
   switch (buttonType) {
     case 'double':
