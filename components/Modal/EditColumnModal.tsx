@@ -1,8 +1,6 @@
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
-import { I_ModalToggle } from './ModalType';
-
-import { MouseEvent } from 'react'; //추가
+import { MouseEvent } from 'react';
 
 interface Props {
   handleModal: (event: MouseEvent<HTMLElement>) => void;
@@ -12,6 +10,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClickFirstButton?: () => void;
   onClickSecondButton?: () => void;
+  onClick: () => void;
 }
 
 const EditColumnModal = ({
@@ -22,10 +21,13 @@ const EditColumnModal = ({
   onChange,
   onClickFirstButton,
   onClickSecondButton,
+  onClick,
 }: Props) => {
+  const DeleteColumn = event => {
+    event.preventDefault();
+  };
   return (
     <ModalLayout handleModal={handleModal}>
-      {/* 변경 */}
       <form className='flex flex-col h-[11.25rem]'>
         <label className='text-lg'>{title}</label>
         <input
@@ -33,15 +35,20 @@ const EditColumnModal = ({
           type='text'
           placeholder={placeholder}
           onChange={onChange}
-          value={value} //변경
+          value={value}
         />
-        <ModalButton
-          buttonType='double'
-          firstButton='취소'
-          secondButton='변경'
-          onClickFirstButton={onClickFirstButton}
-          onClickSecondButton={onClickSecondButton}
-        />
+        <div className='flex justify-between items-baseline text-tp-gray_800'>
+          <button className='text-sm underline' onClick={DeleteColumn}>
+            삭제하기
+          </button>
+          <ModalButton
+            buttonType='double'
+            firstButton='취소'
+            secondButton='변경'
+            onClickFirstButton={onClickFirstButton}
+            onClickSecondButton={onClickSecondButton}
+          />
+        </div>
       </form>
     </ModalLayout>
   );

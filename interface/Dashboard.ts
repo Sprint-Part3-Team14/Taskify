@@ -8,4 +8,5 @@ export interface I_CardList {
 export interface I_DashboardTitle {
   title: string;
   count: number;
+  columnId: string;
 }

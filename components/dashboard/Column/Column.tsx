@@ -7,7 +7,7 @@ import { StaticImageData } from 'next/image';
 
 import AddButton from '@/components/common/button/add';
 import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
-import DashboardTitle from '../../Dashboard/DashboardTitle/DashboardTitle';
+import DashboardTitle from '../ColumnTitle/ColumnTitle';
 import Card from '../Card/Card';
 
 interface I_Column {
@@ -40,7 +40,7 @@ const Column = ({ column, cards, index }: I_Column) => {
           ref={provided.innerRef}
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
-            <DashboardTitle title={column.title} count={cards.length} />
+            <DashboardTitle title={column.title} count={cards.length} columnId={column.id} />
             <AddButton onClick={handleCreateWorkModal} />
             {isToggeldCreateWorkModal && <CreateWorkModal handleModal={handleCreateWorkModal} />}
           </div>
