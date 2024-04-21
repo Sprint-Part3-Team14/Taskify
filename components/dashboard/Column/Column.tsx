@@ -23,9 +23,10 @@ interface I_Column {
     };
   }[];
   index: number;
+  dashboardId: string;
 }
 
-const Column = ({ column, cards, index }: I_Column) => {
+const Column = ({ column, cards, index, dashboardId }: I_Column) => {
   const [isToggeldCreateWorkModal, setIsCreatWorkModal] = useState(false);
 
   const handleCreateWorkModal = () => {
@@ -40,7 +41,7 @@ const Column = ({ column, cards, index }: I_Column) => {
           ref={provided.innerRef}
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
-            <DashboardTitle title={column.title} count={cards.length} columnId={column.id} />
+            <DashboardTitle title={column.title} count={cards.length} columnId={column.id} dashboardId={dashboardId} />
             <AddButton onClick={handleCreateWorkModal} />
             {isToggeldCreateWorkModal && <CreateWorkModal handleModal={handleCreateWorkModal} />}
           </div>

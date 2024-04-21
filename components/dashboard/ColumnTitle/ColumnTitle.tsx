@@ -9,7 +9,7 @@ import { ELLIPSE, SETTING } from '../constants';
 
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 
-const ColumnTitle = ({ title, count, columnId }: I_DashboardTitle) => {
+const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) => {
   const [isToggledEditColumnMdoal, setIsToggledEditColumnModal] = useState(false);
   const [editedValue, setEditedValue] = useState(title);
   const [inputValue, setInputValue] = useState(title);
@@ -20,6 +20,7 @@ const ColumnTitle = ({ title, count, columnId }: I_DashboardTitle) => {
 
   const handleChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target.value;
+
     setEditedValue(target);
   };
 
@@ -27,8 +28,31 @@ const ColumnTitle = ({ title, count, columnId }: I_DashboardTitle) => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
+    if (editedValue.trim() === '') {
+      alert('값을 입력해주세요.');
+      return;
+    }
+
     try {
       const accessToken = getAccessToken();
+      const checkDuplicateResponse = await fetch(
+        `https://sp-taskify-api.vercel.app/4-14/columns?dashboardId=${dashboardId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const responseData = await checkDuplicateResponse.json();
+      const checkDuplicate = responseData.data;
+
+      const isDuplicateTitle = checkDuplicate.some(column => column.title === editedValue);
+
+      if (isDuplicateTitle) {
+        alert('중복된 컬럼 이름입니다');
+        return;
+      }
+
       const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
         method: 'PUT',
         headers: {
@@ -60,21 +84,22 @@ const ColumnTitle = ({ title, count, columnId }: I_DashboardTitle) => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
-    try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        handleEditColumnModal();
+    if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
+      try {
+        const accessToken = getAccessToken();
+        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          handleEditColumnModal();
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
   };
 

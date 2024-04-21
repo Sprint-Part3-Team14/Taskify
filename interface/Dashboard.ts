@@ -9,4 +9,5 @@ export interface I_DashboardTitle {
   title: string;
   count: number;
   columnId: string;
+  dashboardId: string;
 }

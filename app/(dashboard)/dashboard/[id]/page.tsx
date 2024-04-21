@@ -78,8 +78,32 @@ const Dashboard = () => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
+
+    if (columnNewTitle.trim() === '') {
+      alert('값을 입력해 주세요');
+      return;
+    }
+
     try {
       const accessToken = getAccessToken();
+      const checkDuplicateResponse = await fetch(
+        `https://sp-taskify-api.vercel.app/4-14/columns?dashboardId=${dashboardId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const responseData = await checkDuplicateResponse.json();
+      const checkDuplicate = responseData.data;
+
+      const isDuplicateTitle = checkDuplicate.some(column => column.title === columnNewTitle);
+
+      if (isDuplicateTitle) {
+        alert('중복된 컬럼 이름입니다');
+        return;
+      }
+
       const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns`, {
         method: 'POST',
         headers: {
@@ -101,7 +125,7 @@ const Dashboard = () => {
           columns: {
             ...prevData.columns,
             [newColumnData.id]: {
-              id: newColumnData.id,
+              id: String(newColumnData.id),
               title: newColumnData.title,
               cardIds: [],
             },
@@ -194,7 +218,9 @@ const Dashboard = () => {
                 {data.columnOrder.map((columnId, index) => {
                   const column = data.columns[columnId];
                   const cards = column.cardIds.map(cardId => data.cards[cardId]);
-                  return <Column column={column} cards={cards} key={column.id} index={index} />;
+                  return (
+                    <Column column={column} cards={cards} key={column.id} index={index} dashboardId={dashboardId} />
+                  );
                 })}
                 {provided.placeholder}
               </div>
