@@ -23,9 +23,6 @@ const EditColumnModal = ({
   onClickSecondButton,
   onClick,
 }: Props) => {
-  const DeleteColumn = event => {
-    event.preventDefault();
-  };
   return (
     <ModalLayout handleModal={handleModal}>
       <form className='flex flex-col h-[11.25rem]'>
@@ -38,7 +35,7 @@ const EditColumnModal = ({
           value={value}
         />
         <div className='flex justify-between items-baseline text-tp-gray_800'>
-          <button className='text-sm underline' onClick={DeleteColumn}>
+          <button className='text-sm underline' onClick={onClick}>
             삭제하기
           </button>
           <ModalButton

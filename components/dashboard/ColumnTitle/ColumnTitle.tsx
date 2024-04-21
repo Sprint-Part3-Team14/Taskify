@@ -56,8 +56,26 @@ const ColumnTitle = ({ title, count, columnId }: I_DashboardTitle) => {
     handleEditColumnModal();
   };
 
-  const hanldeColumnDelete = () => {
-    handleEditColumnModal();
+  const hanldeColumnDelete = async () => {
+    setAccessToken(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
+    );
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        handleEditColumnModal();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
