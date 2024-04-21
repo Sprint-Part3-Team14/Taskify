@@ -3,36 +3,18 @@
 import { useState } from 'react';
 
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { StaticImageData } from 'next/image';
+import { I_Column } from '@/interface/Dashboard';
 
-import AddButton from '@/components/common/button/add';
-import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
-import DashboardTitle from '../ColumnTitle/ColumnTitle';
+import AddButton from 'components/common/button/add';
+import CreateWorkModal from 'components/Modal/WorkModal/CreateWorkModal';
+import ColumnTitle from '../ColumnTitle/ColumnTitle';
 import Card from '../Card/Card';
 
-interface I_Column {
-  column: { id: string; title: string; cardIds: string[] };
-  cards: {
-    id: string;
-    content: {
-      image?: StaticImageData;
-      title: string;
-      tag: React.ReactNode[];
-      date: string;
-      user: JSX.Element;
-    };
-  }[];
-  index: number;
-  dashboardId: string;
-}
-
 const Column = ({ column, cards, index, dashboardId }: I_Column) => {
-  const [isToggeldCreateWorkModal, setIsCreatWorkModal] = useState(false);
-
-  const handleCreateWorkModal = () => {
-    setIsCreatWorkModal(!isToggeldCreateWorkModal);
+  const [isToggeldCreateWorkModal, setIsToggledCreatWorkModal] = useState(false);
+  const handleToggledCreateWorkModal = () => {
+    setIsToggledCreatWorkModal(!isToggeldCreateWorkModal);
   };
-
   return (
     <Draggable draggableId={column.id} index={index}>
       {provided => (
@@ -41,9 +23,9 @@ const Column = ({ column, cards, index, dashboardId }: I_Column) => {
           ref={provided.innerRef}
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
-            <DashboardTitle title={column.title} count={cards.length} columnId={column.id} dashboardId={dashboardId} />
-            <AddButton onClick={handleCreateWorkModal} />
-            {isToggeldCreateWorkModal && <CreateWorkModal handleModal={handleCreateWorkModal} />}
+            <ColumnTitle title={column.title} count={cards.length} columnId={column.id} dashboardId={dashboardId} />
+            <AddButton onClick={handleToggledCreateWorkModal} />
+            {isToggeldCreateWorkModal && <CreateWorkModal handleModal={handleToggledCreateWorkModal} />}
           </div>
           <Droppable droppableId={column.id} type='card'>
             {provided => (

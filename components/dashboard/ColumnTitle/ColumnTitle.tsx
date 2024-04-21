@@ -1,34 +1,35 @@
 'use client';
 
 import { useState } from 'react';
+
 import Image from 'next/image';
-import EditColumnModal from '@/components/Modal/EditColumnModal';
-import { I_DashboardTitle } from '@/interface/Dashboard';
+
+import EditColumnModal from 'components/Modal/EditColumnModal';
+import { I_DashboardTitle } from 'interface/Dashboard';
+import { setAccessToken, getAccessToken } from 'utils/handleToken';
+
 import NumberChip from '../../common/Chip/NumberChip';
 import { ELLIPSE, SETTING } from '../constants';
 
-import { setAccessToken, getAccessToken } from '@/utils/handleToken';
-
 const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) => {
   const [isToggledEditColumnMdoal, setIsToggledEditColumnModal] = useState(false);
-  const [editedValue, setEditedValue] = useState(title);
+  const [newColumnTitle, setNewColumnTitle] = useState(title);
   const [inputValue, setInputValue] = useState(title);
 
-  const handleEditColumnModal = () => {
+  const handleToggledEditColumnModal = () => {
     setIsToggledEditColumnModal(!isToggledEditColumnMdoal);
   };
 
   const handleChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target.value;
-
-    setEditedValue(target);
+    setNewColumnTitle(target);
   };
 
   const handleChangeNewTitle = async () => {
     setAccessToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
     );
-    if (editedValue.trim() === '') {
+    if (newColumnTitle.trim() === '') {
       alert('값을 입력해주세요.');
       return;
     }
@@ -46,7 +47,7 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
       const responseData = await checkDuplicateResponse.json();
       const checkDuplicate = responseData.data;
 
-      const isDuplicateTitle = checkDuplicate.some(column => column.title === editedValue);
+      const isDuplicateTitle = checkDuplicate.some(column => column.title === newColumnTitle);
 
       if (isDuplicateTitle) {
         alert('중복된 컬럼 이름입니다');
@@ -60,24 +61,23 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: editedValue,
+          title: newColumnTitle,
         }),
       });
 
       if (response.ok) {
-        handleEditColumnModal();
+        handleToggledEditColumnModal();
       }
     } catch (error) {
       console.error(error);
     }
-
-    setInputValue(editedValue);
-    handleEditColumnModal();
+    setInputValue(newColumnTitle);
+    handleToggledEditColumnModal();
   };
 
   const handleModalClose = () => {
-    setEditedValue(inputValue);
-    handleEditColumnModal();
+    setNewColumnTitle(inputValue);
+    handleToggledEditColumnModal();
   };
 
   const hanldeColumnDelete = async () => {
@@ -95,7 +95,7 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
           },
         });
         if (response.ok) {
-          handleEditColumnModal();
+          handleToggledEditColumnModal();
         }
       } catch (error) {
         console.error(error);
@@ -110,13 +110,13 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
         <div className='text-lg text-tp-black_700'>{inputValue}</div>
         <NumberChip count={count} />
       </div>
-      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleEditColumnModal} />
+      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleToggledEditColumnModal} />
       {isToggledEditColumnMdoal && (
         <EditColumnModal
           handleModal={handleModalClose}
           title='컬럼 관리'
           placeholder='이름을 입력해 주세요.'
-          value={editedValue}
+          value={newColumnTitle}
           onChange={handleChangeInputValue}
           onClickFirstButton={handleModalClose}
           onClickSecondButton={handleChangeNewTitle}

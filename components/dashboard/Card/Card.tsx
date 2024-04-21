@@ -5,23 +5,11 @@ import React, { useState } from 'react';
 import EditWorkMdoal from 'components/Modal/WorkModal/CreateWorkModal';
 
 import { Draggable } from '@hello-pangea/dnd';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
+import TagChip from '@/components/common/Chip/TagChip';
+import { I_Card } from '@/interface/Dashboard';
 
 const CALENDAR = '/icon/calendar_today.svg';
-
-interface I_Card {
-  card: {
-    id: string;
-    content: {
-      image?: StaticImageData;
-      title: string;
-      tag: React.ReactNode[];
-      date: string;
-      user: JSX.Element;
-    };
-  };
-  index: number;
-}
 
 const Card = ({ card, index }: I_Card) => {
   const [isToggledEditWorkModal, setIsToggledEditWorkModal] = useState(false);
@@ -29,10 +17,9 @@ const Card = ({ card, index }: I_Card) => {
   const handleToggledEditWorkModal = () => {
     setIsToggledEditWorkModal(!isToggledEditWorkModal);
   };
-
-  const isDragDisabled = card.id === '';
+  const isDragDisabled = String(card.id) === '';
   return (
-    <Draggable draggableId={card.id} index={index} isDragDisabled={isDragDisabled}>
+    <Draggable draggableId={String(card.id)} index={index} isDragDisabled={isDragDisabled}>
       {provided => (
         <div
           className='flex flex-col gap-2.5 p-5 border border-solid border-tp-gray_700 bg-tp-gray_500 rounded-md'
@@ -40,13 +27,11 @@ const Card = ({ card, index }: I_Card) => {
           {...provided.dragHandleProps}
           ref={provided.innerRef}>
           <div className='flex flex-col gap-[10px]' onClick={handleToggledEditWorkModal}>
-            {card?.content.image && (
-              <Image className='w-full rounded-md' src={card?.content.image} alt='card' width={270} height={160} />
-            )}
+            {card?.content.image && <img className='w-full rounded-md' src={card?.content.image} alt='card' />}
             <div className=' font-semibold text-base'>{card.content.title}</div>
             <div className='flex gap-1.5'>
               {card.content.tag.map((item, index) => (
-                <div key={index}>{item}</div>
+                <TagChip key={index} name={item} size='large' color='red' />
               ))}
             </div>
             <div className='flex justify-between'>

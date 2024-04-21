@@ -1,43 +1,26 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 
-import AddButton from '@/components/common/button/add';
+import AddButton from 'components/common/button/add';
 import Column from '@/components/Dashboard/Column/Column';
 import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 import { usePathname } from 'next/navigation';
 
-export interface I_DashboardColumns {
-  result: string;
-  data: [];
-}
-
-export interface I_DashboardColumnsItem {
-  id: number;
-  title: string;
-  teamId: string;
-  dashboardId: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
 const Dashboard = () => {
+  const [dashboardItem, setDashboardItem] = useState({ cards: {}, columns: {}, columnOrder: [] });
   const [isToggledCreatedColumnModal, setIsToggledCreatedColumnModal] = useState(false);
-  const [data, setData] = useState({ cards: {}, columns: {}, columnOrder: [] });
   const [columnNewTitle, setColumnNewTitle] = useState('');
+  const [columnIds, setColumnIds] = useState([]);
+
   const path = usePathname();
   const dashboardId = path.split('/')[2];
 
   const handleToggledCreateColumnModal = () => {
     setIsToggledCreatedColumnModal(!isToggledCreatedColumnModal);
-  };
-
-  const handlCloseModal = () => {
-    handleToggledCreateColumnModal();
   };
 
   const handleColumnNewTitle = (title: string) => {
@@ -66,13 +49,70 @@ const Dashboard = () => {
           };
           return String(column.id);
         });
-        setData({ cards: {}, columns, columnOrder });
+        setColumnIds(columnOrder);
+        setDashboardItem({ cards: {}, columns, columnOrder });
       } catch (error) {
         console.error(error);
       }
     };
     getDashboardColumnList();
   }, []);
+
+  useEffect(() => {
+    const getDashboardCardList = async () => {
+      try {
+        const accessToken = getAccessToken();
+        const updatedColumns = {};
+
+        for (const columnId of columnIds) {
+          const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards?size=10&columnId=${columnId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          const responseData = await response.json();
+          if (responseData.cards) {
+            const updatedCardIds = responseData.cards.map(card => card.id);
+            updatedColumns[columnId] = {
+              ...dashboardItem.columns[columnId],
+              cardIds: updatedCardIds,
+            };
+
+            const updatedCards = {};
+            responseData.cards.forEach(card => {
+              updatedCards[card.id] = {
+                id: card.id,
+                content: {
+                  title: card.title,
+                  image: card.imageUrl,
+                  date: new Date(card.createdAt).toLocaleDateString('ko-KR'),
+                  tag: card.tags,
+                  user: card.assignee.profileImageUrl,
+                },
+              };
+            });
+
+            setDashboardItem(prevData => ({
+              ...prevData,
+              columns: {
+                ...prevData.columns,
+                ...updatedColumns,
+              },
+              cards: {
+                ...prevData.cards,
+                ...updatedCards,
+              },
+            }));
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getDashboardCardList();
+  }, [columnIds]);
 
   const handleCreateColumn = async () => {
     setAccessToken(
@@ -96,7 +136,6 @@ const Dashboard = () => {
       );
       const responseData = await checkDuplicateResponse.json();
       const checkDuplicate = responseData.data;
-
       const isDuplicateTitle = checkDuplicate.some(column => column.title === columnNewTitle);
 
       if (isDuplicateTitle) {
@@ -117,10 +156,10 @@ const Dashboard = () => {
       });
 
       if (response.ok) {
-        handlCloseModal();
+        handleToggledCreateColumnModal();
         const newColumnData = await response.json();
 
-        setData(prevData => ({
+        setDashboardItem(prevData => ({
           ...prevData,
           columns: {
             ...prevData.columns,
@@ -145,19 +184,19 @@ const Dashboard = () => {
       if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
       if (type === 'column') {
-        const newColumnOrder = Array.from(data.columnOrder);
+        const newColumnOrder = Array.from(dashboardItem.columnOrder);
         newColumnOrder.splice(source.index, 1);
         newColumnOrder.splice(destination.index, 0, draggableId);
 
         const newData = {
-          ...data,
+          ...dashboardItem,
           columnOrder: newColumnOrder,
         };
-        setData(newData);
+        setDashboardItem(newData);
         return;
       }
-      const startColumn = data.columns[source.droppableId];
-      const finishColumn = data.columns[destination.droppableId];
+      const startColumn = dashboardItem.columns[source.droppableId];
+      const finishColumn = dashboardItem.columns[destination.droppableId];
 
       if (startColumn === finishColumn) {
         const newcardIds = Array.from(startColumn.cardIds);
@@ -170,14 +209,14 @@ const Dashboard = () => {
         };
 
         const newData = {
-          ...data,
+          ...dashboardItem,
           columns: {
-            ...data.columns,
+            ...dashboardItem.columns,
             [newColumn.id]: newColumn,
           },
         };
 
-        setData(newData);
+        setDashboardItem(newData);
       } else {
         const startcardIds = Array.from(startColumn.cardIds);
         startcardIds.splice(source.index, 1);
@@ -194,18 +233,18 @@ const Dashboard = () => {
         };
 
         const newData = {
-          ...data,
+          ...dashboardItem,
           columns: {
-            ...data.columns,
+            ...dashboardItem.columns,
             [newStartColumn.id]: newStartColumn,
             [newFinishColumn.id]: newFinishColumn,
           },
         };
 
-        setData(newData);
+        setDashboardItem(newData);
       }
     },
-    [data]
+    [dashboardItem]
   );
 
   return (
@@ -215,9 +254,9 @@ const Dashboard = () => {
           <Droppable droppableId='all-columns' direction='horizontal' type='column'>
             {provided => (
               <div className='flex w-full' {...provided.droppableProps} ref={provided.innerRef}>
-                {data.columnOrder.map((columnId, index) => {
-                  const column = data.columns[columnId];
-                  const cards = column.cardIds.map(cardId => data.cards[cardId]);
+                {dashboardItem.columnOrder.map((columnId, index) => {
+                  const column = dashboardItem.columns[columnId];
+                  const cards = column.cardIds.map(cardId => dashboardItem.cards[cardId]);
                   return (
                     <Column column={column} cards={cards} key={column.id} index={index} dashboardId={dashboardId} />
                   );
@@ -233,7 +272,7 @@ const Dashboard = () => {
       </div>
       {isToggledCreatedColumnModal && (
         <CreateColumnModal
-          onClickFirstButton={handlCloseModal}
+          onClickFirstButton={handleToggledCreateColumnModal}
           onClickSecondButton={handleCreateColumn}
           onChange={handleColumnNewTitle}
           handleModal={handleToggledCreateColumnModal}
