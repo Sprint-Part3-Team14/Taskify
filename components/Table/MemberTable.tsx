@@ -2,35 +2,46 @@
 import Image from 'next/image';
 import { DEFAULT_PROFILE_IMAGE } from './constant';
 import TableLayout from './TableLayout';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
-
-const members = [
-  {
-    profile_image: '/icon/crown.svg',
-    name: '김유경',
-  },
-  {
-    profile_image: '/icon/unsubscribe.svg',
-    name: '한태욱',
-  },
-  {
-    profile_image: '/icon/calendar_today.svg',
-    name: '김규헌',
-  },
-];
-// api에서 받아오는 데이터로 변경 예정
+import PageNationButton from '../PageNation/PageNationButton';
 
 const MemberTable = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [members, setMembers] = useState([]);
+  const [pageNation, setPageNation] = useState({
+    currentPage: 1,
+    totalPage: 1,
+  });
 
   const handleLoadMembers = async () => {
     try {
       const { members, totalCount } = await getDashBoardMembers({ currentPage: 1, dashboardId: 5946 });
-      console.log(`members : `, members);
-      console.log(`totalCount : `, totalCount);
+      setPageNation(prevState => ({
+        ...prevState,
+        totalPage: totalCount,
+      }));
+      console.log(`members[0] : `, members[0]);
+      setMembers(members);
     } catch (error: any) {
       console.error(error);
+    }
+  };
+
+  const handleCurrentPage = (event: MouseEvent<HTMLButtonElement>) => {
+    if (event.currentTarget.id === 'plus') {
+      if (pageNation.currentPage < pageNation.totalPage) {
+        setPageNation(prevState => ({
+          ...prevState,
+          currentPage: pageNation.currentPage++,
+        }));
+      }
+    } else {
+      if (pageNation.currentPage > 1) {
+        setPageNation(prevState => ({
+          ...prevState,
+          currentPage: pageNation.currentPage--,
+        }));
+      }
     }
   };
 
@@ -42,9 +53,9 @@ const MemberTable = () => {
     <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
       <div className='flex gap-3 items-center ml-7'>
         <div className='w-[2.375rem] h-[2.375rem] relative rounded-full overflow-hidden'>
-          <Image fill src={member.profile_image ? member.profile_image : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
+          <img src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
         </div>
-        <p className='text-base text-tp-black_700'>{member.name}</p>
+        <p className='text-base text-tp-black_700'>{member.nickname}</p>
       </div>
       <button type='button' className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
         버튼대체
@@ -52,7 +63,19 @@ const MemberTable = () => {
     </div>
   ));
 
-  return <TableLayout title='구성원' tableContent={MemberList} />;
+  return (
+    <TableLayout
+      title='구성원'
+      headerContent={
+        <PageNationButton
+          totalPage={pageNation.totalPage}
+          currentPage={pageNation.currentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      }
+      tableContent={MemberList}
+    />
+  );
 };
 
 export default MemberTable;
