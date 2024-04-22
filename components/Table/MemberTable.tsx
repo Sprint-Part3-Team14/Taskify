@@ -4,6 +4,7 @@ import TableLayout from './TableLayout';
 import { MouseEvent, useEffect, useState } from 'react';
 import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
 import PageNationButton from '../PageNation/PageNationButton';
+import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
 
 const MemberTable = () => {
   const [members, setMembers] = useState([]);
@@ -51,6 +52,11 @@ const MemberTable = () => {
     }
   };
 
+  const handleDeleteMember = async (event: MouseEvent<HTMLButtonElement>) => {
+    const memberId = event.currentTarget.id;
+    deleteDashBoardMember({ memberId });
+  };
+
   useEffect(() => {
     handleLoadMembers();
   }, [pageNation.currentPage]);
@@ -63,7 +69,11 @@ const MemberTable = () => {
         </div>
         <p className='text-base text-tp-black_700'>{member.nickname}</p>
       </div>
-      <button id={member.id} type='button' className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
+      <button
+        onClick={handleDeleteMember}
+        id={member.id}
+        type='button'
+        className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
         버튼대체
       </button>
     </div>
