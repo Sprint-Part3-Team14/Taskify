@@ -14,9 +14,17 @@ import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
 interface I_ModalCard extends I_Card {
   handleModal: () => void;
+  onClickFirstButton: () => void;
 }
 
-const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_ModalCard) => {
+const EditCardModal = ({
+  handleModal,
+  onClickFirstButton,
+  members,
+  dragDropItem,
+  columnItem,
+  cardItem,
+}: I_ModalCard) => {
   const [selectImage, setSelectImage] = useState('');
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -29,11 +37,14 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
     }
   };
 
-  const [title, setTitle] = useState(cards.content.title);
-  const [descrpition, setDiscription] = useState(cards.content.dsecription);
-  const [date, setDate] = useState(cards.content.date);
-  const [tags, setTags] = useState<string[]>(cards.content.tag);
+  console.log(cardItem);
+
+  const [title, setTitle] = useState(cardItem.content.title);
+  const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
+  const [date, setDate] = useState(cardItem.content.date);
+  const [tags, setTags] = useState<string[]>(cardItem.content.tag);
   const [tagsName, setTagsName] = useState('');
+  const [image, setImage] = useState(cardItem.content.image);
 
   const handletitle = (event: ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
@@ -50,7 +61,7 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
     setTagsName(tagName);
   };
 
-  const handledate = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);
     const currentTime = new Date();
 
@@ -92,7 +103,7 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
 
     try {
       const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cards.id}`, {
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -100,7 +111,7 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
         },
         body: JSON.stringify({
           assigneeUserId: 1764,
-          columnId: Number(column.id),
+          columnId: Number(columnItem.id),
           title: title,
           description: descrpition,
           dueDate: date,
@@ -117,13 +128,11 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
     }
   };
 
-  const getRandomColorIndex = () => Math.floor(Math.random() * 4) + 1;
-
   return (
     <ModalLayout handleModal={handleModal} title='할 일 수정'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <ProgressDropDown dragDropItem={dragDropItem} column={column} />
+          <ProgressDropDown dragDropItem={dragDropItem} column={columnItem} />
           <PersonInChargeDropDown members={members} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
@@ -160,8 +169,7 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
             required
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
-            onChange={handledate}
-            value={date}
+            onChange={handleDate}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
@@ -183,7 +191,13 @@ const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_
           />
         </div>
         <InputImageFile size='small' />
-        <ModalButton buttonType='double' firstButton='취소' secondButton='수정' onClickSecondButton={handleEditCard} />
+        <ModalButton
+          buttonType='double'
+          firstButton='취소'
+          secondButton='수정'
+          onClickFirstButton={onClickFirstButton}
+          onClickSecondButton={handleEditCard}
+        />
       </form>
     </ModalLayout>
   );

@@ -12,7 +12,7 @@ import Card from '../Card/Card';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
-const Column = ({ column, cards, index, dashboardId, dragDropItem }: I_Column) => {
+const Column = ({ columnItem, cardList, index, dashboardId, dragDropItem }: I_Column) => {
   const [isToggeldModal, setIsToggeldModal] = useState(false);
   const [dashboardMembers, setDashboardMembers] = useState([]);
 
@@ -42,36 +42,43 @@ const Column = ({ column, cards, index, dashboardId, dragDropItem }: I_Column) =
     };
     getMyDashboardMembers();
   }, []);
+
   return (
-    <Draggable draggableId={column.id} index={index}>
+    <Draggable draggableId={columnItem.id} index={index}>
       {provided => (
         <div
-          className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 w-96  min-h-screen p-5 '
+          className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '
           ref={provided.innerRef}
           {...provided.draggableProps}>
-          <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
-            <ColumnTitle title={column.title} count={cards.length} columnId={column.id} dashboardId={dashboardId} />
+          <div className=' flex flex-col w-full gap-4  ' {...provided.dragHandleProps}>
+            <ColumnTitle
+              title={columnItem.title}
+              count={cardList.length}
+              columnId={columnItem.id}
+              dashboardId={dashboardId}
+            />
             <AddButton onClick={handleToggeldModal} />
             {isToggeldModal && (
               <CreateWorkModal
                 handleModal={handleToggeldModal}
                 dashboardMembers={dashboardMembers}
                 dashboardId={dashboardId}
-                column={column}
+                column={columnItem}
+                onClickFirstButton={handleToggeldModal}
               />
             )}
           </div>
-          <Droppable droppableId={column.id} type='card'>
+          <Droppable droppableId={columnItem.id} type='card'>
             {provided => (
-              <div className='flex flex-col  gap-4' {...provided.droppableProps} ref={provided.innerRef}>
+              <div className='flex flex-col w-full  gap-4' {...provided.droppableProps} ref={provided.innerRef}>
                 <>
-                  {cards.map((card: I_CardItem, index: number) => (
+                  {cardList.map((card: I_CardItem, index: number) => (
                     <Card
                       key={card.id}
-                      cards={card}
+                      cardItem={card}
                       index={index}
                       members={dashboardMembers}
-                      column={column}
+                      columnItem={columnItem}
                       dragDropItem={dragDropItem}
                     />
                   ))}

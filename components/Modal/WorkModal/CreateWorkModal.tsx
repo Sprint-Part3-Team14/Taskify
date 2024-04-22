@@ -16,6 +16,7 @@ interface ModalPorps {
   handleModal: () => void;
   dashboardId: string;
   column: { id: string; title: string; cardIds: string[] };
+  onClickFirstButton: () => void;
 }
 
 interface Props {
@@ -29,7 +30,7 @@ interface Props {
   userId: number;
 }
 
-const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }: ModalPorps) => {
+const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, onClickFirstButton }: ModalPorps) => {
   const [selectImage, setSelectImage] = useState('');
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -52,16 +53,6 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }:
     setTagsName(event.target.value);
   };
 
-  const handleTagKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      const newTag = tagsName.trim();
-      if (newTag) {
-        setTags(prevTags => [...prevTags, newTag]);
-        setTagsName('');
-      }
-    }
-  };
   //시간 분 선택할 수 있게 수정헤야 함
   const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);
@@ -97,6 +88,17 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }:
     setDescription(event.target.value);
   };
 
+  const createTagChip = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const newTag = tagsName.trim();
+      if (newTag) {
+        setTags(prevTags => [...prevTags, newTag]);
+        setTagsName('');
+      }
+    }
+  };
+
   //이미지 받아오는 부분 수정
   const handleCreateColumn = async () => {
     setAccessToken(
@@ -124,7 +126,7 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }:
         }),
       });
       if (response.ok) {
-        handleModal;
+        handleModal();
       }
     } catch (error) {
       console.error(error);
@@ -173,20 +175,22 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }:
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
-          <label className='flex gap-1 font-extrabold text-lg'>태그</label>
-          <div className='flex items-center w-full border border-solid border-tp-gray_700 p-4 rounded-lg gap-2 '>
-            {tags.map((name, index) => (
-              <TagChip key={index} name={name} size='large' color='red' />
-            ))}
-            <input
-              type='text'
-              placeholder='입력 후 Enter'
-              className='w-full outline-tp-violet_900 placeholder:text-sm'
-              value={tagsName}
-              onChange={handleTagName}
-              onKeyDown={handleTagKeyPress}
-            />
+          <div className='flex items-center'>
+            <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
+            <div className='flex items-center w-full p-4 rounded-lg gap-4 '>
+              {tags.map((name, index) => (
+                <TagChip key={index} name={name} size='large' />
+              ))}
+            </div>
           </div>
+          <input
+            type='text'
+            placeholder='입력 후 Enter'
+            className='w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4'
+            value={tagsName}
+            onChange={handleTagName}
+            onKeyDown={createTagChip}
+          />
         </div>
         <InputImageFile size='small' />
         <ModalButton
@@ -194,6 +198,7 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column }:
           firstButton='취소'
           secondButton='생성'
           onClickSecondButton={handleCreateColumn}
+          onClickFirstButton={onClickFirstButton}
         />
       </form>
     </ModalLayout>

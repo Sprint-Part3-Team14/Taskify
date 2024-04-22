@@ -41,7 +41,6 @@ const Dashboard = () => {
           },
         });
         const responseData = await response.json();
-        console.log(responseData);
         const columns = {};
         const columnOrder = responseData.data.map((column: I_ColumnOrder_Columns) => {
           columns[String(column.id)] = {
@@ -250,31 +249,36 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className='flex flex-row w-full bg-tp-gray_500'>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId='all-columns' direction='horizontal' type='column'>
-            {provided => (
-              <div className='flex w-full' {...provided.droppableProps} ref={provided.innerRef}>
-                {dragDropItem.columnOrder.map((columnId, index) => {
-                  const column = dragDropItem.columns[columnId];
-                  const cards = column.cardIds.map((cardId: number) => dragDropItem.cards[cardId]);
-                  return (
-                    <Column
-                      column={column}
-                      cards={cards}
-                      key={column.id}
-                      index={index}
-                      dashboardId={dashboardId}
-                      dragDropItem={dragDropItem}
-                    />
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <div className='w-fit grow py-16 px-5'>
+      <div className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
+        <div className='flex justify-between'>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId='all-columns' direction='horizontal' type='column'>
+              {provided => (
+                <div
+                  className='flex pc:flex-row mb:flex-col w-full'
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}>
+                  {dragDropItem.columnOrder.map((columnId, index) => {
+                    const column = dragDropItem.columns[columnId];
+                    const cards = column.cardIds.map((cardId: number) => dragDropItem.cards[cardId]);
+                    return (
+                      <Column
+                        columnItem={column}
+                        cardList={cards}
+                        key={column.id}
+                        index={index}
+                        dashboardId={dashboardId}
+                        dragDropItem={dragDropItem}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+        <div className='w-fit grow py-16 px-5 bg-tp-gray_500'>
           <AddButton onClick={handleToggledModal}>새로운 컬럼 추가하기</AddButton>
         </div>
       </div>

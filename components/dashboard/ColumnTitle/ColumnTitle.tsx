@@ -10,25 +10,24 @@ import { setAccessToken, getAccessToken } from 'utils/handleToken';
 
 import NumberChip from '../../common/Chip/NumberChip';
 import { ELLIPSE, SETTING } from '../constants';
+import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
 const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) => {
-  const [isToggledEditColumnMdoal, setIsToggledEditColumnModal] = useState(false);
+  const [isToggledModal, setIsToggeldModal] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState(title);
   const [inputValue, setInputValue] = useState(title);
 
-  const handleToggledEditColumnModal = () => {
-    setIsToggledEditColumnModal(!isToggledEditColumnMdoal);
+  const handleToggledModal = () => {
+    setIsToggeldModal(!isToggledModal);
   };
 
   const handleChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target.value;
-    setNewColumnTitle(target);
+    const title = event.target.value;
+    setNewColumnTitle(title);
   };
 
   const handleChangeNewTitle = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
     if (newColumnTitle.trim() === '') {
       alert('값을 입력해주세요.');
       return;
@@ -66,24 +65,22 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
       });
 
       if (response.ok) {
-        handleToggledEditColumnModal();
+        handleToggledModal();
       }
     } catch (error) {
       console.error(error);
     }
     setInputValue(newColumnTitle);
-    handleToggledEditColumnModal();
+    handleToggledModal();
   };
 
   const handleModalClose = () => {
     setNewColumnTitle(inputValue);
-    handleToggledEditColumnModal();
+    handleToggledModal();
   };
 
   const hanldeColumnDelete = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
     if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
       try {
         const accessToken = getAccessToken();
@@ -95,7 +92,7 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
           },
         });
         if (response.ok) {
-          handleToggledEditColumnModal();
+          handleToggledModal();
         }
       } catch (error) {
         console.error(error);
@@ -110,8 +107,8 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
         <div className='text-lg text-tp-black_700'>{inputValue}</div>
         <NumberChip count={count} />
       </div>
-      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleToggledEditColumnModal} />
-      {isToggledEditColumnMdoal && (
+      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleToggledModal} />
+      {isToggledModal && (
         <EditColumnModal
           handleModal={handleModalClose}
           title='컬럼 관리'

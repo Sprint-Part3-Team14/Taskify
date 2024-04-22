@@ -1,3 +1,5 @@
+/* COLUMN LIST */
+
 export interface I_ColumnOrder_Columns {
   id: number;
   title: string;
@@ -26,27 +28,7 @@ export interface I_ColumnOrder_Cards {
   updatedAt: string;
 }
 
-export interface I_Column {
-  column: I_ColumnList;
-  cards: I_CardItem[];
-  index: number;
-  dashboardId: string;
-  dragDropItem: I_DragDropItem;
-  id?: number;
-  title?: string;
-}
-
-export interface I_ColumnList {
-  id: string;
-  title: string;
-  cardIds: [];
-}
-
-export interface I_CardItem {
-  content: { title: string; image: string; dsecription: string; date: string; tag: Array<string>; user: string };
-  id: number;
-  length: number;
-}
+/* Drag and Drop */
 
 export interface I_DragDropItem {
   cards: {
@@ -72,6 +54,28 @@ export interface I_DragDropItem {
   columnOrder: string[];
 }
 
+export interface I_Column {
+  columnItem: I_ColumnList;
+  cardList: I_CardItem[];
+  index: number;
+  dashboardId: string;
+  dragDropItem: I_DragDropItem;
+  id?: number;
+  title?: string;
+}
+
+export interface I_ColumnList {
+  id: string;
+  title: string;
+  cardIds: [];
+}
+
+export interface I_CardItem {
+  content: { title: string; image: string; dsecription: string; date: string; tag: Array<string>; user: string };
+  id: number;
+  length: number;
+}
+
 export interface I_DashboardMember {
   id: number;
   email: string;
@@ -84,10 +88,17 @@ export interface I_DashboardMember {
 }
 
 export interface I_Card {
-  column: I_ColumnList;
-  cards: I_CardItem;
+  columnItem: I_ColumnList;
+  cardItem: I_CardItem;
   index?: number;
   dashboardId?: string;
   dragDropItem: I_DragDropItem;
   members: I_DashboardMember[];
+}
+
+export interface I_DashboardTitle {
+  title: string;
+  count: number;
+  columnId: string;
+  dashboardId: string;
 }
