@@ -14,21 +14,24 @@ const MainLogo = '/logo/main_site_logo.png';
 interface FormData {
   email: string;
   password: string;
+  watch: string;
 }
 
 const SigninPage = () => {
-  const { control, handleSubmit } = useForm<FormData>();
+  const { control, handleSubmit, watch } = useForm<FormData>();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    const accessToken = getAccessToken();
+  const email = watch('email');
+  const password = watch('password');
+  // useEffect(() => {
+  //   const accessToken = getAccessToken();
 
-    if (accessToken) {
-      console.log(accessToken);
-      router.push('/dashboard');
-    }
-  }, [router]);
+  //   if (accessToken) {
+  //     console.log(accessToken);
+  //     router.push('/dashboard');
+  //   }
+  // }, [router]);
 
   const onSubmit: SubmitHandler<FormData> = async data => {
     try {
@@ -89,7 +92,7 @@ const SigninPage = () => {
                     }`}
                     type='text'
                     placeholder='example@example.com'
-                    autoComplete='off'
+                    autoComplete='on'
                   />
                   {fieldState.invalid && (
                     <small className='flex mt-1 font-GS font-medium text-red-500'>{fieldState.error?.message}</small>
@@ -137,6 +140,7 @@ const SigninPage = () => {
           </div>
           <button
             type='submit'
+            disabled={!email || !password}
             className={'h-[50px]  w-full flex-center rounded-lg bg-tp-violet_900 text-white disabled:bg-gray-400'}>
             로그인
           </button>
