@@ -1,6 +1,9 @@
+'use client';
 import Image from 'next/image';
 import { DEFAULT_PROFILE_IMAGE } from './constant';
 import TableLayout from './TableLayout';
+import { useEffect, useState } from 'react';
+import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
 
 const members = [
   {
@@ -19,6 +22,22 @@ const members = [
 // api에서 받아오는 데이터로 변경 예정
 
 const MemberTable = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleLoadMembers = async () => {
+    try {
+      const { members, totalCount } = await getDashBoardMembers({ currentPage: 1, dashboardId: 5946 });
+      console.log(`members : `, members);
+      console.log(`totalCount : `, totalCount);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleLoadMembers();
+  }, []);
+
   const MemberList = members.map(member => (
     <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
       <div className='flex gap-3 items-center ml-7'>
