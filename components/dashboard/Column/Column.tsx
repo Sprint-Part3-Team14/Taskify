@@ -3,25 +3,25 @@
 import { useEffect, useState } from 'react';
 
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { I_Column } from '@/interface/Dashboard';
+import { I_CardItem, I_Column } from 'interface/Dashboard';
 
 import AddButton from 'components/common/button/add';
 import CreateWorkModal from 'components/Modal/WorkModal/CreateWorkModal';
 import ColumnTitle from '../ColumnTitle/ColumnTitle';
 import Card from '../Card/Card';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
+import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
-const Column = ({ column, cards, index, dashboardId, dashboardItem }: I_Column) => {
-  const [isToggeldCreateWorkModal, setIsToggledCreatWorkModal] = useState(false);
+const Column = ({ column, cards, index, dashboardId, dragDropItem }: I_Column) => {
+  const [isToggeldModal, setIsToggeldModal] = useState(false);
   const [dashboardMembers, setDashboardMembers] = useState([]);
-  const handleToggledCreateWorkModal = () => {
-    setIsToggledCreatWorkModal(!isToggeldCreateWorkModal);
+
+  const handleToggeldModal = () => {
+    setIsToggeldModal(!isToggeldModal);
   };
 
   useEffect(() => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
     const getMyDashboardMembers = async () => {
       try {
         const accessToken = getAccessToken();
@@ -42,20 +42,19 @@ const Column = ({ column, cards, index, dashboardId, dashboardItem }: I_Column) 
     };
     getMyDashboardMembers();
   }, []);
-
   return (
     <Draggable draggableId={column.id} index={index}>
       {provided => (
         <div
-          className='flex flex-col border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 w-96  min-h-screen p-5 '
+          className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 w-96  min-h-screen p-5 '
           ref={provided.innerRef}
           {...provided.draggableProps}>
           <div className=' flex flex-col  gap-4  ' {...provided.dragHandleProps}>
             <ColumnTitle title={column.title} count={cards.length} columnId={column.id} dashboardId={dashboardId} />
-            <AddButton onClick={handleToggledCreateWorkModal} />
-            {isToggeldCreateWorkModal && (
+            <AddButton onClick={handleToggeldModal} />
+            {isToggeldModal && (
               <CreateWorkModal
-                handleModal={handleToggledCreateWorkModal}
+                handleModal={handleToggeldModal}
                 dashboardMembers={dashboardMembers}
                 dashboardId={dashboardId}
                 column={column}
@@ -66,14 +65,14 @@ const Column = ({ column, cards, index, dashboardId, dashboardItem }: I_Column) 
             {provided => (
               <div className='flex flex-col  gap-4' {...provided.droppableProps} ref={provided.innerRef}>
                 <>
-                  {cards.map((card, idx) => (
+                  {cards.map((card: I_CardItem, index: number) => (
                     <Card
                       key={card.id}
-                      card={card}
-                      index={idx}
+                      cards={card}
+                      index={index}
                       members={dashboardMembers}
                       column={column}
-                      dashboardItem={dashboardItem}
+                      dragDropItem={dragDropItem}
                     />
                   ))}
                   {provided.placeholder}

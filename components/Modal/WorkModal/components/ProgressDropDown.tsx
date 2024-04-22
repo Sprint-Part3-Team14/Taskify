@@ -1,10 +1,16 @@
 'use client';
 import Image from 'next/image';
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import ProgressChip from 'components/common/Chip/ProgressChip';
+import { I_ColumnList, I_DragDropItem } from '@/interface/Dashboard';
 
-const ProgressDropDown = ({ dashboardItem, column }) => {
-  const columnList = Object.values(dashboardItem.columns);
+interface Props {
+  dragDropItem: I_DragDropItem;
+  column: I_ColumnList;
+}
+
+const ProgressDropDown = ({ dragDropItem, column }: Props) => {
+  const columnList = Object.values(dragDropItem.columns);
   const [openList, setOpenList] = useState(false);
   const [selectedColumn, setSelectedColumn] = useState(columnList[0]);
   const [selectItem, setSelectItem] = useState(<ProgressChip size='large' title={column.title} />);
@@ -16,7 +22,6 @@ const ProgressDropDown = ({ dashboardItem, column }) => {
   function handleSelectItem(item) {
     setSelectedColumn(item.title);
     setSelectItem(<ProgressChip size='large' title={item.title} />);
-    setOpenList(false);
   }
 
   return (
@@ -43,7 +48,7 @@ const ProgressDropDown = ({ dashboardItem, column }) => {
               key={item.id}
               id={item.id}
               onClick={() => handleSelectItem(item)}>
-              <div className={selectedColumn === item.title ? 'w-5 h-5 relative' : 'w-5 h-5 relative invisible'}>
+              <div className={selectedColumn.title === item.title ? 'w-5 h-5 relative' : 'w-5 h-5 relative invisible'}>
                 <Image fill src='/icon/check.svg' alt='선택된 상태' />
               </div>
               <ProgressChip size='large' title={item.title} />

@@ -1,21 +1,4 @@
-export interface I_CardList {
-  cardDatas?: I_Card[];
-  title: string;
-}
-
-export interface I_DashboardTitle {
-  title: string;
-  count: number;
-  columnId: string;
-  dashboardId: string;
-}
-
-export interface I_DashboardColumns {
-  result: string;
-  data: [];
-}
-
-export interface I_DashboardColumnsItem {
+export interface I_ColumnOrder_Columns {
   id: number;
   title: string;
   teamId: string;
@@ -24,32 +7,87 @@ export interface I_DashboardColumnsItem {
   updatedAt: string;
 }
 
-export interface I_Column {
-  column: { id: string; title: string; cardIds: string[] };
-  cards: {
+export interface I_ColumnOrder_Cards {
+  id: number;
+  title: string;
+  description: string;
+  tags: Array<string>;
+  dueDate: string;
+  assignee: {
     id: number;
-    content: {
-      image?: string;
-      title: string;
-      tag: [];
-      date: string;
-      user: string | null;
-    };
-  }[];
+    nickname: string;
+    profileImageUrl: any;
+  };
+  imageUrl: string;
+  teamId: string;
+  dashboardId: number;
+  columnId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface I_Column {
+  column: I_ColumnList;
+  cards: I_CardItem[];
   index: number;
   dashboardId: string;
+  dragDropItem: I_DragDropItem;
+  id?: number;
+  title?: string;
+}
+
+export interface I_ColumnList {
+  id: string;
+  title: string;
+  cardIds: [];
+}
+
+export interface I_CardItem {
+  content: { title: string; image: string; dsecription: string; date: string; tag: Array<string>; user: string };
+  id: number;
+  length: number;
+}
+
+export interface I_DragDropItem {
+  cards: {
+    [key: string]: {
+      id: number;
+      content: {
+        title: string;
+        image: string;
+        description: string;
+        date: string;
+        tag: string[];
+        user: string;
+      };
+    };
+  };
+  columns: {
+    [key: string]: {
+      id: string;
+      title: string;
+      cardIds: number[];
+    };
+  };
+  columnOrder: string[];
+}
+
+export interface I_DashboardMember {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: any;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+  userId: number;
 }
 
 export interface I_Card {
-  card: {
-    id: number;
-    content: {
-      image?: string;
-      title: string;
-      tag: [];
-      date: string;
-      user: string | null;
-    };
-  };
-  index: number;
+  column: I_ColumnList;
+  cards: I_CardItem;
+  index?: number;
+  dashboardId?: string;
+  dragDropItem: I_DragDropItem;
+  members: I_DashboardMember[];
 }

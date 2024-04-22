@@ -1,26 +1,29 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 
 import AddButton from 'components/common/button/add';
-import Column from '@/components/Dashboard/Column/Column';
-import CreateColumnModal from '@/components/Modal/CreateColumnModal';
+import Column from 'components/Dashboard/Column/Column';
+import CreateColumnModal from 'components/Modal/CreateColumnModal';
 
-import { setAccessToken, getAccessToken } from '@/utils/handleToken';
-import { usePathname } from 'next/navigation';
+import { setAccessToken, getAccessToken } from 'utils/handleToken';
+
+import { TEMP_TOKEN, ERROR } from '../constants';
+import { I_ColumnOrder_Cards, I_ColumnOrder_Columns } from '@/interface/Dashboard';
 
 const Dashboard = () => {
-  const [dashboardItem, setDashboardItem] = useState({ cards: {}, columns: {}, columnOrder: [] });
-  const [isToggledCreatedColumnModal, setIsToggledCreatedColumnModal] = useState(false);
+  const [dragDropItem, setDragDropItem] = useState({ cards: {}, columns: {}, columnOrder: [] });
+  const [isToggledModal, setIsToggledModal] = useState(false);
   const [columnNewTitle, setColumnNewTitle] = useState('');
   const [columnIds, setColumnIds] = useState([]);
 
   const path = usePathname();
   const dashboardId = path.split('/')[2];
 
-  const handleToggledCreateColumnModal = () => {
-    setIsToggledCreatedColumnModal(!isToggledCreatedColumnModal);
+  const handleToggledModal = () => {
+    setIsToggledModal(!isToggledModal);
   };
 
   const handleColumnNewTitle = (title: string) => {
@@ -28,9 +31,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
     const getDashboardColumnList = async () => {
       try {
         const accessToken = getAccessToken();
@@ -40,8 +41,9 @@ const Dashboard = () => {
           },
         });
         const responseData = await response.json();
+        console.log(responseData);
         const columns = {};
-        const columnOrder = responseData.data.map(column => {
+        const columnOrder = responseData.data.map((column: I_ColumnOrder_Columns) => {
           columns[String(column.id)] = {
             id: String(column.id),
             title: column.title,
@@ -50,7 +52,7 @@ const Dashboard = () => {
           return String(column.id);
         });
         setColumnIds(columnOrder);
-        setDashboardItem({ cards: {}, columns, columnOrder });
+        setDragDropItem({ cards: {}, columns, columnOrder });
       } catch (error) {
         console.error(error);
       }
@@ -62,7 +64,7 @@ const Dashboard = () => {
     const getDashboardCardList = async () => {
       try {
         const accessToken = getAccessToken();
-        const updatedColumns = {};
+        const updateColumnsCards = {};
 
         for (const columnId of columnIds) {
           const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards?size=10&columnId=${columnId}`, {
@@ -73,19 +75,20 @@ const Dashboard = () => {
 
           const responseData = await response.json();
           if (responseData.cards) {
-            const updatedCardIds = responseData.cards.map(card => card.id);
-            updatedColumns[columnId] = {
-              ...dashboardItem.columns[columnId],
+            const updatedCardIds = responseData.cards.map((card: I_ColumnOrder_Cards) => card.id);
+            updateColumnsCards[columnId] = {
+              ...dragDropItem.columns[columnId],
               cardIds: updatedCardIds,
             };
 
             const updatedCards = {};
-            responseData.cards.forEach(card => {
+            responseData.cards.forEach((card: I_ColumnOrder_Cards) => {
               updatedCards[card.id] = {
                 id: card.id,
                 content: {
                   title: card.title,
                   image: card.imageUrl,
+                  dsecription: card.description,
                   date: new Date(card.createdAt).toLocaleDateString('ko-KR'),
                   tag: card.tags,
                   user: card.assignee.profileImageUrl,
@@ -93,14 +96,14 @@ const Dashboard = () => {
               };
             });
 
-            setDashboardItem(prevData => ({
-              ...prevData,
+            setDragDropItem(prevList => ({
+              ...prevList,
               columns: {
-                ...prevData.columns,
-                ...updatedColumns,
+                ...prevList.columns,
+                ...updateColumnsCards,
               },
               cards: {
-                ...prevData.cards,
+                ...prevList.cards,
                 ...updatedCards,
               },
             }));
@@ -115,12 +118,10 @@ const Dashboard = () => {
   }, [columnIds]);
 
   const handleCreateColumn = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
 
     if (columnNewTitle.trim() === '') {
-      alert('값을 입력해 주세요');
+      alert(ERROR.NOTITLE);
       return;
     }
 
@@ -136,10 +137,10 @@ const Dashboard = () => {
       );
       const responseData = await checkDuplicateResponse.json();
       const checkDuplicate = responseData.data;
-      const isDuplicateTitle = checkDuplicate.some(column => column.title === columnNewTitle);
+      const isDuplicateTitle = checkDuplicate.some((column: I_ColumnOrder_Columns) => column.title === columnNewTitle);
 
       if (isDuplicateTitle) {
-        alert('중복된 컬럼 이름입니다');
+        alert(ERROR.DUPLICATE);
         return;
       }
 
@@ -156,20 +157,20 @@ const Dashboard = () => {
       });
 
       if (response.ok) {
-        handleToggledCreateColumnModal();
+        handleToggledModal();
         const newColumnData = await response.json();
 
-        setDashboardItem(prevData => ({
-          ...prevData,
+        setDragDropItem(prevList => ({
+          ...prevList,
           columns: {
-            ...prevData.columns,
+            ...prevList.columns,
             [newColumnData.id]: {
               id: String(newColumnData.id),
               title: newColumnData.title,
               cardIds: [],
             },
           },
-          columnOrder: [...prevData.columnOrder, newColumnData.id],
+          columnOrder: [...prevList.columnOrder, newColumnData.id],
         }));
       }
     } catch (error) {
@@ -184,19 +185,19 @@ const Dashboard = () => {
       if (destination.droppableId === source.droppableId && source.index === destination.index) return;
 
       if (type === 'column') {
-        const newColumnOrder = Array.from(dashboardItem.columnOrder);
+        const newColumnOrder = Array.from(dragDropItem.columnOrder);
         newColumnOrder.splice(source.index, 1);
         newColumnOrder.splice(destination.index, 0, draggableId);
 
         const newData = {
-          ...dashboardItem,
+          ...dragDropItem,
           columnOrder: newColumnOrder,
         };
-        setDashboardItem(newData);
+        setDragDropItem(newData);
         return;
       }
-      const startColumn = dashboardItem.columns[source.droppableId];
-      const finishColumn = dashboardItem.columns[destination.droppableId];
+      const startColumn = dragDropItem.columns[source.droppableId];
+      const finishColumn = dragDropItem.columns[destination.droppableId];
 
       if (startColumn === finishColumn) {
         const newcardIds = Array.from(startColumn.cardIds);
@@ -209,14 +210,14 @@ const Dashboard = () => {
         };
 
         const newData = {
-          ...dashboardItem,
+          ...dragDropItem,
           columns: {
-            ...dashboardItem.columns,
+            ...dragDropItem.columns,
             [newColumn.id]: newColumn,
           },
         };
 
-        setDashboardItem(newData);
+        setDragDropItem(newData);
       } else {
         const startcardIds = Array.from(startColumn.cardIds);
         startcardIds.splice(source.index, 1);
@@ -233,18 +234,18 @@ const Dashboard = () => {
         };
 
         const newData = {
-          ...dashboardItem,
+          ...dragDropItem,
           columns: {
-            ...dashboardItem.columns,
+            ...dragDropItem.columns,
             [newStartColumn.id]: newStartColumn,
             [newFinishColumn.id]: newFinishColumn,
           },
         };
 
-        setDashboardItem(newData);
+        setDragDropItem(newData);
       }
     },
-    [dashboardItem]
+    [dragDropItem]
   );
 
   return (
@@ -254,9 +255,9 @@ const Dashboard = () => {
           <Droppable droppableId='all-columns' direction='horizontal' type='column'>
             {provided => (
               <div className='flex w-full' {...provided.droppableProps} ref={provided.innerRef}>
-                {dashboardItem.columnOrder.map((columnId, index) => {
-                  const column = dashboardItem.columns[columnId];
-                  const cards = column.cardIds.map(cardId => dashboardItem.cards[cardId]);
+                {dragDropItem.columnOrder.map((columnId, index) => {
+                  const column = dragDropItem.columns[columnId];
+                  const cards = column.cardIds.map((cardId: number) => dragDropItem.cards[cardId]);
                   return (
                     <Column
                       column={column}
@@ -264,7 +265,7 @@ const Dashboard = () => {
                       key={column.id}
                       index={index}
                       dashboardId={dashboardId}
-                      dashboardItem={dashboardItem}
+                      dragDropItem={dragDropItem}
                     />
                   );
                 })}
@@ -274,15 +275,15 @@ const Dashboard = () => {
           </Droppable>
         </DragDropContext>
         <div className='w-fit grow py-16 px-5'>
-          <AddButton onClick={handleToggledCreateColumnModal}>새로운 컬럼 추가하기</AddButton>
+          <AddButton onClick={handleToggledModal}>새로운 컬럼 추가하기</AddButton>
         </div>
       </div>
-      {isToggledCreatedColumnModal && (
+      {isToggledModal && (
         <CreateColumnModal
-          onClickFirstButton={handleToggledCreateColumnModal}
+          onClickFirstButton={handleToggledModal}
           onClickSecondButton={handleCreateColumn}
           onChange={handleColumnNewTitle}
-          handleModal={handleToggledCreateColumnModal}
+          handleModal={handleToggledModal}
         />
       )}
     </>

@@ -1,54 +1,52 @@
 'use client';
 
 import React, { useState } from 'react';
-
-import EditCardModal from '@/components/Modal/WorkModal/EditCardModal';
-
-import { Draggable } from '@hello-pangea/dnd';
 import Image from 'next/image';
-import TagChip from '@/components/common/Chip/TagChip';
-import { I_Card } from '@/interface/Dashboard';
+import { Draggable } from '@hello-pangea/dnd';
 
-const CALENDAR = '/icon/calendar_today.svg';
+import EditCardModal from 'components/Modal/WorkModal/EditCardModal';
+import TagChip from 'components/common/Chip/TagChip';
+import { I_Card } from 'interface/Dashboard';
+import { CALENDAR } from '../constants';
 
-const Card = ({ card, index, members, column, dashboardItem }: I_Card) => {
-  const [isToggledEditWorkModal, setIsToggledEditWorkModal] = useState(false);
+const Card = ({ cards, index, members, column, dragDropItem }: I_Card) => {
+  const [isToggledModal, setIstoggeldModal] = useState(false);
 
-  const handleToggledEditWorkModal = () => {
-    setIsToggledEditWorkModal(!isToggledEditWorkModal);
+  const handleToggledModal = () => {
+    setIstoggeldModal(!isToggledModal);
   };
-  const isDragDisabled = String(card.id) === '';
+  const isDragDisabled = String(cards.id) === '';
   return (
-    <Draggable draggableId={String(card.id)} index={index} isDragDisabled={isDragDisabled}>
+    <Draggable draggableId={String(cards.id)} index={index} isDragDisabled={isDragDisabled}>
       {provided => (
         <div
-          className='flex flex-col gap-2.5 p-5 border border-solid border-tp-gray_700 bg-tp-gray_500 rounded-md'
+          className='flex flex-col gap-2.5 p-5 w-[20.8125rem] border border-solid border-tp-gray_700 bg-tp-white rounded-md'
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}>
-          <div className='flex flex-col gap-[10px]' onClick={handleToggledEditWorkModal}>
-            {card?.content.image && <img className='w-full rounded-md' src={card?.content.image} alt='card' />}
-            <div className=' font-semibold text-base'>{card.content.title}</div>
+          <div className='flex flex-col gap-[10px]' onClick={handleToggledModal}>
+            {cards?.content.image && <img className='w-full rounded-md' src={cards?.content.image} alt='card' />}
+            <div className=' font-semibold text-base'>{cards.content.title}</div>
             <div className='flex gap-1.5'>
-              {card.content.tag.map((item, index) => (
-                <TagChip key={index} name={item} size='large' color='red' />
+              {cards.content.tag.map((item, index) => (
+                <TagChip key={index} name={item} size='large' color={1} />
               ))}
             </div>
             <div className='flex justify-between'>
-              <div className='flex items-center gap-1.5'>
+              <div className='flex flex-wrap items-center gap-1.5'>
                 <Image src={CALENDAR} alt='calendar' width={18} height={18} />
-                <div className='text-xs font-medium text-tp-gray_900'>{card.content.date}</div>
+                <div className='text-xs font-medium text-tp-gray_900'>{cards.content.date}</div>
               </div>
-              <div>{card.content.user}</div>
+              <div>{cards.content.user}</div>
             </div>
           </div>
-          {isToggledEditWorkModal && (
+          {isToggledModal && (
             <EditCardModal
-              handleModal={handleToggledEditWorkModal}
+              handleModal={handleToggledModal}
               members={members}
               column={column}
-              dashboardItem={dashboardItem}
-              card={card}
+              dragDropItem={dragDropItem}
+              cards={cards}
             />
           )}
         </div>

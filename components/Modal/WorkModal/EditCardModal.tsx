@@ -9,27 +9,14 @@ import InputImageFile from '@/components/InputImage/InputImage';
 import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
+import { I_Card } from '@/interface/Dashboard';
+import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
-interface ModalPorps {
-  members: Props[];
-  totalCount?: number;
-  handleModal?: () => void;
-  dashboardId?: string;
-  column?: { id: string; title: string; cardIds: string[] };
+interface I_ModalCard extends I_Card {
+  handleModal: () => void;
 }
 
-interface Props {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-  userId: number;
-}
-
-const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: ModalPorps) => {
+const EditCardModal = ({ handleModal, members, dragDropItem, column, cards }: I_ModalCard) => {
   const [selectImage, setSelectImage] = useState('');
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -42,23 +29,28 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
     }
   };
 
-  console.log(card);
-
-  const [cardTitle, setCardTitle] = useState(card.content.title);
-  const [cardDescrpition, setCardDescrpition] = useState(card.content.description);
-  const [cardDate, setCardDate] = useState(card.content.date);
-  const [tags, setTags] = useState<string[]>(card.content.tag);
+  const [title, setTitle] = useState(cards.content.title);
+  const [descrpition, setDiscription] = useState(cards.content.dsecription);
+  const [date, setDate] = useState(cards.content.date);
+  const [tags, setTags] = useState<string[]>(cards.content.tag);
   const [tagsName, setTagsName] = useState('');
 
-  const handleCardTitle = event => {
-    setCardTitle(event.target.value);
+  const handletitle = (event: ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    setTitle(title);
   };
 
-  const handleCardDescrpition = event => {
-    setCardDescrpition(event.target.value);
+  const handledescrpition = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const description = event.target.value;
+    setDiscription(description);
   };
 
-  const handleCardDate = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
+    const tagName = event.target.value;
+    setTagsName(tagName);
+  };
+
+  const handledate = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);
     const currentTime = new Date();
 
@@ -81,14 +73,10 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
       ':' +
       minutes;
 
-    setCardDate(formattedDate);
+    setDate(formattedDate);
   };
 
-  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
-    setTagsName(event.target.value);
-  };
-
-  const handleTagKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const createTagChip = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       const newTag = tagsName.trim();
@@ -100,13 +88,11 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
   };
 
   const handleEditCard = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    setAccessToken(TEMP_TOKEN);
 
     try {
       const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${card.id}`, {
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cards.id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -115,9 +101,9 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
         body: JSON.stringify({
           assigneeUserId: 1764,
           columnId: Number(column.id),
-          title: cardTitle,
-          description: cardDescrpition,
-          dueDate: cardDate,
+          title: title,
+          description: descrpition,
+          dueDate: date,
           tags: tags,
           imageUrl:
             'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/14_20003_1713343503827.jpeg',
@@ -131,11 +117,13 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
     }
   };
 
+  const getRandomColorIndex = () => Math.floor(Math.random() * 4) + 1;
+
   return (
     <ModalLayout handleModal={handleModal} title='할 일 수정'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <ProgressDropDown dashboardItem={dashboardItem} column={column} />
+          <ProgressDropDown dragDropItem={dragDropItem} column={column} />
           <PersonInChargeDropDown members={members} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
@@ -146,8 +134,8 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
             type='text'
             placeholder='제목을 입력해 주세요'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 placeholder:text-sm'
-            onChange={handleCardTitle}
-            value={cardTitle}
+            onChange={handletitle}
+            value={title}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[9rem]'>
@@ -159,8 +147,8 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
               id='Comments'
               placeholder='설명을 입력해 주세요'
               className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
-              onChange={handleCardDescrpition}
-              value={cardDescrpition}
+              onChange={handledescrpition}
+              value={descrpition}
             />
           </div>
         </div>
@@ -172,25 +160,27 @@ const EditCardModal = ({ handleModal, members, dashboardItem, column, card }: Mo
             required
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
-            onChange={handleCardDate}
-            value={cardDate}
+            onChange={handledate}
+            value={date}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
-          <label className='flex gap-1 font-extrabold text-lg'>태그</label>
-          <div className='flex items-center w-full border border-solid border-tp-gray_700 p-4 rounded-lg gap-2 '>
-            {tags.map((name, index) => (
-              <TagChip key={index} name={name} size='large' color='red' />
-            ))}
-            <input
-              type='text'
-              placeholder='입력 후 Enter'
-              className='w-full outline-tp-violet_900 placeholder:text-sm'
-              value={tagsName}
-              onChange={handleTagName}
-              onKeyDown={handleTagKeyPress}
-            />
+          <div className='flex items-center'>
+            <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
+            <div className='flex items-center w-full p-4 rounded-lg gap-4 '>
+              {tags.map((name, index) => (
+                <TagChip key={index} name={name} size='large' />
+              ))}
+            </div>
           </div>
+          <input
+            type='text'
+            placeholder='입력 후 Enter'
+            className='w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4'
+            value={tagsName}
+            onChange={handleTagName}
+            onKeyDown={createTagChip}
+          />
         </div>
         <InputImageFile size='small' />
         <ModalButton buttonType='double' firstButton='취소' secondButton='수정' onClickSecondButton={handleEditCard} />
