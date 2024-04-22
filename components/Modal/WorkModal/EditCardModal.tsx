@@ -172,25 +172,28 @@ const EditCardModal = ({
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
             onChange={handleDate}
+            value={date}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
           <div className='flex items-center'>
             <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
-            <div className='flex items-center w-full p-4 rounded-lg gap-4 '>
+          </div>
+          <div className='relative'>
+            <input
+              type='text'
+              placeholder='입력 후 Enter'
+              className=' w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4 '
+              value={tagsName}
+              onChange={handleTagName}
+              onKeyDown={createTagChip}
+            />
+            <div className='absolute  left-[100px] flex flex-start flex-wrap w-[350px] gap-4 py-7 '>
               {tags.map((name, index) => (
                 <TagChip key={index} name={name} size='large' onClick={() => removeTag(name)} />
               ))}
             </div>
           </div>
-          <input
-            type='text'
-            placeholder='입력 후 Enter'
-            className='w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4'
-            value={tagsName}
-            onChange={handleTagName}
-            onKeyDown={createTagChip}
-          />
         </div>
         <InputImageFile size='small' />
         <ModalButton

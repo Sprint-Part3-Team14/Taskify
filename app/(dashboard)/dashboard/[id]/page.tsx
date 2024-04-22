@@ -11,7 +11,7 @@ import CreateColumnModal from 'components/Modal/CreateColumnModal';
 import { setAccessToken, getAccessToken } from 'utils/handleToken';
 
 import { TEMP_TOKEN, ERROR } from '../constants';
-import { I_ColumnOrder_Cards, I_ColumnOrder_Columns } from '@/interface/Dashboard';
+import { I_ColumnOrder_Cards, I_ColumnOrder_Columns } from 'interface/Dashboard';
 
 const Dashboard = () => {
   const [dragDropItem, setDragDropItem] = useState({ cards: {}, columns: {}, columnOrder: [] });

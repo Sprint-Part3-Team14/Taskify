@@ -28,7 +28,7 @@ const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) =>
           <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem]' onClick={handleToggledModal}>
             {cardItem?.content.image && (
               <img
-                className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full rounded-md'
+                className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full h-[10rem] rounded-md '
                 src={cardItem?.content.image}
                 alt='card'
               />
