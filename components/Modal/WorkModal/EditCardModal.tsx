@@ -37,8 +37,6 @@ const EditCardModal = ({
     }
   };
 
-  console.log(cardItem);
-
   const [title, setTitle] = useState(cardItem.content.title);
   const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
   const [date, setDate] = useState(cardItem.content.date);
@@ -59,6 +57,10 @@ const EditCardModal = ({
   const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
     const tagName = event.target.value;
     setTagsName(tagName);
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(prevTags => prevTags.filter(item => item !== tag));
   };
 
   const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
@@ -164,7 +166,7 @@ const EditCardModal = ({
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg '>마감일</label>
           <input
-            type='date'
+            type='datetime-local'
             date-placeholder='날짜를 입력해 주세요'
             required
             aria-required='true'
@@ -177,7 +179,7 @@ const EditCardModal = ({
             <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
             <div className='flex items-center w-full p-4 rounded-lg gap-4 '>
               {tags.map((name, index) => (
-                <TagChip key={index} name={name} size='large' />
+                <TagChip key={index} name={name} size='large' onClick={() => removeTag(name)} />
               ))}
             </div>
           </div>

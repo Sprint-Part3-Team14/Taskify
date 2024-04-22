@@ -6,4 +6,5 @@ export interface I_ProgressChip {
 export interface I_TagChip {
   name: string;
   size: 'large' | 'small';
+  onClick?: () => void;
 }

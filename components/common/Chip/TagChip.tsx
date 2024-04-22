@@ -1,6 +1,6 @@
 import { I_TagChip } from 'interface/Chip';
 
-const TagChip = ({ size, name }: I_TagChip) => {
+const TagChip = ({ size, name, onClick }: I_TagChip) => {
   const fontSizeSelect = {
     large: 'text-xs',
     small: 'text-[0.625rem]',
@@ -16,7 +16,9 @@ const TagChip = ({ size, name }: I_TagChip) => {
   const randomColorIndex = Math.floor(Math.random() * 4) + 1;
 
   return (
-    <div className={`${fontSizeSelect[size]} ${colors[randomColorIndex]} flex items-center px-2 py-1 gap-1.5 rounded`}>
+    <div
+      onClick={onClick}
+      className={`${fontSizeSelect[size]} ${colors[randomColorIndex]} flex items-center px-2 py-1 gap-1.5 rounded`}>
       {name}
     </div>
   );

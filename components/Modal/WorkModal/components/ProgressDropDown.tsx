@@ -12,7 +12,7 @@ interface Props {
 const ProgressDropDown = ({ dragDropItem, column }: Props) => {
   const columnList = Object.values(dragDropItem.columns);
   const [openList, setOpenList] = useState(false);
-  const [selectedColumn, setSelectedColumn] = useState(columnList[0]);
+  const [selectedColumn, setSelectedColumn] = useState(column);
   const [selectItem, setSelectItem] = useState(<ProgressChip size='large' title={column.title} />);
 
   function handleOpenDropDown() {
@@ -20,7 +20,7 @@ const ProgressDropDown = ({ dragDropItem, column }: Props) => {
   }
 
   function handleSelectItem(item) {
-    setSelectedColumn(item.title);
+    setSelectedColumn(item);
     setSelectItem(<ProgressChip size='large' title={item.title} />);
   }
 
