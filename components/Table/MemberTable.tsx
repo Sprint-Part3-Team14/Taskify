@@ -63,7 +63,7 @@ const MemberTable = () => {
         </div>
         <p className='text-base text-tp-black_700'>{member.nickname}</p>
       </div>
-      <button type='button' className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
+      <button id={member.id} type='button' className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
         버튼대체
       </button>
     </div>
