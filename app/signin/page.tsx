@@ -24,14 +24,14 @@ const SigninPage = () => {
 
   const email = watch('email');
   const password = watch('password');
-  // useEffect(() => {
-  //   const accessToken = getAccessToken();
+  useEffect(() => {
+    const accessToken = getAccessToken();
 
-  //   if (accessToken) {
-  //     console.log(accessToken);
-  //     router.push('/dashboard');
-  //   }
-  // }, [router]);
+    if (accessToken) {
+      console.log(accessToken);
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   const onSubmit: SubmitHandler<FormData> = async data => {
     try {
