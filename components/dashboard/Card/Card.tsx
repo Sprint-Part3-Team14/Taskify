@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import EditWorkMdoal from 'components/Modal/WorkModal/CreateWorkModal';
+import EditCardModal from '@/components/Modal/WorkModal/EditCardModal';
 
 import { Draggable } from '@hello-pangea/dnd';
 import Image from 'next/image';
@@ -11,7 +11,7 @@ import { I_Card } from '@/interface/Dashboard';
 
 const CALENDAR = '/icon/calendar_today.svg';
 
-const Card = ({ card, index }: I_Card) => {
+const Card = ({ card, index, members, column, dashboardItem }: I_Card) => {
   const [isToggledEditWorkModal, setIsToggledEditWorkModal] = useState(false);
 
   const handleToggledEditWorkModal = () => {
@@ -42,7 +42,15 @@ const Card = ({ card, index }: I_Card) => {
               <div>{card.content.user}</div>
             </div>
           </div>
-          {isToggledEditWorkModal && <EditWorkMdoal handleModal={handleToggledEditWorkModal} />}
+          {isToggledEditWorkModal && (
+            <EditCardModal
+              handleModal={handleToggledEditWorkModal}
+              members={members}
+              column={column}
+              dashboardItem={dashboardItem}
+              card={card}
+            />
+          )}
         </div>
       )}
     </Draggable>

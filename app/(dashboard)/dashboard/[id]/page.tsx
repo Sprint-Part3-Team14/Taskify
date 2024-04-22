@@ -258,7 +258,14 @@ const Dashboard = () => {
                   const column = dashboardItem.columns[columnId];
                   const cards = column.cardIds.map(cardId => dashboardItem.cards[cardId]);
                   return (
-                    <Column column={column} cards={cards} key={column.id} index={index} dashboardId={dashboardId} />
+                    <Column
+                      column={column}
+                      cards={cards}
+                      key={column.id}
+                      index={index}
+                      dashboardId={dashboardId}
+                      dashboardItem={dashboardItem}
+                    />
                   );
                 })}
                 {provided.placeholder}
