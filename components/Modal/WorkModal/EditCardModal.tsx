@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from 'react';
-
 import InputImageButton from '../Button/InputImageButton';
 // import ModalDropdown from '../Input/ModalDropdown';
 import ModalLayout from '../ModalLayout';
@@ -10,28 +9,22 @@ import InputImageFile from '@/components/InputImage/InputImage';
 import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
+import { I_Card } from '@/interface/Dashboard';
+import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
-interface ModalPorps {
-  dashboardMembers: Props[];
-  totalCount?: number;
+interface I_ModalCard extends I_Card {
   handleModal: () => void;
-  dashboardId: string;
-  column: { id: string; title: string; cardIds: string[] };
   onClickFirstButton: () => void;
 }
 
-interface Props {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-  userId: number;
-}
-
-const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, onClickFirstButton }: ModalPorps) => {
+const EditCardModal = ({
+  handleModal,
+  onClickFirstButton,
+  members,
+  dragDropItem,
+  columnItem,
+  cardItem,
+}: I_ModalCard) => {
   const [selectImage, setSelectImage] = useState('');
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -44,17 +37,32 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
     }
   };
 
-  const [tags, setTags] = useState<string[]>([]);
+  const [title, setTitle] = useState(cardItem.content.title);
+  const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
+  const [date, setDate] = useState(cardItem.content.date);
+  const [tags, setTags] = useState<string[]>(cardItem.content.tag);
   const [tagsName, setTagsName] = useState('');
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
+  const [image, setImage] = useState(cardItem.content.image);
 
-  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
-    setTagsName(event.target.value);
+  const handletitle = (event: ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    setTitle(title);
   };
 
-  //시간 분 선택할 수 있게 수정헤야 함
+  const handledescrpition = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const description = event.target.value;
+    setDiscription(description);
+  };
+
+  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
+    const tagName = event.target.value;
+    setTagsName(tagName);
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(prevTags => prevTags.filter(item => item !== tag));
+  };
+
   const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);
     const currentTime = new Date();
@@ -81,14 +89,6 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
     setDate(formattedDate);
   };
 
-  const handleCardTitle = event => {
-    setTitle(event.target.value);
-  };
-
-  const handleCardDescrpition = event => {
-    setDescription(event.target.value);
-  };
-
   const createTagChip = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -100,26 +100,22 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
     }
   };
 
-  //이미지 받아오는 부분 수정
-  const handleCreateColumn = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+  const handleEditCard = async () => {
+    setAccessToken(TEMP_TOKEN);
 
     try {
       const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards`, {
-        method: 'POST',
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           assigneeUserId: 1764,
-          dashboardId: Number(dashboardId),
-          columnId: Number(column.id),
+          columnId: Number(columnItem.id),
           title: title,
-          description: description,
+          description: descrpition,
           dueDate: date,
           tags: tags,
           imageUrl:
@@ -127,7 +123,7 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
         }),
       });
       if (response.ok) {
-        handleModal();
+        handleModal;
       }
     } catch (error) {
       console.error(error);
@@ -135,10 +131,11 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
   };
 
   return (
-    <ModalLayout handleModal={handleModal} title='할 일 생성'>
+    <ModalLayout handleModal={handleModal} title='할 일 수정'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <PersonInChargeDropDown members={dashboardMembers} />
+          <ProgressDropDown dragDropItem={dragDropItem} column={columnItem} />
+          <PersonInChargeDropDown members={members} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>
@@ -148,7 +145,8 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
             type='text'
             placeholder='제목을 입력해 주세요'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 placeholder:text-sm'
-            onChange={handleCardTitle}
+            onChange={handletitle}
+            value={title}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[9rem]'>
@@ -160,50 +158,54 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
               id='Comments'
               placeholder='설명을 입력해 주세요'
               className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
-              onChange={handleCardDescrpition}
+              onChange={handledescrpition}
+              value={descrpition}
             />
           </div>
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg '>마감일</label>
           <input
-            type='date'
+            type='datetime-local'
             date-placeholder='날짜를 입력해 주세요'
             required
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
             onChange={handleDate}
+            value={date}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
           <div className='flex items-center'>
             <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
-            <div className='flex items-center w-full p-4 rounded-lg gap-4 '>
+          </div>
+          <div className='relative'>
+            <input
+              type='text'
+              placeholder='입력 후 Enter'
+              className=' w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4 '
+              value={tagsName}
+              onChange={handleTagName}
+              onKeyDown={createTagChip}
+            />
+            <div className='absolute  left-[100px] flex flex-start flex-wrap w-[350px] gap-4 py-7 '>
               {tags.map((name, index) => (
-                <TagChip key={index} name={name} size='large' />
+                <TagChip key={index} name={name} size='large' onClick={() => removeTag(name)} />
               ))}
             </div>
           </div>
-          <input
-            type='text'
-            placeholder='입력 후 Enter'
-            className='w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4'
-            value={tagsName}
-            onChange={handleTagName}
-            onKeyDown={createTagChip}
-          />
         </div>
         <InputImageFile size='small' />
         <ModalButton
           buttonType='double'
           firstButton='취소'
-          secondButton='생성'
-          onClickSecondButton={handleCreateColumn}
+          secondButton='수정'
           onClickFirstButton={onClickFirstButton}
+          onClickSecondButton={handleEditCard}
         />
       </form>
     </ModalLayout>
   );
 };
 
-export default CreateWorkModal;
+export default EditCardModal;

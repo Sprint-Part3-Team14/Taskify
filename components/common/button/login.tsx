@@ -4,7 +4,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-function LoginButton({ children, onClick, disabled, ...rest }: Props) {
+const LoginButton = ({ children, onClick, disabled, ...rest }: Props) => {
   return (
     <button
       onClick={onClick}
@@ -15,6 +15,6 @@ function LoginButton({ children, onClick, disabled, ...rest }: Props) {
       {children}
     </button>
   );
-}
+};
 
 export default LoginButton;
