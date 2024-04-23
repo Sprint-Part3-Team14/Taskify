@@ -5,61 +5,54 @@ import { useState, useEffect } from 'react';
 import EmptyMessage from '../EmptyMessage/EmptyMessage';
 import InvitationList from '../InvitationList/InvitationList';
 import SearchBar from '../SearchBar/SearchBar';
+import { INVITATION_TABLE, MESSAGE } from '../constants';
 
-import { setAccessToken, getAccessToken } from '@/utils/handleToken';
+import { getAccessToken } from 'utils/handleToken';
+
+const PAGE_SIZE = 10;
 
 const InvitationSection = () => {
   const [invitationList, setInvitationList] = useState([]);
   const [filteredInvitationList, setFilteredInvitationList] = useState([...invitationList]);
-  const [hasInviation, setHasInvitaion] = useState<boolean>(false);
+  const [hasInvitation, setHasInvitation] = useState(false);
+  const [hasFilteredInvitation, setHasFilteredInvitation] = useState(false);
 
   useEffect(() => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
-    const getMyInvitationList = async () => {
-      try {
-        const accessToken = getAccessToken();
-        const response = await fetch('https://sp-taskify-api.vercel.app/4-14/invitations?size=10', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const responseData = await response.json();
-        const myInvitationList = responseData.invitations;
-        setInvitationList(myInvitationList);
-        setFilteredInvitationList(myInvitationList);
-      } catch (error) {
-        console.error(error);
-      }
+    getMyInvitationData();
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-    getMyInvitationList();
   }, []);
 
+  console.log(filteredInvitationList);
+
   useEffect(() => {
-    let count: number = invitationList.length;
-    let countInvitation = count > 0 ? true : false;
-    setHasInvitaion(countInvitation);
+    setFilteredInvitationList(invitationList);
   }, [invitationList]);
 
-  const handleAcceptInvitation = async (id: number) => {
+  const getMyInvitationData = async () => {
     try {
       const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
-        method: 'PUT',
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations?size=${PAGE_SIZE}`, {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ inviteAccepted: true }),
       });
-
-      if (response.ok) {
-        setInvitationList(prevList => prevList.filter(list => list.id !== id));
-        setFilteredInvitationList(prevList => prevList.filter(list => list.id !== id));
-      }
+      const responseData = await response.json();
+      const myInvitationList = Array.isArray(responseData.invitations) ? responseData.invitations : [];
+      setInvitationList(prevList => [...prevList, ...myInvitationList]);
+      setHasInvitation(myInvitationList.length > 0);
+      setHasFilteredInvitation(myInvitationList.length > 0);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      getMyInvitationData();
     }
   };
 
@@ -93,33 +86,39 @@ const InvitationSection = () => {
       const filteredList = invitationList.filter(list =>
         list.dashboard.title.toLowerCase().includes(keyword.toLowerCase())
       );
-      setFilteredInvitationList(filteredList);
+      const filteredSameList = filteredList.filter(
+        (list, index, array) =>
+          index ===
+          array.findIndex(
+            item => item.dashboard.title === list.dashboard.title && item.inviter.email === list.inviter.email
+          )
+      );
+      setFilteredInvitationList(filteredSameList);
     }
   };
-
   return (
-    <div className='flex flex-col gap-6  rounded-lg bg-tp-white max-w-[63.875rem] min-x-[16.25rem]'>
-      <div className='px-7 pt-8 mb:text-xl tb:text-2xl font-bold'>초대 받은 대시보드</div>
-      {hasInviation ? (
+    <section className='flex flex-col gap-6  rounded-lg bg-tp-white max-w-[63.875rem] min-x-[16.25rem]'>
+      <h1 className='px-7 pt-8 mb:text-xl tb:text-2xl font-bold'>{INVITATION_TABLE.TITLE}</h1>
+      {hasInvitation && (
         <>
           <SearchBar onSearch={handleSearchInvitation} />
           <div className='flex flex-col'>
             <div className='tb:grid grid-cols-3 px-7 pb-1 text-tp-gray_800 mb:text-sm tb:text-base mb:hidden '>
-              <h2>이름</h2>
-              <h2>초대자</h2>
-              <h2>수락여부</h2>
+              <h2>{INVITATION_TABLE.NAME}</h2>
+              <h2>{INVITATION_TABLE.INVITOR}</h2>
+              <h2>{INVITATION_TABLE.ACCEPTANCE}</h2>
             </div>
             <InvitationList
               invitationList={filteredInvitationList}
-              handleAccept={handleAcceptInvitation}
+              handleAccept={handleRejectInvitation}
               handleReject={handleRejectInvitation}
             />
           </div>
         </>
-      ) : (
-        <EmptyMessage />
       )}
-    </div>
+      {!hasInvitation && <EmptyMessage message={MESSAGE.EMPTY} />}
+      {hasInvitation && !hasFilteredInvitation && <EmptyMessage message={MESSAGE.NO_SEARCH} />}
+    </section>
   );
 };
 

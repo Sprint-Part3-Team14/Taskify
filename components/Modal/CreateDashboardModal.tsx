@@ -1,10 +1,14 @@
 'use Client';
 
-import { useState } from 'react';
+import { ChangeEvent, useState, useEffect, useRef } from 'react';
+
 import Image from 'next/image';
-import ModalButton from './Button/ModalButton';
+
 import ModalLayout from './ModalLayout';
+import ModalButton from './Button/ModalButton';
+
 import { I_ModalToggle } from './ModalType';
+import { COLOR_LIST, INITIAL_COLOR } from '../MyInvitation/constants';
 
 const CreateDashboardModal = ({
   handleModal,
@@ -14,10 +18,17 @@ const CreateDashboardModal = ({
   onChange,
 }: I_ModalToggle) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectColor, setSelectColor] = useState('#7AC555');
-  const selectColorList = ['#7AC555', '#760DDE', '#FFA500', '#76A5EA', '#E876EA'];
+  const [selectColor, setSelectColor] = useState(INITIAL_COLOR);
+  const selectColorList = COLOR_LIST;
+  const inputRef = useRef(null);
 
-  const handleInputChange = event => {
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     onChange(event.target.value);
   };
@@ -34,6 +45,7 @@ const CreateDashboardModal = ({
           className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-[30.0rem]'
           type='text'
           placeholder='뉴 프로젝트'
+          ref={inputRef}
           value={inputValue}
           onChange={handleInputChange}
         />

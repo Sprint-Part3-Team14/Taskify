@@ -9,26 +9,23 @@ import Link from 'next/link';
 import AddButton from 'components/common/button/add';
 
 import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
+import { getAccessToken } from 'utils/handleToken';
 import { I_MyDashboardList } from 'interface/myInvitation';
-import { getAccessToken, setAccessToken } from 'utils/handleToken';
 
-import MyPagination from '../MyPagenation';
-import { LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN } from '../constants';
+import { INITIAL_COLOR, LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN, BUTTON_TITLE } from '../constants';
+import MyPagination from '../MyPagenation'; // 공통
 
 const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
-  const [isToggledModal, setIsToggledModal] = useState<boolean>(false);
-  const [newDashboardTitle, setNewDashBoardTitle] = useState<string>('');
-  const [selectColor, setSelectColor] = useState<string>('');
+  const [isToggledModal, setIsToggledModal] = useState(false);
+  const [newDashboardTitle, setNewDashBoardTitle] = useState('');
+  const [selectColor, setSelectColor] = useState(INITIAL_COLOR);
+
   const route = useRouter();
 
   let totalPage = Math.ceil(totalCount / 5);
 
-  const handleToggledMdoal = () => {
+  const handleToggledModal = () => {
     setIsToggledModal(!isToggledModal);
-  };
-
-  const handleClosedModal = () => {
-    handleToggledMdoal();
   };
 
   const handleDashboardNewTitle = (title: string) => {
@@ -40,9 +37,11 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
   };
 
   const handleCreateDashboard = async () => {
-    setAccessToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NCwidGVhbUlkIjoiNC0xNCIsImlhdCI6MTcxMzUzNDk0NCwiaXNzIjoic3AtdGFza2lmeSJ9.o5wp3rAonlrxZUKvldFhQWQdIsGksFE8A1qusxMXlpA'
-    );
+    if (!newDashboardTitle.trim()) {
+      alert('대시보드 제목을 입력하세요.');
+      return;
+    }
+
     try {
       const accessToken = getAccessToken();
       const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
@@ -60,7 +59,7 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
         const responseData = await response.json();
         const newDashboardId = responseData.id;
         setNewDashBoardTitle('');
-        setSelectColor('#7AC555');
+        setSelectColor(INITIAL_COLOR);
         route.push(`/dashboard/${newDashboardId}`);
       }
     } catch (error) {
@@ -69,29 +68,31 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
   };
 
   return (
-    <div className='flex flex-col gap-1 max-w-[63.875rem]'>
-      <div className='grid pc:grid-cols-3 tb:grid-cols-2 mb:grid-cols-1 gap-[0.625rem] '>
-        <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
+    <section className='flex flex-col gap-1 max-w-[63.875rem]'>
+      <div className='grid pc:grid-cols-3 tb:grid-cols-2 mb:grid-cols-1 gap-[0.625rem] pc:h-[9.5rem]  '>
+        <AddButton onClick={handleToggledModal}>{BUTTON_TITLE.ADD_DASHBOARD}</AddButton>
         {isToggledModal && (
           <CreateDashboardModal
-            handleModal={handleToggledMdoal}
-            onClickFirstButton={handleClosedModal}
+            handleModal={handleToggledModal}
+            onClickFirstButton={handleToggledModal}
             onClickSecondButton={handleCreateDashboard}
             onSelectColor={handleSelectColor}
             onChange={handleDashboardNewTitle}
           />
         )}
         {myDashboards.map(({ title, color, id, createdByMe }, index) => (
-          <Link key={index} href={`dashboard/${id}`}>
-            <div className='flex justify-between items-center gap-2.5 px-5  mb:min-w-[284px] tb:min-w-0 w-full h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
+          <Link className='w-full ' key={index} href={`dashboard/${id}`}>
+            <div className='flex justify-between items-center gap-2.5 px-5 w-full  tb:min-w-0  h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700 hover:bg-tp-gray_500 hover:border-tp-gray_800'>
               <div className='flex items-center gap-4'>
                 <div>
                   <svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6' fill={color}>
                     <circle cx='3' cy='3' r='3' fill={color} />
                   </svg>
                 </div>
-                <div className='text-lg font-bold '>{title}</div>
-                {createdByMe && <Image src={MADE_BY_ME_CROWN} alt='byme' width={20} height={16} />}
+                <div className='w-full  flex gap-3 overflow-hidden text-ellipsis whitespace-nowrap'>
+                  <div className='w-full  text-lg font-bold overflow-hidden text-ellipsis'>{title}</div>
+                  {createdByMe && <Image src={MADE_BY_ME_CROWN} alt='byme' width={20} height={16} />}
+                </div>
               </div>
               <Image src={LINK_DASHBOARD_ARROW} alt='arrow' width={18} height={18} />
             </div>
@@ -107,10 +108,11 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
             onLeftClick={onClickPrevPage}
             onRightClick={onClickNextPage}
             rightDisabled={totalPage <= currentPage}
+            leftDisabled={currentPage === 1}
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
