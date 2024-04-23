@@ -14,8 +14,10 @@ export const ERROR_MESSAGES = {
     verify: '비밀번호를 확인해주세요.',
     invalidNewPassword: '기존 비밀번호과 다른 비밀번호를 입력해주세요.',
   },
-  passwordCh: {
-    field: '비밀번호가 일치하지 않습니다.',
-    newPasswordChField: '새 비밀번호가 일치하지 않습니다.',
+  passwordCheck: {
+    field: '비밀번호를 한번 더 입력해주세요',
+    pattern: '비밀번호가 일치하지 않습니다.',
+    newPasswordCheckField: '새 비밀번호가 일치하지 않습니다.',
+
   },
 };
