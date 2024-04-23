@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import AddButton from 'components/common/button/add';
+
 import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
 import { I_MyDashboardList } from 'interface/myInvitation';
 import { getAccessToken, setAccessToken } from 'utils/handleToken';
@@ -69,7 +70,7 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
 
   return (
     <div className='flex flex-col gap-1 max-w-[63.875rem]'>
-      <div className='flex flex-wrap mb:justify-center pc:justify-start gap-3 tb:gap-[0.625rem] tb:flex-wrap'>
+      <div className='grid pc:grid-cols-3 tb:grid-cols-2 mb:grid-cols-1 gap-[0.625rem] '>
         <AddButton onClick={handleToggledMdoal}>새로운 대시보드</AddButton>
         {isToggledModal && (
           <CreateDashboardModal
@@ -82,7 +83,7 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
         )}
         {myDashboards.map(({ title, color, id, createdByMe }, index) => (
           <Link key={index} href={`dashboard/${id}`}>
-            <div className='flex justify-between items-center gap-2.5 px-5  min-w-[284px] tb:w-[544px] pc:w-[333px] h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
+            <div className='flex justify-between items-center gap-2.5 px-5  mb:min-w-[284px] tb:min-w-0 w-full h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700'>
               <div className='flex items-center gap-4'>
                 <div>
                   <svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6' fill={color}>

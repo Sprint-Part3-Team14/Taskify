@@ -1,37 +1,54 @@
 'use client';
 import { DEFAULT_PROFILE_IMAGE } from '@/components/Table/constant';
 import Image from 'next/image';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useEffect } from 'react';
 
-const memberData = {
-  members: [
-    {
-      id: 8108,
-      email: 'test@codeit.com',
-      nickname: 'codeit14',
-      profileImageUrl: null,
-      createdAt: '2024-04-17T10:10:30.042Z',
-      updatedAt: '2024-04-17T10:10:30.042Z',
-      isOwner: true,
-      userId: 1680,
-    },
-    {
-      id: 8141,
-      email: 'yukyoung@naver.com',
-      nickname: 'yukyoung',
-      profileImageUrl: null,
-      createdAt: '2024-04-17T17:51:57.369Z',
-      updatedAt: '2024-04-17T17:51:57.369Z',
-      isOwner: false,
-      userId: 1692,
-    },
-  ],
-  totalCount: 2,
-};
+// const memberData = {
+//   members: [
+//     {
+//       id: 8108,
+//       email: 'test@codeit.com',
+//       nickname: 'codeit14',
+//       profileImageUrl: null,
+//       createdAt: '2024-04-17T10:10:30.042Z',
+//       updatedAt: '2024-04-17T10:10:30.042Z',
+//       isOwner: true,
+//       userId: 1680,
+//     },
+//     {
+//       id: 8141,
+//       email: 'yukyoung@naver.com',
+//       nickname: 'yukyoung',
+//       profileImageUrl: null,
+//       createdAt: '2024-04-17T17:51:57.369Z',
+//       updatedAt: '2024-04-17T17:51:57.369Z',
+//       isOwner: false,
+//       userId: 1692,
+//     },
+//   ],
+//   totalCount: 2,
+// };
 
-const { members } = memberData;
+// const { members } = memberData;
 
-const PersonInChargeDropDown = () => {
+interface ModalPorps {
+  members: Props[];
+  totalCount?: number;
+  handleModal?: () => void;
+}
+
+interface Props {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: any;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+  userId: number;
+}
+
+const PersonInChargeDropDown = ({ members }: ModalPorps) => {
   const [openList, setOpenList] = useState(false);
   const [selectItem, setSelectItem] = useState(members[0].nickname);
 
