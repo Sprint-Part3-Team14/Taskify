@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import ModalLayout from './ModalLayout';
 import { ModalComments } from './constant';
 import { I_ModalToggle } from './ModalType';

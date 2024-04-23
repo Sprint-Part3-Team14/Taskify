@@ -17,6 +17,6 @@ export interface I_ModalToggle {
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
   onSelectColor?: (color: string) => void;
-  onChange: (title: string) => void;
+  onChange?: (title: string) => void;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
 }
