@@ -3,10 +3,11 @@
 import React, { useCallback, useState } from 'react';
 
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
-import { StaticImageData } from 'next/image';
 
-import AddButton from '@/components/dashboard/AddButton/AddButton';
-import Column from '@/components/dashboard/Column/Column';
+import AddButton from '@/components/common/button/add';
+import Column from '@/components/Dashboard/Column/Column';
+
+import { initialData } from './initial-data';
 
 interface I_Data {
   cards: {
@@ -21,6 +22,7 @@ interface I_Data {
       };
     };
   };
+
   columns: {
     [key: string]: { id: string; title: string; cardIds: string[] };
   };
@@ -28,7 +30,7 @@ interface I_Data {
 }
 
 const Dashboard = () => {
-  const [data, setData] = useState<I_Data>();
+  const [data, setData] = useState<I_Data>(initialData);
   const onDragEnd = useCallback(
     (result: DropResult) => {
       const { destination, source, draggableId, type } = result;

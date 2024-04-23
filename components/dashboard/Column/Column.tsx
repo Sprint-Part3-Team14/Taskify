@@ -1,10 +1,9 @@
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { StaticImageData } from 'next/image';
 
-import AddButton from '../AddButton/AddButton';
+import AddButton from '@/components/common/button/add';
 import DashboardTitle from '../DashboardTitle/DashboardTitle';
-
-import Card from '@/components/Card/Card';
+import Card from '../Card/Card';
 
 interface I_Column {
   column: { id: string; title: string; cardIds: string[] };
