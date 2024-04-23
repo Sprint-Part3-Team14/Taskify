@@ -13,7 +13,9 @@ const Header = () => {
         <Link href='/signin'>
           <button>로그인</button>
         </Link>
-        <button>회원가입</button>
+        <Link href='/signup'>
+          <button>회원가입</button>
+        </Link>
       </div>
     </div>
   );

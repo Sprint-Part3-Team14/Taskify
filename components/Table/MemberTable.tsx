@@ -1,39 +1,97 @@
-import Image from 'next/image';
+'use client';
 import { DEFAULT_PROFILE_IMAGE } from './constant';
 import TableLayout from './TableLayout';
-
-const members = [
-  {
-    profile_image: '/icon/crown.svg',
-    name: '김유경',
-  },
-  {
-    profile_image: '/icon/unsubscribe.svg',
-    name: '한태욱',
-  },
-  {
-    profile_image: '/icon/calendar_today.svg',
-    name: '김규헌',
-  },
-];
-// api에서 받아오는 데이터로 변경 예정
+import { MouseEvent, useEffect, useState } from 'react';
+import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
+import PageNationButton from '../PageNation/PageNationButton';
+import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
 
 const MemberTable = () => {
+  const [members, setMembers] = useState([]);
+  const [pageNation, setPageNation] = useState({
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const apiQuery = {
+    showCount: 4,
+    dashboardId: 5946,
+  };
+
+  const handleLoadMembers = async () => {
+    try {
+      const { members, totalCount } = await getDashBoardMembers({
+        currentPage: pageNation.currentPage,
+        showCount: apiQuery.showCount,
+        dashboardId: apiQuery.dashboardId,
+      });
+      setPageNation(prevState => ({
+        ...prevState,
+        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+      }));
+      setMembers(members);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleCurrentPage = (event: MouseEvent<HTMLButtonElement>) => {
+    if (event.currentTarget.id === 'plus') {
+      if (pageNation.currentPage < pageNation.totalPage) {
+        setPageNation(prevState => ({
+          ...prevState,
+          currentPage: pageNation.currentPage++,
+        }));
+      }
+    } else {
+      if (pageNation.currentPage > 1) {
+        setPageNation(prevState => ({
+          ...prevState,
+          currentPage: pageNation.currentPage--,
+        }));
+      }
+    }
+  };
+
+  const handleDeleteMember = async (event: MouseEvent<HTMLButtonElement>) => {
+    const memberId = event.currentTarget.id;
+    deleteDashBoardMember({ memberId });
+  };
+
+  useEffect(() => {
+    handleLoadMembers();
+  }, [pageNation.currentPage]);
+
   const MemberList = members.map(member => (
-    <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
+    <div key={member.id} className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
       <div className='flex gap-3 items-center ml-7'>
         <div className='w-[2.375rem] h-[2.375rem] relative rounded-full overflow-hidden'>
-          <Image fill src={member.profile_image ? member.profile_image : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
+          <img src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
         </div>
-        <p className='text-base text-tp-black_700'>{member.name}</p>
+        <p className='text-base text-tp-black_700'>{member.nickname}</p>
       </div>
-      <button type='button' className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
+      <button
+        onClick={handleDeleteMember}
+        id={member.id}
+        type='button'
+        className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
         버튼대체
       </button>
     </div>
   ));
 
-  return <TableLayout title='구성원' tableContent={MemberList} />;
+  return (
+    <TableLayout
+      title='구성원'
+      headerContent={
+        <PageNationButton
+          totalPage={pageNation.totalPage}
+          currentPage={pageNation.currentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      }
+      tableContent={MemberList}
+    />
+  );
 };
 
 export default MemberTable;
