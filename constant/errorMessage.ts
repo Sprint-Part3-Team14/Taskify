@@ -18,5 +18,6 @@ export const ERROR_MESSAGES = {
     field: '비밀번호를 한번 더 입력해주세요',
     pattern: '비밀번호가 일치하지 않습니다.',
     newPasswordCheckField: '새 비밀번호가 일치하지 않습니다.',
+
   },
 };
