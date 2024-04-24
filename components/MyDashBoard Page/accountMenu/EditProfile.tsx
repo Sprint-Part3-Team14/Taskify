@@ -2,6 +2,7 @@
 import InputImageFile from '@/components/InputImage/InputImage';
 import { useInputValue } from '@/hooks/useInputValue';
 import { changeUserProfile } from '@/utils/api/changeUserProfile';
+import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
 import { getLoginUserProfile } from '@/utils/api/getLoginUserProfile';
 import { FormEvent, useEffect, useState } from 'react';
 
@@ -13,10 +14,6 @@ const EditProfile = () => {
     profileImageUrl: '',
   });
   const newNickName = useInputValue();
-
-  const handleImageFile = (imageUrl: string) => {
-    setImageURL(imageUrl);
-  };
 
   const getUserData = async () => {
     const { email, nickname, profileImageUrl } = await getLoginUserProfile();
@@ -42,6 +39,11 @@ const EditProfile = () => {
     }
   };
 
+  const inputImageCallBack = async ({ file }) => {
+    const { profileImageUrl } = await changeUserProfileImage({ file });
+    setImageURL(profileImageUrl);
+  };
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -55,7 +57,7 @@ const EditProfile = () => {
         role='edit-profile'
         className='flex pc:flex-row tb:flex-row  mb:flex-col items-center justify-stretch gap-4 mb-12 relative'
         onSubmit={changeProfile}>
-        <InputImageFile size='large' handleImageFile={handleImageFile} defaultImg={userData.profileImageUrl} />
+        <InputImageFile size='large' defaultImg={userData.profileImageUrl} apiCallback={inputImageCallBack} />
         <div
           role='email-nickname-input-container'
           className='flex flex-col gap-3.5 pc:w-[22.875rem] tb:w-[18.125rem] mb:w-[15.25rem]'>
