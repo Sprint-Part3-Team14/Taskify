@@ -71,7 +71,7 @@ const InvitationHistory = () => {
   return (
     <>
       {isShowModal && <InviteModal handleModal={handleToggleModal} />}
-      <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />;
+      <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );
 };
