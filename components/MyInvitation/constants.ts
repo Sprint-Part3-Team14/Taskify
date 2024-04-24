@@ -1,9 +1,3 @@
-export const LINK_DASHBOARD_ARROW = '/icon/arrow_backward.svg';
-export const MADE_BY_ME_CROWN = '/icon/crown.svg';
-export const PLUS_VIOLET = '/icon/plus_violet.svg';
-export const SEARCH_ICON = '/icon/search.svg';
-export const EMPTY_MESSAGE_ICON = '/icon/unsubscribe.svg';
-
 export const INITIAL_COLOR = '#7AC555';
 
 export const BUTTON_TITLE = {

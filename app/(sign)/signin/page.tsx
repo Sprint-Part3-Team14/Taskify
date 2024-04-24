@@ -9,8 +9,6 @@ import { getAccessToken, setAccessToken } from '@/utils/handleToken';
 import { ERROR_MESSAGES } from 'constant/errorMessage';
 import { REG_EXP } from 'constant/regexp';
 
-const MainLogo = '/logo/main_site_logo.png';
-
 interface FormData {
   email: string;
   password: string;
@@ -29,7 +27,7 @@ const SigninPage = () => {
 
     if (accessToken) {
       console.log(accessToken);
-      router.push('/dashboard');
+      router.push('/mydashboard');
     }
   }, [router]);
 
@@ -64,7 +62,7 @@ const SigninPage = () => {
       <div className='mx-auto max-h-fit min-h-screen w-full max-w-lg flex-col px-12 py-16 text-center'>
         <Link href='/'>
           <div className='mx-auto my-0 inline-block justify-center'>
-            <Image src={MainLogo} alt='메인 로고 이미지' width={200} height={279} />
+            <Image src='/logo/main_site_logo.png' alt='메인 로고 이미지' width={200} height={279} />
           </div>
         </Link>
         <h1 className='mt-[10px] text-lg font-GS font-extrabold'>오늘도 만나서 반가워요!</h1>

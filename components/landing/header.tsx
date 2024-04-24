@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-import logo from '../../public/logo/logo_large.jpg';
+import logo from '@/public/images/logo/logo_large.jpg';
 import Link from 'next/link';
 
 const Header = () => {
   return (
-    <div className='z-nav flex h-70 w-full items-center justify-between bg-white pr-20 '>
+    <div className='z-nav flex h-70 w-full items-center justify-between bg-white px-12 '>
       <div className='p-4'>
         <Image src={logo} alt='Logo' width={121} height={39} />
       </div>

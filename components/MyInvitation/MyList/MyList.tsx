@@ -12,8 +12,9 @@ import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
 import { getAccessToken } from 'utils/handleToken';
 import { I_MyDashboardList } from 'interface/myInvitation';
 
-import { INITIAL_COLOR, LINK_DASHBOARD_ARROW, MADE_BY_ME_CROWN, BUTTON_TITLE } from '../constants';
+import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
 import MyPagination from '../MyPagenation'; // 공통
+import { ArrowBackwardIcon, CrownIcon } from 'constant/importImage';
 
 const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
   const [isToggledModal, setIsToggledModal] = useState(false);
@@ -91,10 +92,10 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
                 </div>
                 <div className='w-full  flex gap-3 overflow-hidden text-ellipsis whitespace-nowrap'>
                   <div className='w-full  text-lg font-bold overflow-hidden text-ellipsis'>{title}</div>
-                  {createdByMe && <Image src={MADE_BY_ME_CROWN} alt='byme' width={20} height={16} />}
+                  {createdByMe && <Image src={CrownIcon} alt='byme' width={20} height={16} />}
                 </div>
               </div>
-              <Image src={LINK_DASHBOARD_ARROW} alt='arrow' width={18} height={18} />
+              <Image src={ArrowBackwardIcon} alt='arrow' width={18} height={18} />
             </div>
           </Link>
         ))}

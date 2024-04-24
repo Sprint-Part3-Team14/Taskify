@@ -2,6 +2,7 @@
 import { useInputValue } from '@/hooks/useInputValue';
 import { changeDashBoard } from '@/utils/api/changeDashBoard';
 import { getDashBoardData } from '@/utils/api/getDashBoardData';
+import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 
@@ -75,7 +76,7 @@ const ChangeDashBoardName = () => {
                 className='pc:w-[1.875rem] pc:h-[1.875rem] mb:w-7 mb:h-7 pc:block tb:block mb:hidden mb:first:block relative'>
                 {selectColor === color && (
                   <div className='w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                    <Image fill src='/icon/white_check.svg' alt='선택된 색상' />
+                    <Image fill src={WhiteCheckIcon} alt='선택된 색상' />
                   </div>
                 )}
                 <div className='min-w-full min-h-full rounded-full' style={{ backgroundColor: color }} />
