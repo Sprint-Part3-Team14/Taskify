@@ -1,37 +1,29 @@
 import { ChangeEvent, useState } from 'react';
-import InputImageButton from '../Button/InputImageButton';
-// import ModalDropdown from '../Input/ModalDropdown';
+
 import ModalLayout from '../ModalLayout';
-import PersonInChargeDropDown from './components/PersonInChargeDropDown';
-import ProgressDropDown from './components/ProgressDropDown';
+
 import Image from 'next/image';
-import InputImageFile from '@/components/InputImage/InputImage';
-import ModalButton from '../Button/ModalButton';
+
 import TagChip from '@/components/common/Chip/TagChip';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 import { I_Card } from '@/interface/Dashboard';
 import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 import ModalTextarea from '../input/ModalTextarea';
 import EditCardModal from './EditCardModal';
+import ProgressChip from '@/components/common/Chip/ProgressChip';
+import { CloseIcon, MoreVertIcon } from 'constant/importImage';
+import Popover from './components/Popover';
+import DeleteAllCardModal from '../DeleteAllCardModal';
 
 interface I_ModalCard extends I_Card {
   handleModal: () => void;
-  onClickFirstButton: () => void;
+  handlePopover: () => void;
 }
 
-const WorkModal = ({ handleModal, onClickFirstButton, members, dragDropItem, columnItem, cardItem }: I_ModalCard) => {
+const WorkModal = ({ handleModal, members, dragDropItem, columnItem, cardItem }: I_ModalCard) => {
   const [isToggledModal, setIstoggeldModal] = useState(false);
+  const [isToggledPopover, setIsToggledPopover] = useState(false);
   const [selectImage, setSelectImage] = useState('');
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const [title, setTitle] = useState(cardItem.content.title);
   const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
@@ -130,46 +122,66 @@ const WorkModal = ({ handleModal, onClickFirstButton, members, dragDropItem, col
     setIstoggeldModal(!isToggledModal);
   };
 
+  const handleToggledPopover = () => {
+    setIsToggledPopover(!isToggledPopover);
+  };
+
   return (
     <ModalLayout handleModal={handleModal} title='새로운 일정 관리 Taskify'>
       <form className='relative'>
-        <div className='flex gap-6 pb-6'>
-          <div className='flex flex-col gap-4 h-[6.25rem bg-tp-white]'>
-            <div className='flex flex-start flex-wrap w-[350px] gap-4 py-7 '>
-              {tags.map((name, index) => (
-                <TagChip key={index} name={name} size='large' />
-              ))}
+        <div className='flex gap-6 '>
+          <div className='flex flex-col w-[28rem] gap-5 h-[6.25rem]bg-tp-white'>
+            <div className='flex items-center w-full overflow-hidde`n gap-3'>
+              <div className='flex flex-shrink-0 pr-3 border-r-[1px]'>
+                <ProgressChip title={columnItem.title} />
+              </div>
+              <div className='flex flex-wrap w-[350px] gap-4 '>
+                {tags.map((name, index) => (
+                  <TagChip key={index} name={name} size='large' />
+                ))}
+              </div>
             </div>
-            <div className='flex flex-col gap-2.5 h-[7.5rem]'>{descrpition}</div>
-            <div className='flex flex-col gap-2.5 h-[9rem] bg-tp-black_900'></div>
+            <div className='flex flex-col gap-2.5 h-[7.5rem] overflow-y-scroll'>{descrpition}</div>
+            <div className='flex flex-col gap-2.5 h-[15.625rem] bg-tp-black_900'></div>
             <div className='flex flex-col gap-2.5 '>
               <ModalTextarea />
             </div>
-            <div className='flex flex-col gap-2.5 h-[8rem]'>
-              <div className='flex'>
-                <div>user</div>
+            <div className='flex w-full flex-col gap-2.5 '>
+              <div className='flex items-center gap-4'>
+                <div>U</div>
                 <div className='felx flex-col'>
-                  <div className='flex'>
-                    <div>작성자</div>
-                    <div>작성일</div>
+                  <div className='flex items-baseline gap-3'>
+                    <div className='text-sm font-semibold'>작성자</div>
+                    <div className='text-xs text-tp-gray_800'>작성일</div>
                   </div>
-                  <div>내용</div>
+                  <div className=''>내용</div>
                 </div>
               </div>
-            </div>
-            <div className='flex'>
-              <div>수정</div>
-              <div>삭제</div>
+              <div className='flex justify-end gap-3 text-xs text-tp-gray_800'>
+                <div>수정</div>
+                <div>삭제</div>
+              </div>
             </div>
           </div>
-          <div>
-            <div>담당자</div>
-            <div>user</div>
-            <div>마감일</div>
-            <div>마감시간</div>
+          <div className='flex flex-col gap-3 w-[11.25rem] h-[9.375rem] p-4 border border-solid rounded-lg '>
+            <div className='flex flex-col gap-3'>
+              <div className='font-semibold text-xs'>담당자</div>
+              <div className='flex gap-3'>
+                <div className=''>U</div>
+                <div className='text-xs'>이름</div>
+              </div>
+            </div>
+            <div className='flex flex-col gap-3'>
+              <div className='font-semibold text-xs'>마감일</div>
+              <div className='text-xs'>마감시간</div>
+            </div>
           </div>
         </div>
-        <div className='absolute top-[-60px] right-0 flex'>
+        <div className='absolute top-[-60px] right-0 flex gap-3 text-sm '>
+          <button type='button' onClick={handleToggledPopover}>
+            <Image src={MoreVertIcon} alt='edit' width={28} height={28} />
+          </button>
+          {isToggledPopover && <Popover onClick={handleToggledModal} />}
           {isToggledModal && (
             <EditCardModal
               handleModal={handleToggledModal}
@@ -180,9 +192,9 @@ const WorkModal = ({ handleModal, onClickFirstButton, members, dragDropItem, col
               onClickFirstButton={handleToggledModal}
             />
           )}
-          <div onClick={handleToggledModal}>수정</div>
-          <div>삭제</div>
-          <div>X</div>
+          <button type='button' onClick={handleModal}>
+            <Image src={CloseIcon} alt='close' width={28} height={28} />
+          </button>
         </div>
       </form>
     </ModalLayout>
