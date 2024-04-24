@@ -3,9 +3,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { I_SearchBarProps } from '@/interface/myInvitation';
-
-const SEARCH_ICON = '/icon/search.svg';
+import { I_SearchBarProps } from 'interface/myInvitation';
+import { SEARCH_ICON } from '../constants';
 
 const SearchBar = ({ onSearch }: I_SearchBarProps) => {
   const [keyword, setKeyword] = useState('');
@@ -18,10 +17,10 @@ const SearchBar = ({ onSearch }: I_SearchBarProps) => {
 
   return (
     <div className='px-7'>
-      <div className='flex w-full px-4 py-2 gap-2 border border-solid rounded-md border-tp-gray_700'>
+      <div className='flex w-full px-4 py-2 gap-2 border border-solid rounded-md border-tp-gray_700 focus-within:border-tp-black_800 focus-within:border-[2.5px]'>
         <Image src={SEARCH_ICON} alt='search' width={24} height={24} />
         <input
-          className='w-full mb:text-sm tb:text-base placeholder:text-tp-gray_800'
+          className='w-full mb:text-sm tb:text-base outline-none placeholder:text-tp-gray_800'
           placeholder='검색'
           value={keyword}
           onChange={handleChange}

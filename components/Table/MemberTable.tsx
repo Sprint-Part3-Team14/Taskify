@@ -67,14 +67,16 @@ const MemberTable = () => {
         <div className='w-[2.375rem] h-[2.375rem] relative rounded-full overflow-hidden'>
           <img src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
         </div>
-        <p className='text-base text-tp-black_700'>{member.nickname}</p>
+        <p className='text-base text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[7.5rem] '>
+          {member.nickname}
+        </p>
       </div>
       <button
         onClick={handleDeleteMember}
         id={member.id}
         type='button'
-        className='border border-solid border-tp-gray_700 rounded-lg py-2 px-6 mr-7'>
-        버튼대체
+        className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg pc:py-2 pc:px-7 mr-7 mb:py-1.5 mb:px-3'>
+        삭제
       </button>
     </div>
   ));
