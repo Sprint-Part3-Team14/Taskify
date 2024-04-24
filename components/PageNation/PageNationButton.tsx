@@ -14,20 +14,24 @@ const PageNationButton = ({ currentPage, totalPage, handleCurrentPage }: PageNat
       <p className='text-sm text-tp-black_700'>
         {totalPage} 페이지 중 {currentPage}
       </p>
-      <div>
+      <div className='flex justyfy-center items-center'>
         <button
           id='previous'
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-l-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
-          <Image src={ArrowForwardIcon} alt='다음 페이지 보기' width={16} height={16} />
+          <div className='w-4 h-4 relative'>
+            <Image fill src={ArrowForwardIcon} alt='다음 페이지 보기' />
+          </div>
         </button>
         <button
           id='next'
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-r-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
-          <Image src={ArrowBackwardIcon} alt='다음 페이지 보기' width={16} height={16} />
+          <div className='w-4 h-4 relative'>
+            <Image fill src={ArrowBackwardIcon} alt='다음 페이지 보기' />
+          </div>
         </button>
       </div>
     </div>
