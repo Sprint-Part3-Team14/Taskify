@@ -3,8 +3,11 @@ import TableLayout from './TableLayout';
 import { usePageNation } from '@/hooks/usePageNation';
 import { useEffect, useState } from 'react';
 import PageNationButton from '../PageNation/PageNationButton';
+import { useHandleModal } from '@/hooks/useHandleModal';
+import InviteModal from '../Modal/InviteModal';
 
 const InvitationHistory = () => {
+  const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState([]);
 
@@ -22,6 +25,22 @@ const InvitationHistory = () => {
       </button>
     </div>
   ));
+
+  const invitationHeader = (
+    <div className='flex gap-2.5 items-self'>
+      <PageNationButton
+        totalPage={pageNation.totalPage}
+        currentPage={pageNation.currentPage}
+        handleCurrentPage={handleCurrentPage}
+      />
+      <button
+        onClick={handleToggleModal}
+        type='button'
+        className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-4 rounded-md'>
+        <img src='/icon/plus.svg' alt='초대하기 아이콘' /> 초대
+      </button>
+    </div>
+  );
 
   const apiQuery = {
     showCount: 5,
@@ -50,17 +69,10 @@ const InvitationHistory = () => {
   }, [pageNation.currentPage]);
 
   return (
-    <TableLayout
-      title='초대 내역'
-      headerContent={
-        <PageNationButton
-          totalPage={pageNation.totalPage}
-          currentPage={pageNation.currentPage}
-          handleCurrentPage={handleCurrentPage}
-        />
-      }
-      tableContent={InvitationList}
-    />
+    <>
+      {isShowModal && <InviteModal handleModal={handleToggleModal} />}
+      <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />;
+    </>
   );
 };
 
