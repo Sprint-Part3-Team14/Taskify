@@ -1,6 +1,5 @@
 'use client';
-import { DEFAULT_PROFILE_IMAGE } from '@/components/Table/constant';
-import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
+import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useState, useEffect } from 'react';
 
@@ -91,7 +90,7 @@ const PersonInChargeDropDown = ({ members }: ModalPorps) => {
               <div className='w-[1.625rem] h-[1.625rem] relative rounded-full overflow-hidden'>
                 <Image
                   fill
-                  src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE}
+                  src={member.profileImageUrl ? member.profileImageUrl : DEFAULTPROFILEIMAGE}
                   alt={selectItem + '의 프로필 사진'}
                 />
               </div>

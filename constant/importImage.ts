@@ -49,3 +49,10 @@ export {
   VisibleEyeIcon,
   VioletPlusIcon,
 };
+
+// Image
+
+import DEFAULTPROFILEIMAGE from '@/public/images/image/default_profile_image.jpg';
+import DESKTOPIMAGE from '@/public/images/image/desktop.jpg';
+
+export { DEFAULTPROFILEIMAGE, DESKTOPIMAGE };
