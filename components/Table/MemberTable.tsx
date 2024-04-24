@@ -6,14 +6,12 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
 import PageNationButton from '../PageNation/PageNationButton';
 import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
+import { usePageNation } from '@/hooks/usePageNation';
 import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
 
 const MemberTable = () => {
+  const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [members, setMembers] = useState([]);
-  const [pageNation, setPageNation] = useState({
-    currentPage: 1,
-    totalPage: 1,
-  });
   const apiQuery = {
     showCount: 4,
     dashboardId: 5946,
@@ -33,24 +31,6 @@ const MemberTable = () => {
       setMembers(members);
     } catch (error: any) {
       console.error(error);
-    }
-  };
-
-  const handleCurrentPage = (event: MouseEvent<HTMLButtonElement>) => {
-    if (event.currentTarget.id === 'plus') {
-      if (pageNation.currentPage < pageNation.totalPage) {
-        setPageNation(prevState => ({
-          ...prevState,
-          currentPage: pageNation.currentPage++,
-        }));
-      }
-    } else {
-      if (pageNation.currentPage > 1) {
-        setPageNation(prevState => ({
-          ...prevState,
-          currentPage: pageNation.currentPage--,
-        }));
-      }
     }
   };
 

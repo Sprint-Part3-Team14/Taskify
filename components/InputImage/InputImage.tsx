@@ -8,20 +8,19 @@ type Size = 'small' | 'large';
 const InputImageFile = ({
   size,
   title,
-  handleImageFile,
   defaultImg,
+  apiCallback,
 }: {
   size: Size;
   title?: string;
-  handleImageFile?: (imageFormData) => void;
   defaultImg?: string;
+  apiCallback: ({ file }) => void;
 }) => {
   const [selectImage, setSelectImage] = useState('');
 
   const handleUploadProfileImage = async ({ file }) => {
     try {
-      const { profileImageUrl } = await changeUserProfileImage({ file });
-      handleImageFile(profileImageUrl);
+      apiCallback({ file });
     } catch (error: any) {
       console.error('Error uploading Image : ', error);
     }
