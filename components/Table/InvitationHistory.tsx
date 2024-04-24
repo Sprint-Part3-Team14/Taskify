@@ -1,24 +1,18 @@
+import { getInvitations } from '@/utils/api/getInvitations';
 import TableLayout from './TableLayout';
-
-const mockData = [
-  {
-    email: 'test@codeit.com',
-  },
-  {
-    email: 'sksms2104@naver.com',
-  },
-  {
-    email: 'yukyoung@naver.com',
-  },
-];
-// api에서 데이터를 받아와서 띄워줘야 함
+import { usePageNation } from '@/hooks/usePageNation';
+import { useEffect, useState } from 'react';
+import PageNationButton from '../PageNation/PageNationButton';
 
 const InvitationHistory = () => {
-  const InvitationList = mockData.map(invitation => (
+  const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
+  const [invitations, setInvitations] = useState([]);
+
+  const InvitationList = invitations.map(invitation => (
     <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
       <div className='flex gap-3 items-center'>
         <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[10rem]'>
-          {invitation.email}
+          {invitation.invitee.email}
         </p>
       </div>
       <button
@@ -29,7 +23,45 @@ const InvitationHistory = () => {
     </div>
   ));
 
-  return <TableLayout title='초대 내역' tableContent={InvitationList} />;
+  const apiQuery = {
+    showCount: 5,
+    dashboardId: 5946,
+  };
+
+  const handleLoadInvitations = async () => {
+    try {
+      const { invitations, totalCount } = await getInvitations({
+        currentPage: pageNation.currentPage,
+        showCount: apiQuery.showCount,
+        dashboardId: apiQuery.dashboardId,
+      });
+      setPageNation(prevState => ({
+        ...prevState,
+        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+      }));
+      setInvitations(invitations);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleLoadInvitations();
+  }, [pageNation.currentPage]);
+
+  return (
+    <TableLayout
+      title='초대 내역'
+      headerContent={
+        <PageNationButton
+          totalPage={pageNation.totalPage}
+          currentPage={pageNation.currentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      }
+      tableContent={InvitationList}
+    />
+  );
 };
 
 export default InvitationHistory;
