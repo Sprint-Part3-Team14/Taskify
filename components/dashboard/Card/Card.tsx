@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 
-import EditCardModal from 'components/Modal/WorkModal/EditCardModal';
+import WorkModal from '@/components/Modal/WorkModal/WorkModal';
 import TagChip from 'components/common/Chip/TagChip';
 import { I_Card } from 'interface/Dashboard';
 import { CALENDAR } from '../constants';
@@ -15,6 +15,8 @@ const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) =>
   const handleToggledModal = () => {
     setIstoggeldModal(!isToggledModal);
   };
+
+  console.log(cardItem);
 
   const isDragDisabled = String(cardItem.id) === '';
   return (
@@ -28,7 +30,7 @@ const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) =>
           <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem]' onClick={handleToggledModal}>
             {cardItem?.content.image && (
               <img
-                className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full h-[10rem] rounded-md '
+                className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full  rounded-md '
                 src={cardItem?.content.image}
                 alt='card'
               />
@@ -50,7 +52,7 @@ const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) =>
             </div>
           </div>
           {isToggledModal && (
-            <EditCardModal
+            <WorkModal
               handleModal={handleToggledModal}
               members={members}
               columnItem={columnItem}

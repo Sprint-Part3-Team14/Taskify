@@ -11,30 +11,34 @@ import TagChip from '@/components/common/Chip/TagChip';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
 import { I_Card } from '@/interface/Dashboard';
 import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
+import ModalTextarea from '../input/ModalTextarea';
+import EditCardModal from './EditCardModal';
 
 interface I_ModalCard extends I_Card {
   handleModal: () => void;
   onClickFirstButton: () => void;
 }
 
-const EditCardModal = ({
-  handleModal,
-  onClickFirstButton,
-  members,
-  dragDropItem,
-  columnItem,
-  cardItem,
-}: I_ModalCard) => {
+const WorkModal = ({ handleModal, onClickFirstButton, members, dragDropItem, columnItem, cardItem }: I_ModalCard) => {
+  const [isToggledModal, setIstoggeldModal] = useState(false);
+  const [selectImage, setSelectImage] = useState('');
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [title, setTitle] = useState(cardItem.content.title);
   const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
   const [date, setDate] = useState(cardItem.content.date);
   const [tags, setTags] = useState<string[]>(cardItem.content.tag);
   const [tagsName, setTagsName] = useState('');
-  const [image, setImage] = useState('');
-
-  const handImage = image => {
-    setImage(image);
-  };
+  const [image, setImage] = useState(cardItem.content.image);
 
   const handletitle = (event: ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
@@ -110,7 +114,8 @@ const EditCardModal = ({
           description: descrpition,
           dueDate: date,
           tags: tags,
-          profileimageUrl: String(image),
+          imageUrl:
+            'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/14_20003_1713343503827.jpeg',
         }),
       });
       if (response.ok) {
@@ -121,82 +126,67 @@ const EditCardModal = ({
     }
   };
 
+  const handleToggledModal = () => {
+    setIstoggeldModal(!isToggledModal);
+  };
+
   return (
-    <ModalLayout handleModal={handleModal} title='할 일 수정'>
-      <form>
-        <div className='flex gap-4 h-[6.25rem]'>
-          <ProgressDropDown dragDropItem={dragDropItem} column={columnItem} />
-          <PersonInChargeDropDown members={members} />
-        </div>
-        <div className='flex flex-col gap-2.5 h-[7.5rem]'>
-          <label className='flex gap-1 font-extrabold text-lg'>
-            제목<span className='text-tp-violet_900 '>*</span>
-          </label>
-          <input
-            type='text'
-            placeholder='제목을 입력해 주세요'
-            className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 placeholder:text-sm'
-            onChange={handletitle}
-            value={title}
-          />
-        </div>
-        <div className='flex flex-col gap-2.5 h-[9rem]'>
-          <label className='flex gap-1 font-extrabold text-lg'>
-            설명<span className='text-tp-violet_900 '>*</span>
-          </label>
-          <div className='relative inline'>
-            <textarea
-              id='Comments'
-              placeholder='설명을 입력해 주세요'
-              className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
-              onChange={handledescrpition}
-              value={descrpition}
-            />
-          </div>
-        </div>
-        <div className='flex flex-col gap-2.5 h-[7.5rem]'>
-          <label className='flex gap-1 font-extrabold text-lg '>마감일</label>
-          <input
-            type='datetime-local'
-            date-placeholder='날짜를 입력해 주세요'
-            required
-            aria-required='true'
-            className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
-            onChange={handleDate}
-            value={date}
-          />
-        </div>
-        <div className='flex flex-col gap-2.5 h-[8rem]'>
-          <div className='flex items-center'>
-            <label className='flex w-10 gap-1 font-extrabold text-lg'>태그</label>
-          </div>
-          <div className='relative'>
-            <input
-              type='text'
-              placeholder='입력 후 Enter'
-              className=' w-full outline-tp-violet_900 placeholder:text-sm border border-solid border-tp-gray_700 p-4 rounded-lg gap-4 '
-              value={tagsName}
-              onChange={handleTagName}
-              onKeyDown={createTagChip}
-            />
-            <div className='absolute  left-[100px] flex flex-start flex-wrap w-[350px] gap-4 py-7 '>
+    <ModalLayout handleModal={handleModal} title='새로운 일정 관리 Taskify'>
+      <form className='relative'>
+        <div className='flex gap-6 pb-6'>
+          <div className='flex flex-col gap-4 h-[6.25rem bg-tp-white]'>
+            <div className='flex flex-start flex-wrap w-[350px] gap-4 py-7 '>
               {tags.map((name, index) => (
-                <TagChip key={index} name={name} size='large' onClick={() => removeTag(name)} />
+                <TagChip key={index} name={name} size='large' />
               ))}
             </div>
+            <div className='flex flex-col gap-2.5 h-[7.5rem]'>{descrpition}</div>
+            <div className='flex flex-col gap-2.5 h-[9rem] bg-tp-black_900'></div>
+            <div className='flex flex-col gap-2.5 '>
+              <ModalTextarea />
+            </div>
+            <div className='flex flex-col gap-2.5 h-[8rem]'>
+              <div className='flex'>
+                <div>user</div>
+                <div className='felx flex-col'>
+                  <div className='flex'>
+                    <div>작성자</div>
+                    <div>작성일</div>
+                  </div>
+                  <div>내용</div>
+                </div>
+              </div>
+            </div>
+            <div className='flex'>
+              <div>수정</div>
+              <div>삭제</div>
+            </div>
+          </div>
+          <div>
+            <div>담당자</div>
+            <div>user</div>
+            <div>마감일</div>
+            <div>마감시간</div>
           </div>
         </div>
-        <InputImageFile size='small' handleImageFile={handImage} />
-        <ModalButton
-          buttonType='double'
-          firstButton='취소'
-          secondButton='수정'
-          onClickFirstButton={onClickFirstButton}
-          onClickSecondButton={handleEditCard}
-        />
+        <div className='absolute top-[-60px] right-0 flex'>
+          {isToggledModal && (
+            <EditCardModal
+              handleModal={handleToggledModal}
+              members={members}
+              columnItem={columnItem}
+              dragDropItem={dragDropItem}
+              cardItem={cardItem}
+              onClickFirstButton={handleToggledModal}
+            />
+          )}
+          <div onClick={handleToggledModal}>수정</div>
+          <div>삭제</div>
+          <div>X</div>
+        </div>
       </form>
     </ModalLayout>
   );
 };
 
-export default EditCardModal;
+export default WorkModal;

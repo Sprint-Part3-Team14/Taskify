@@ -32,23 +32,16 @@ interface Props {
 }
 
 const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, onClickFirstButton }: ModalPorps) => {
-  const [selectImage, setSelectImage] = useState('');
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
+  const [image, setImage] = useState();
+
+  const handImage = image => {
+    setImage(image);
+  };
 
   const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
     setTagsName(event.target.value);
@@ -122,7 +115,7 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
           description: description,
           dueDate: date,
           tags: tags,
-          imageUrl:
+          ProfileimageUrl:
             'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/14_20003_1713343503827.jpeg',
         }),
       });
@@ -193,7 +186,7 @@ const CreateWorkModal = ({ handleModal, dashboardMembers, dashboardId, column, o
             onKeyDown={createTagChip}
           />
         </div>
-        <InputImageFile size='small' />
+        <InputImageFile size='small' handleImageFile={handImage} />
         <ModalButton
           buttonType='double'
           firstButton='취소'
