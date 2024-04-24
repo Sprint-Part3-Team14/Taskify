@@ -23,7 +23,6 @@ interface I_ModalCard extends I_Card {
 const WorkModal = ({ handleModal, members, dragDropItem, columnItem, cardItem }: I_ModalCard) => {
   const [isToggledModal, setIstoggeldModal] = useState(false);
   const [isToggledPopover, setIsToggledPopover] = useState(false);
-  const [selectImage, setSelectImage] = useState('');
 
   const [title, setTitle] = useState(cardItem.content.title);
   const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
@@ -131,7 +130,7 @@ const WorkModal = ({ handleModal, members, dragDropItem, columnItem, cardItem }:
       <form className='relative'>
         <div className='flex gap-6 '>
           <div className='flex flex-col w-[28rem] gap-5 h-[6.25rem]bg-tp-white'>
-            <div className='flex items-center w-full overflow-hidde`n gap-3'>
+            <div className='flex items-center w-full overflow-hidde`n gap-5'>
               <div className='flex flex-shrink-0 pr-3 border-r-[1px]'>
                 <ProgressChip title={columnItem.title} />
               </div>

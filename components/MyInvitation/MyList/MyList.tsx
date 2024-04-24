@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+
+import { usePageNation } from '@/hooks/usePageNation';
+import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,20 +13,44 @@ import AddButton from 'components/common/button/add';
 
 import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
 import { getAccessToken } from 'utils/handleToken';
-import { I_MyDashboardList } from 'interface/myInvitation';
 
 import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
-import MyPagination from '../MyPagenation'; // 공통
 import { ArrowBackwardIcon, CrownIcon } from 'constant/importImage';
+import PageNationButton from '@/components/PageNation/PageNationButton';
 
-const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, currentPage }: I_MyDashboardList) => {
+const MyList = () => {
   const [isToggledModal, setIsToggledModal] = useState(false);
   const [newDashboardTitle, setNewDashBoardTitle] = useState('');
   const [selectColor, setSelectColor] = useState(INITIAL_COLOR);
 
+  const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
+  const [myDashboardList, setMyDashboardList] = useState([]);
+
   const route = useRouter();
 
-  let totalPage = Math.ceil(totalCount / 5);
+  const apiQuery = {
+    showCount: 5,
+  };
+
+  const handleGetMyDashboardList = async () => {
+    try {
+      const { dashboards, totalCount } = await getMyDashboardList({
+        currentPage: pageNation.currentPage,
+        showCount: apiQuery.showCount,
+      });
+      setPageNation(prevState => ({
+        ...prevState,
+        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+      }));
+      setMyDashboardList(dashboards);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetMyDashboardList();
+  }, [pageNation.currentPage]);
 
   const handleToggledModal = () => {
     setIsToggledModal(!isToggledModal);
@@ -81,7 +108,7 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
             onChange={handleDashboardNewTitle}
           />
         )}
-        {myDashboards.map(({ title, color, id, createdByMe }, index) => (
+        {myDashboardList.map(({ title, color, id, createdByMe }, index) => (
           <Link className='w-full ' key={index} href={`dashboard/${id}`}>
             <div className='flex justify-between items-center gap-2.5 px-5 w-full  tb:min-w-0  h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700 hover:bg-tp-gray_500 hover:border-tp-gray_800'>
               <div className='flex items-center gap-4'>
@@ -101,15 +128,11 @@ const MyList = ({ myDashboards, totalCount, onClickNextPage, onClickPrevPage, cu
         ))}
       </div>
       <div className='flex justify-end items-center w-full gap-4'>
-        <div className='mb:text-xs tb:text-sm'>
-          {totalPage} 페이지 중 {currentPage}
-        </div>
         <div className='flex'>
-          <MyPagination
-            onLeftClick={onClickPrevPage}
-            onRightClick={onClickNextPage}
-            rightDisabled={totalPage <= currentPage}
-            leftDisabled={currentPage === 1}
+          <PageNationButton
+            totalPage={pageNation.totalPage}
+            currentPage={pageNation.currentPage}
+            handleCurrentPage={handleCurrentPage}
           />
         </div>
       </div>

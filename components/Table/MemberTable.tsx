@@ -17,6 +17,8 @@ const MemberTable = () => {
     dashboardId: 5946,
   };
 
+  console.log(members);
+
   const handleLoadMembers = async () => {
     try {
       const { members, totalCount } = await getDashBoardMembers({
