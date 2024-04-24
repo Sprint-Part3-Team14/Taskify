@@ -1,17 +1,17 @@
 'use client';
-import { DEFAULT_PROFILE_IMAGE } from './constant';
+
+import Image from 'next/image';
 import TableLayout from './TableLayout';
 import { MouseEvent, useEffect, useState } from 'react';
 import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
 import PageNationButton from '../PageNation/PageNationButton';
 import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
+import { usePageNation } from '@/hooks/usePageNation';
+import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
 
 const MemberTable = () => {
+  const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [members, setMembers] = useState([]);
-  const [pageNation, setPageNation] = useState({
-    currentPage: 1,
-    totalPage: 1,
-  });
   const apiQuery = {
     showCount: 4,
     dashboardId: 5946,
@@ -34,24 +34,6 @@ const MemberTable = () => {
     }
   };
 
-  const handleCurrentPage = (event: MouseEvent<HTMLButtonElement>) => {
-    if (event.currentTarget.id === 'plus') {
-      if (pageNation.currentPage < pageNation.totalPage) {
-        setPageNation(prevState => ({
-          ...prevState,
-          currentPage: pageNation.currentPage++,
-        }));
-      }
-    } else {
-      if (pageNation.currentPage > 1) {
-        setPageNation(prevState => ({
-          ...prevState,
-          currentPage: pageNation.currentPage--,
-        }));
-      }
-    }
-  };
-
   const handleDeleteMember = async (event: MouseEvent<HTMLButtonElement>) => {
     const memberId = event.currentTarget.id;
     deleteDashBoardMember({ memberId });
@@ -65,7 +47,7 @@ const MemberTable = () => {
     <div key={member.id} className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
       <div className='flex gap-3 items-center ml-7'>
         <div className='w-[2.375rem] h-[2.375rem] relative rounded-full overflow-hidden'>
-          <img src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE} alt='프로필 사진' />
+          <img src={member.profileImageUrl ? member.profileImageUrl : DEFAULTPROFILEIMAGE} alt='유경아 구해줘' />
         </div>
         <p className='text-base text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[7.5rem] '>
           {member.nickname}

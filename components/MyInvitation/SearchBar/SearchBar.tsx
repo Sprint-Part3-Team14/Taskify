@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { I_SearchBarProps } from 'interface/myInvitation';
 import { SEARCH_ICON } from '../constants';
+import { SearchIcon } from 'constant/importImage';
 
 const SearchBar = ({ onSearch }: I_SearchBarProps) => {
   const [keyword, setKeyword] = useState('');
@@ -18,7 +19,7 @@ const SearchBar = ({ onSearch }: I_SearchBarProps) => {
   return (
     <div className='px-7'>
       <div className='flex w-full px-4 py-2 gap-2 border border-solid rounded-md border-tp-gray_700 focus-within:border-tp-black_800 focus-within:border-[2.5px]'>
-        <Image src={SEARCH_ICON} alt='search' width={24} height={24} />
+        <Image src={SearchIcon} alt='search' width={24} height={24} />
         <input
           className='w-full mb:text-sm tb:text-base outline-none placeholder:text-tp-gray_800'
           placeholder='검색'

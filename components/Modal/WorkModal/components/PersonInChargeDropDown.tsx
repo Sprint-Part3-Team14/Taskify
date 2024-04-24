@@ -1,5 +1,5 @@
 'use client';
-import { DEFAULT_PROFILE_IMAGE } from '@/components/Table/constant';
+import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useState, useEffect } from 'react';
 
@@ -73,7 +73,7 @@ const PersonInChargeDropDown = ({ members }: ModalPorps) => {
         }>
         {selectItem}
         <div className='w-6 h-6 relative'>
-          <Image fill src='/icon/arrow_drop_down.svg' alt='상태 선택' />
+          <Image fill src={ArrowDropDownIcon} alt='상태 선택' />
         </div>
       </button>
       {openList && (
@@ -85,12 +85,12 @@ const PersonInChargeDropDown = ({ members }: ModalPorps) => {
               id={member.nickname}
               onClick={handleSelectItem}>
               <div className={selectItem === member.nickname ? 'w-5 h-5 relative' : 'w-5 h-5 relative invisible'}>
-                <Image fill src='/icon/check.svg' alt='선택된 상태' />
+                <Image fill src={CheckIcon} alt='선택된 상태' />
               </div>
               <div className='w-[1.625rem] h-[1.625rem] relative rounded-full overflow-hidden'>
                 <Image
                   fill
-                  src={member.profileImageUrl ? member.profileImageUrl : DEFAULT_PROFILE_IMAGE}
+                  src={member.profileImageUrl ? member.profileImageUrl : DEFAULTPROFILEIMAGE}
                   alt={selectItem + '의 프로필 사진'}
                 />
               </div>

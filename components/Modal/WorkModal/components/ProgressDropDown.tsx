@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ProgressChip from 'components/common/Chip/ProgressChip';
 import { I_ColumnList, I_DragDropItem } from '@/interface/Dashboard';
+import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
 
 interface Props {
   dragDropItem: I_DragDropItem;
@@ -37,7 +38,7 @@ const ProgressDropDown = ({ dragDropItem, column }: Props) => {
         }>
         {selectItem}
         <div className='w-6 h-6 relative'>
-          <Image fill src='/icon/arrow_drop_down.svg' alt='상태 선택' />
+          <Image fill src={ArrowDropDownIcon} alt='상태 선택' />
         </div>
       </button>
       {openList && (
@@ -49,7 +50,7 @@ const ProgressDropDown = ({ dragDropItem, column }: Props) => {
               id={item.id}
               onClick={() => handleSelectItem(item)}>
               <div className={selectedColumn.title === item.title ? 'w-5 h-5 relative' : 'w-5 h-5 relative invisible'}>
-                <Image fill src='/icon/check.svg' alt='선택된 상태' />
+                <Image fill src={CheckIcon} alt='선택된 상태' />
               </div>
               <ProgressChip size='large' title={item.title} />
             </div>

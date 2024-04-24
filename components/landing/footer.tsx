@@ -1,6 +1,7 @@
-import EmailIcon from '../../public/icon/email.svg';
-import FaceBookIcon from '../../public/icon/facebook_icon.svg';
-import InstargramIcon from '../../public/icon/instagram_icon.svg';
+import EmailIcon from '@/public/images/icon/email.svg';
+import FaceBookIcon from '@/public/images/icon/facebook_icon.svg';
+import InstargramIcon from '@/public/images/icon/instagram_icon.svg';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -16,12 +17,15 @@ const Footer = () => {
           </a>
         </div>
         <div className='flex gap-5'>
-          <img src={EmailIcon} />
           <button className='h-18 w-18 tablet:h-22 tablet:w-22'>
-            <img src={FaceBookIcon} />
+            <Image src={EmailIcon} alt='이메일 아이콘' height={18} width={18} />
+          </button>
+
+          <button className='h-18 w-18 tablet:h-22 tablet:w-22'>
+            <Image src={FaceBookIcon} alt='페이스북 아이콘' height={18} width={18} />
           </button>
           <button className='h-18 w-18 tablet:h-22 tablet:w-22'>
-            <img src={InstargramIcon} />
+            <Image src={InstargramIcon} alt='인스타그램 아이콘' height={18} width={18} />
           </button>
         </div>
       </div>

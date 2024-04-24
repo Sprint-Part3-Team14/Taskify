@@ -11,6 +11,7 @@ import { setAccessToken, getAccessToken } from 'utils/handleToken';
 import NumberChip from '../../common/Chip/NumberChip';
 import { ELLIPSE, SETTING } from '../constants';
 import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
+import { EllipseIcon, SettingIcon } from 'constant/importImage';
 
 const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
@@ -103,11 +104,11 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
   return (
     <div className='flex justify-between items-center '>
       <div className='flex items-center gap-3  text-lg font-bold'>
-        <Image src={ELLIPSE} alt='ellipse' width={8} height={8} />
+        <Image src={EllipseIcon} alt='ellipse' width={8} height={8} />
         <div className='text-lg text-tp-black_700'>{inputValue}</div>
         <NumberChip count={count} />
       </div>
-      <Image src={SETTING} alt='setting' width={24} height={24} onClick={handleToggledModal} />
+      <Image src={SettingIcon} alt='setting' width={24} height={24} onClick={handleToggledModal} />
       {isToggledModal && (
         <EditColumnModal
           handleModal={handleModalClose}

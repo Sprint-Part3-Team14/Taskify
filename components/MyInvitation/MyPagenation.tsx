@@ -3,9 +3,7 @@
 import { ButtonHTMLAttributes } from 'react';
 
 import Image from 'next/image';
-
-const ICON_ARROW_BACKWARD = '/icon/arrow_backward.svg';
-const ICON_ARROW_FOWARD = '/icon/arrow_forward.svg';
+import { ArrowBackwardIcon, ArrowForwardIcon } from 'constant/importImage';
 
 const ARROW_COLOR = {
   enabled: '#333236',
@@ -29,13 +27,13 @@ const MyPagination = ({ onLeftClick, onRightClick, leftDisabled, rightDisabled }
         onClick={onLeftClick}
         disabled={leftDisabled}
         className='flex border-solid-gray justify-center items-center h-[40px] w-[40px] bg-tp-white  border border-tp-gray_700 rounded-l-[4px]'>
-        <Image src={ICON_ARROW_FOWARD} alt='arrowleft' width={16} height={16} />
+        <Image src={ArrowForwardIcon} alt='arrowleft' width={16} height={16} />
       </button>
       <button
         onClick={onRightClick}
         disabled={rightDisabled}
         className='flex border-solid-gray justify-center items-center h-[40px] w-[40px] bg-tp-white border border-tp-gray_700 rounded-r-[4px]'>
-        <Image src={ICON_ARROW_BACKWARD} alt='arrowright' width={16} height={16} />
+        <Image src={ArrowBackwardIcon} alt='arrowright' width={16} height={16} />
       </button>
     </div>
   );

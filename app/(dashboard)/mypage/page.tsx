@@ -1,4 +1,5 @@
 import InputImageButton from '@/components/Modal/Button/InputImageButton';
+import { ArrowForwardIcon } from 'constant/importImage';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,7 +9,7 @@ const MyPage = () => {
       <Link href='/boardid'>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
-            <Image fill src='/icon/arrow_forward.svg' alt='뒤로 가기 버튼' />
+            <Image fill src={ArrowForwardIcon} alt='뒤로 가기 버튼' />
           </div>
           돌아가기
         </button>

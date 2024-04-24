@@ -7,7 +7,7 @@ import { Draggable } from '@hello-pangea/dnd';
 import WorkModal from '@/components/Modal/WorkModal/WorkModal';
 import TagChip from 'components/common/Chip/TagChip';
 import { I_Card } from 'interface/Dashboard';
-import { CALENDAR } from '../constants';
+import { CalendarTodayIcon } from 'constant/importImage';
 
 const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) => {
   const [isToggledModal, setIstoggeldModal] = useState(false);
@@ -44,7 +44,7 @@ const Card = ({ cardItem, index, members, columnItem, dragDropItem }: I_Card) =>
               </div>
               <div className='flex justify-between'>
                 <div className='flex flex-wrap items-center gap-1.5'>
-                  <Image src={CALENDAR} alt='calendar' width={18} height={18} />
+                  <Image src={CalendarTodayIcon} alt='calendar' width={18} height={18} />
                   <div className='text-xs font-medium text-tp-gray_900'>{cardItem.content.date}</div>
                 </div>
                 <div>{cardItem.content.user}</div>
