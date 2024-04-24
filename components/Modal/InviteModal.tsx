@@ -2,10 +2,19 @@ import { useInputValue } from '@/hooks/useInputValue';
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
+import { postInvitation } from '@/utils/api/postInvitation';
 
-// 반응형이 적용이 안됨
 const InviteModal = ({ handleModal }: I_ModalToggle) => {
   const { inputValue, onChange } = useInputValue();
+
+  const handlePostInvitation = async () => {
+    try {
+      const result = await postInvitation({ email: inputValue, dashboardId: 5946 });
+      console.log(`result : `, result);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   return (
     <ModalLayout handleModal={handleModal} title='초대하기'>
@@ -17,7 +26,13 @@ const InviteModal = ({ handleModal }: I_ModalToggle) => {
           type='text'
           placeholder='이메일을 입력해 주세요'
         />
-        <ModalButton buttonType='double' firstButton='취소' secondButton='삭제' onClickFirstButton={handleModal} />
+        <ModalButton
+          buttonType='double'
+          firstButton='취소'
+          secondButton='초대'
+          onClickFirstButton={handleModal}
+          onClickSecondButton={handlePostInvitation}
+        />
       </form>
     </ModalLayout>
   );
