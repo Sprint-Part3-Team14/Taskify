@@ -1,3 +1,5 @@
+import { ArrowBackwardIcon, ArrowForwardIcon } from 'constant/importImage';
+import Image from 'next/image';
 import { MouseEvent } from 'react';
 
 interface PageNationButtonProps {
@@ -18,14 +20,14 @@ const PageNationButton = ({ currentPage, totalPage, handleCurrentPage }: PageNat
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-l-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
-          <img src='/icon/arrow_forward.svg' alt='이전 페이지 보기' className='w-4 h-4' />
+          <Image src={ArrowForwardIcon} alt='다음 페이지 보기' width={16} height={16} />
         </button>
         <button
           id='next'
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-r-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
-          <img src='/icon/arrow_backward.svg' alt='이전 페이지 보기' className='w-4 h-4' />
+          <Image src={ArrowBackwardIcon} alt='다음 페이지 보기' width={16} height={16} />
         </button>
       </div>
     </div>

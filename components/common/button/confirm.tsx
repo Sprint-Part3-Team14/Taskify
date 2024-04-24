@@ -5,17 +5,22 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonColor?: 'confirm' | 'reject';
 }
 
-const ConfirmButton = ({ children, onClick, disabled, buttonColor, ...rest }: Props) => {
-  let buttonClassName =
-    'w-[109px] h-[28px] tb:w-[72px] tb:h-[30px] pc:w-[84px] pc:h-[32px] font-bold flex-center rounded disabled:bg-gray-400';
-  buttonColor === 'confirm'
-    ? (buttonClassName += ' bg-tp-violet_900 text-white')
-    : (buttonClassName += ' bg-tp-white text-tp-violet_900 border border-tp-violet_900');
-
+const ConfirmButton = ({ children, onClick, disabled, buttonColor, Accept_Button, ...rest }: Props) => {
   return (
-    <button onClick={onClick} disabled={disabled} className={buttonClassName}>
-      {children}
-    </button>
+    <div className='flex justify-center items-center gap-[0.625rem]'>
+      <button
+        className='w-[5.25rem] h-8 bg-tp-violet_900 rounded text-tp-white text-sm font-medium'
+        onClick={Accept_Button}>
+        {BUTTON_TITLE.ACCEPT}
+      </button>
+      <button
+        className='w-[5.25rem] h-8 text-tp-violet_900 rounded bg-tp-white border boder-solid border-tp-gray_700 text-sm font-medium'
+        onClick={() => {
+          handleReject(id);
+        }}>
+        {BUTTON_TITLE.REJECT}
+      </button>
+    </div>
   );
 };
 

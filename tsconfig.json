@@ -18,7 +18,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/public/images/*": ["public/*"],
+      "@/public/images/*": ["public/images/*"],
       "@/components/*": ["components/*"],
       "@/hooks/*": ["hooks/*"],
       "@/app/*": ["app/*"],
