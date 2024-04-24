@@ -14,14 +14,14 @@ const PageNationButton = ({ currentPage, totalPage, handleCurrentPage }: PageNat
       </p>
       <div>
         <button
-          id='minus'
+          id='previous'
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-l-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
           <img src='/icon/arrow_forward.svg' alt='이전 페이지 보기' className='w-4 h-4' />
         </button>
         <button
-          id='plus'
+          id='next'
           onClick={handleCurrentPage}
           type='button'
           className='border border-solid border-tp-gray_700 rounded-r-md active:bg-tp-gray_600 pc:p-3 mb:p-2.5'>
