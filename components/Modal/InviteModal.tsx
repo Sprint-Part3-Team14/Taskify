@@ -9,8 +9,7 @@ const InviteModal = ({ handleModal }: I_ModalToggle) => {
 
   const handlePostInvitation = async () => {
     try {
-      const result = await postInvitation({ email: inputValue, dashboardId: 5946 });
-      console.log(`result : `, result);
+      await postInvitation({ email: inputValue, dashboardId: 5946 });
     } catch (error: any) {
       console.error(error);
     }
