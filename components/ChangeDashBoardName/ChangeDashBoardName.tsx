@@ -37,7 +37,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
       color: selectColor,
     });
     try {
-      const result = changeDashBoard({ dashBoardId: dashboardId, changeData: changeDashBoardData });
+      changeDashBoard({ dashBoardId: dashboardId, changeData: changeDashBoardData });
     } catch (error: any) {
       console.error(error);
     }
@@ -53,7 +53,9 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
       role='table-Container'
       className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
       <div role='header' className='flex justify-between'>
-        <h1 className='text-[1.25rem] font-bold text-tp-black_700 '>{oldDashBoardName}</h1>
+        <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
+          {oldDashBoardName}
+        </h1>
         <div className='flex items-center gap-2.5 '>
           {selectColorList.map(color => {
             return (
