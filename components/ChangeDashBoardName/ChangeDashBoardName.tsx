@@ -6,17 +6,6 @@ import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 
-const mockData = {
-  id: 5946,
-  title: '유갱갱',
-  color: '#FFA500',
-  createdAt: '2024-04-17T10:43:33.309Z',
-  updatedAt: '2024-04-18T13:57:48.950Z',
-  userId: 1680,
-  createdByMe: true,
-};
-// mock 데이터
-
 const ChangeDashBoardName = () => {
   const [selectColor, setSelectColor] = useState('#7AC555');
   const [changeDashBoardData, setChangeDashBoardData] = useState({

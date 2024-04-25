@@ -5,12 +5,9 @@ import MemberTable from '@/components/Table/MemberTable';
 import { deleteDashBoard } from '@/utils/api/deleteDashBoard';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowBackwardIcon, ArrowForwardIcon } from 'constant/importImage';
+import { ArrowForwardIcon } from 'constant/importImage';
 
 const MydashBoard = () => {
-  {
-    /** 해당 대시보드의 아이디를 여기서 뿌려주면 될 것으로 보임 아래는 임시 dashboardId, 절대로 5496 넣지 말 것 소중히 쌓아올린 대쉬보드 입니다 ㅠ*/
-  }
   const dashboardId = 6312;
 
   const handleDeleteDashBoard = async () => {
