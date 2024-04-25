@@ -29,6 +29,7 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem }: I_Wor
   const [isToggledPopover, setIsToggledPopover] = useState(false);
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
+  const [newContent, setNewContent] = useState('');
   const [targetId, setCursorId] = useState('');
 
   const intersectionObserverRef = useRef(null);
@@ -38,6 +39,11 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem }: I_Wor
 
   const handleToggledPopover = () => {
     setIsToggledPopover(!isToggledPopover);
+  };
+
+  const handleChange = event => {
+    setComment(event.target.value);
+    setNewContent(event.target.value);
   };
 
   const handleDeleteCard = async () => {
