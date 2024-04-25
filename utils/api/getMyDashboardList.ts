@@ -17,6 +17,5 @@ export const getMyDashboardList = async ({ currentPage, showCount }: GetMyDashbo
     }
   );
   const result = response.json();
-  console.log(result);
   return result;
 };

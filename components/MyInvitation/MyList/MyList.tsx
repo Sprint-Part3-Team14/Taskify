@@ -1,33 +1,33 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
-
-import { usePageNation } from '@/hooks/usePageNation';
-import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
-import AddButton from 'components/common/button/add';
-
-import CreateDashboardModal from 'components/Modal/CreateDashboardModal';
-import { getAccessToken } from 'utils/handleToken';
-
-import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
-import { ArrowBackwardIcon, CrownIcon } from 'constant/importImage';
+import AddButton from '@/components/common/button/add';
+import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import PageNationButton from '@/components/PageNation/PageNationButton';
 
+import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
+import { createDashborad } from '@/utils/api/createDashboard';
+
+import { usePageNation } from '@/hooks/usePageNation';
+import { useHandleModal } from '@/hooks/useHandleModal';
+
+import { ArrowBackwardIcon, CrownIcon } from 'constant/importImage';
+import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
+
 const MyList = () => {
-  const [isToggledModal, setIsToggledModal] = useState(false);
   const [newDashboardTitle, setNewDashBoardTitle] = useState('');
   const [selectColor, setSelectColor] = useState(INITIAL_COLOR);
 
+  const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [myDashboardList, setMyDashboardList] = useState([]);
 
   const route = useRouter();
-
   const apiQuery = {
     showCount: 5,
   };
@@ -48,13 +48,29 @@ const MyList = () => {
     }
   };
 
+  const handleCreateDashboard = async () => {
+    if (!newDashboardTitle.trim()) {
+      alert('대시보드 제목을 입력하세요.');
+      return;
+    }
+
+    try {
+      const { id } = await createDashborad({
+        title: newDashboardTitle,
+        color: selectColor.toString(),
+      });
+      const newDashboardId = id;
+      setNewDashBoardTitle('');
+      setSelectColor(INITIAL_COLOR);
+      route.push(`/dashboard/${newDashboardId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     handleGetMyDashboardList();
   }, [pageNation.currentPage]);
-
-  const handleToggledModal = () => {
-    setIsToggledModal(!isToggledModal);
-  };
 
   const handleDashboardNewTitle = (title: string) => {
     setNewDashBoardTitle(title);
@@ -64,45 +80,14 @@ const MyList = () => {
     setSelectColor(color);
   };
 
-  const handleCreateDashboard = async () => {
-    if (!newDashboardTitle.trim()) {
-      alert('대시보드 제목을 입력하세요.');
-      return;
-    }
-
-    try {
-      const accessToken = getAccessToken();
-      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          title: newDashboardTitle,
-          color: selectColor.toString(),
-        }),
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        const newDashboardId = responseData.id;
-        setNewDashBoardTitle('');
-        setSelectColor(INITIAL_COLOR);
-        route.push(`/dashboard/${newDashboardId}`);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <section className='flex flex-col gap-1 max-w-[63.875rem]'>
       <div className='grid pc:grid-cols-3 tb:grid-cols-2 mb:grid-cols-1 gap-[0.625rem] pc:h-[9.5rem]  '>
-        <AddButton onClick={handleToggledModal}>{BUTTON_TITLE.ADD_DASHBOARD}</AddButton>
-        {isToggledModal && (
+        <AddButton onClick={handleToggleModal}>{BUTTON_TITLE.ADD_DASHBOARD}</AddButton>
+        {isShowModal && (
           <CreateDashboardModal
-            handleModal={handleToggledModal}
-            onClickFirstButton={handleToggledModal}
+            handleModal={handleToggleModal}
+            onClickFirstButton={handleToggleModal}
             onClickSecondButton={handleCreateDashboard}
             onSelectColor={handleSelectColor}
             onChange={handleDashboardNewTitle}

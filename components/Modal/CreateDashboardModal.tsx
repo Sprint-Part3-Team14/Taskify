@@ -1,14 +1,24 @@
 'use Client';
 
-import { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { MouseEvent, ChangeEvent, useState, useRef } from 'react';
 
 import Image from 'next/image';
 
 import ModalLayout from './ModalLayout';
 import ModalButton from './Button/ModalButton';
 
-import { I_ModalToggle } from './ModalType';
+import { useEffectOnce } from '@/hooks/useEffectOnce';
+
 import { COLOR_LIST, INITIAL_COLOR } from '../MyInvitation/constants';
+
+interface I_ModalToggle {
+  handleModal: (event: MouseEvent<HTMLElement>) => void;
+  onSelectColor?: (color: string) => void;
+  onChange?: (title: string) => void;
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
+  onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
+}
 
 const CreateDashboardModal = ({
   handleModal,
@@ -22,11 +32,11 @@ const CreateDashboardModal = ({
   const selectColorList = COLOR_LIST;
   const inputRef = useRef(null);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
