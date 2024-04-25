@@ -9,22 +9,25 @@ import InviteModal from '../Modal/InviteModal';
 const InvitationHistory = () => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
-  const [invitations, setInvitations] = useState([]);
+  const [invitations, setInvitations] = useState(null);
+  const plusIcon = '/';
 
-  const InvitationList = invitations.map(invitation => (
-    <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
-      <div className='flex gap-3 items-center'>
-        <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[10rem]'>
-          {invitation.invitee.email}
-        </p>
+  const InvitationList =
+    invitations &&
+    invitations.map(invitation => (
+      <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
+        <div className='flex gap-3 items-center'>
+          <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[10rem]'>
+            {invitation.invitee.email}
+          </p>
+        </div>
+        <button
+          type='button'
+          className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 mb:py-1.5 mb:px-3'>
+          취소
+        </button>
       </div>
-      <button
-        type='button'
-        className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 mb:py-1.5 mb:px-3'>
-        취소
-      </button>
-    </div>
-  ));
+    ));
 
   const invitationHeader = (
     <div className='flex gap-2.5 items-self'>
@@ -37,8 +40,9 @@ const InvitationHistory = () => {
         onClick={handleToggleModal}
         type='button'
         className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-4 rounded-md'>
-        <img src='/icon/plus.svg' alt='초대하기 아이콘' /> 초대
+        <img src='/images/icon/plus.svg' alt='초대하기 아이콘' /> 초대
       </button>
+      {/** 버튼 대체 예정 */}
     </div>
   );
 
