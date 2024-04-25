@@ -1,16 +1,28 @@
 import { getInvitations } from '@/utils/api/getInvitations';
 import TableLayout from './TableLayout';
 import { usePageNation } from '@/hooks/usePageNation';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import PageNationButton from '../PageNation/PageNationButton';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import InviteModal from '../Modal/InviteModal';
+import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
 
-const InvitationHistory = () => {
+const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
-  const plusIcon = '/';
+
+  const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
+    const invitationId = Number(event.currentTarget.id);
+    try {
+      const result = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
+      if (result.message) {
+        alert(result.message);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   const InvitationList =
     invitations &&
@@ -22,6 +34,8 @@ const InvitationHistory = () => {
           </p>
         </div>
         <button
+          onClick={handleDeleteInvitation}
+          id={invitation.id}
           type='button'
           className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 mb:py-1.5 mb:px-3'>
           취소
@@ -46,21 +60,18 @@ const InvitationHistory = () => {
     </div>
   );
 
-  const apiQuery = {
-    showCount: 5,
-    dashboardId: 5946,
-  };
+  const showCount = 5;
 
   const handleLoadInvitations = async () => {
     try {
       const { invitations, totalCount } = await getInvitations({
         currentPage: pageNation.currentPage,
-        showCount: apiQuery.showCount,
-        dashboardId: apiQuery.dashboardId,
+        showCount: showCount,
+        dashboardId: dashboardId,
       });
       setPageNation(prevState => ({
         ...prevState,
-        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+        totalPage: Math.ceil(totalCount / showCount),
       }));
       setInvitations(invitations);
     } catch (error: any) {
@@ -74,7 +85,7 @@ const InvitationHistory = () => {
 
   return (
     <>
-      {isShowModal && <InviteModal handleModal={handleToggleModal} />}
+      {isShowModal && <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} />}
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );

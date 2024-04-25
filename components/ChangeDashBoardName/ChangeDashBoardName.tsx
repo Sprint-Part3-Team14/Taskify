@@ -6,18 +6,7 @@ import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 
-const mockData = {
-  id: 5946,
-  title: '유갱갱',
-  color: '#FFA500',
-  createdAt: '2024-04-17T10:43:33.309Z',
-  updatedAt: '2024-04-18T13:57:48.950Z',
-  userId: 1680,
-  createdByMe: true,
-};
-// mock 데이터
-
-const ChangeDashBoardName = () => {
+const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
   const [changeDashBoardData, setChangeDashBoardData] = useState({
     title: '',
@@ -48,14 +37,14 @@ const ChangeDashBoardName = () => {
       color: selectColor,
     });
     try {
-      const result = changeDashBoard({ dashBoardId: 5946, changeData: changeDashBoardData });
+      changeDashBoard({ dashBoardId: dashboardId, changeData: changeDashBoardData });
     } catch (error: any) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    handleLoadDashBoard(5946);
+    handleLoadDashBoard(dashboardId);
   }, []);
 
   return (
@@ -64,7 +53,9 @@ const ChangeDashBoardName = () => {
       role='table-Container'
       className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
       <div role='header' className='flex justify-between'>
-        <h1 className='text-[1.25rem] font-bold text-tp-black_700 '>{oldDashBoardName}</h1>
+        <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
+          {oldDashBoardName}
+        </h1>
         <div className='flex items-center gap-2.5 '>
           {selectColorList.map(color => {
             return (
