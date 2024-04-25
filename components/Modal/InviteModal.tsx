@@ -4,12 +4,15 @@ import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
 import { postInvitation } from '@/utils/api/postInvitation';
 
-const InviteModal = ({ handleModal }: I_ModalToggle) => {
+const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
   const { inputValue, onChange } = useInputValue();
 
   const handlePostInvitation = async () => {
     try {
-      await postInvitation({ email: inputValue, dashboardId: 5946 });
+      const result = await postInvitation({ email: inputValue, dashboardId: dashboardId });
+      if (result.message) {
+        alert(result.message);
+      }
     } catch (error: any) {
       console.error(error);
     }

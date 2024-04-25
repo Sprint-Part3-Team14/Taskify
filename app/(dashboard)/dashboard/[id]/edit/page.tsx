@@ -11,7 +11,11 @@ const MydashBoard = () => {
   const dashboardId = 6778;
 
   const handleDeleteDashBoard = async () => {
-    await deleteDashBoard({ dashboardId });
+    try {
+      await deleteDashBoard({ dashboardId });
+    } catch (error: any) {
+      console.error(error);
+    }
   };
   return (
     <>

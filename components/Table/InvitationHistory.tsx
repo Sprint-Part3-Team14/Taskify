@@ -15,8 +15,10 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
     const invitationId = Number(event.currentTarget.id);
     try {
-      const { result } = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
-      console.log(`result : `, result);
+      const result = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
+      if (result.message) {
+        alert(result.message);
+      }
     } catch (error: any) {
       console.error(error);
     }
@@ -83,7 +85,7 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   return (
     <>
-      {isShowModal && <InviteModal handleModal={handleToggleModal} />}
+      {isShowModal && <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} />}
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );

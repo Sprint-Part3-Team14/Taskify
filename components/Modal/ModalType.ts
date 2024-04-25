@@ -13,6 +13,7 @@ export interface I_Modals {
 export type I_ModalTitle = '초대하기' | '컬럼 관리' | '할 일 생성' | '새 컬럼 생성' | '할 일 수정';
 
 export interface I_ModalToggle {
+  dashboardId?: number;
   handleModal: (event: MouseEvent<HTMLElement>) => void;
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
