@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { ArrowForwardIcon } from 'constant/importImage';
 
 const MydashBoard = () => {
-  const dashboardId = 6312;
+  const dashboardId = 6778;
 
   const handleDeleteDashBoard = async () => {
     await deleteDashBoard({ dashboardId });
@@ -24,9 +24,9 @@ const MydashBoard = () => {
         </button>
       </Link>
       <div className='flex flex-col gap-3'>
-        <ChangeDashBoardName />
-        <MemberTable />
-        <InvitationHistory />
+        <ChangeDashBoardName dashboardId={dashboardId} />
+        <MemberTable dashboardId={dashboardId} />
+        <InvitationHistory dashboardId={dashboardId} />
         <button
           onClick={handleDeleteDashBoard}
           type='submit'

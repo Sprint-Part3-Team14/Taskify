@@ -6,7 +6,7 @@ import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 
-const ChangeDashBoardName = () => {
+const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
   const [changeDashBoardData, setChangeDashBoardData] = useState({
     title: '',
@@ -37,14 +37,14 @@ const ChangeDashBoardName = () => {
       color: selectColor,
     });
     try {
-      const result = changeDashBoard({ dashBoardId: 5946, changeData: changeDashBoardData });
+      const result = changeDashBoard({ dashBoardId: dashboardId, changeData: changeDashBoardData });
     } catch (error: any) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    handleLoadDashBoard(5946);
+    handleLoadDashBoard(dashboardId);
   }, []);
 
   return (

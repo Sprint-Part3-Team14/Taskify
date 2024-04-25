@@ -6,11 +6,10 @@ import PageNationButton from '../PageNation/PageNationButton';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import InviteModal from '../Modal/InviteModal';
 
-const InvitationHistory = () => {
+const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
-  const plusIcon = '/';
 
   const InvitationList =
     invitations &&
@@ -46,21 +45,18 @@ const InvitationHistory = () => {
     </div>
   );
 
-  const apiQuery = {
-    showCount: 5,
-    dashboardId: 5946,
-  };
+  const showCount = 5;
 
   const handleLoadInvitations = async () => {
     try {
       const { invitations, totalCount } = await getInvitations({
         currentPage: pageNation.currentPage,
-        showCount: apiQuery.showCount,
-        dashboardId: apiQuery.dashboardId,
+        showCount: showCount,
+        dashboardId: dashboardId,
       });
       setPageNation(prevState => ({
         ...prevState,
-        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+        totalPage: Math.ceil(totalCount / showCount),
       }));
       setInvitations(invitations);
     } catch (error: any) {
