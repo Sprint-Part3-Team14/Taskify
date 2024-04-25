@@ -1,15 +1,26 @@
 import { getInvitations } from '@/utils/api/getInvitations';
 import TableLayout from './TableLayout';
 import { usePageNation } from '@/hooks/usePageNation';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import PageNationButton from '../PageNation/PageNationButton';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import InviteModal from '../Modal/InviteModal';
+import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
 
 const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
+
+  const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
+    const invitationId = Number(event.currentTarget.id);
+    try {
+      const { result } = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
+      console.log(`result : `, result);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
   const InvitationList =
     invitations &&
@@ -21,6 +32,8 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
           </p>
         </div>
         <button
+          onClick={handleDeleteInvitation}
+          id={invitation.id}
           type='button'
           className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 mb:py-1.5 mb:px-3'>
           취소
