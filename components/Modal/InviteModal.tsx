@@ -10,6 +10,7 @@ const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
   const handlePostInvitation = async () => {
     try {
       const result = await postInvitation({ email: inputValue, dashboardId: dashboardId });
+      result.message ? alert(result.message) : alert('초대가 완료되었습니다.');
       if (result.message) {
         alert(result.message);
       }
