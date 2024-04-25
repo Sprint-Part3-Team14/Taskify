@@ -5,20 +5,20 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 import EditColumnModal from 'components/Modal/EditColumnModal';
-import { I_DashboardTitle } from 'interface/Dashboard';
-import { setAccessToken, getAccessToken } from 'utils/handleToken';
+
+import { getAccessToken } from 'utils/handleToken';
 
 import NumberChip from '../../common/Chip/NumberChip';
-import { ELLIPSE, SETTING } from '../constants';
-import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
+
 import { EllipseIcon, SettingIcon } from 'constant/importImage';
 
-const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) => {
+const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState(title);
   const [inputValue, setInputValue] = useState(title);
 
   const handleToggledModal = () => {
+    setNewColumnTitle(inputValue);
     setIsToggeldModal(!isToggledModal);
   };
 
@@ -28,7 +28,6 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
   };
 
   const handleChangeNewTitle = async () => {
-    setAccessToken(TEMP_TOKEN);
     if (newColumnTitle.trim() === '') {
       alert('값을 입력해주세요.');
       return;
@@ -45,8 +44,8 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
         }
       );
       const responseData = await checkDuplicateResponse.json();
-      const checkDuplicate = responseData.data;
 
+      const checkDuplicate = responseData.data;
       const isDuplicateTitle = checkDuplicate.some(column => column.title === newColumnTitle);
 
       if (isDuplicateTitle) {
@@ -72,16 +71,9 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
       console.error(error);
     }
     setInputValue(newColumnTitle);
-    handleToggledModal();
-  };
-
-  const handleModalClose = () => {
-    setNewColumnTitle(inputValue);
-    handleToggledModal();
   };
 
   const hanldeColumnDelete = async () => {
-    setAccessToken(TEMP_TOKEN);
     if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
       try {
         const accessToken = getAccessToken();
@@ -111,12 +103,12 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }: I_DashboardTitle) 
       <Image src={SettingIcon} alt='setting' width={24} height={24} onClick={handleToggledModal} />
       {isToggledModal && (
         <EditColumnModal
-          handleModal={handleModalClose}
+          handleModal={handleToggledModal}
           title='컬럼 관리'
           placeholder='이름을 입력해 주세요.'
           value={newColumnTitle}
           onChange={handleChangeInputValue}
-          onClickFirstButton={handleModalClose}
+          onClickFirstButton={handleToggledModal}
           onClickSecondButton={handleChangeNewTitle}
           onClick={hanldeColumnDelete}
         />

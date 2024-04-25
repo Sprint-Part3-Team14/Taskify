@@ -2,40 +2,46 @@
 
 import { useEffect, useState } from 'react';
 
-import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { I_CardItem, I_Column } from 'interface/Dashboard';
-
-import AddButton from 'components/common/button/add';
-import CreateWorkModal from 'components/Modal/WorkModal/CreateWorkModal';
 import ColumnTitle from '../ColumnTitle/ColumnTitle';
 import Card from '../Card/Card';
-import { setAccessToken, getAccessToken } from '@/utils/handleToken';
-import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
 
-const Column = ({ columnItem, cardList, index, dashboardId, dragDropItem }: I_Column) => {
-  const [isToggeldModal, setIsToggeldModal] = useState(false);
-  const [dashboardMembers, setDashboardMembers] = useState([]);
+import AddButton from '@/components/common/button/add';
+import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
 
-  const handleToggeldModal = () => {
-    setIsToggeldModal(!isToggeldModal);
-  };
+import { getCardList } from '@/utils/api/getCardList';
+import { getDashboardMember } from '@/utils/api/getDashboardMember';
+import { useHandleModal } from '@/hooks/useHandleModal';
+import { I_Column } from '@/interface/Dashboard';
+
+interface I_ColumnList {
+  columnItem: I_Column;
+}
+
+const Column = ({ columnItem }: I_ColumnList) => {
+  const { isShowModal, handleToggleModal } = useHandleModal();
+  const [dashboardMember, setDashboardMember] = useState([]);
+  const [cardList, setCardList] = useState([]);
+  const [cardCount, setCardCount] = useState(0);
 
   useEffect(() => {
-    setAccessToken(TEMP_TOKEN);
+    const getDashboardCardList = async () => {
+      try {
+        const { cards, totalCount } = await getCardList({ column: columnItem.id });
+        setCardList(cards);
+        setCardCount(totalCount);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getDashboardCardList();
+  }, [columnItem.id]);
+
+  useEffect(() => {
     const getMyDashboardMembers = async () => {
       try {
-        const accessToken = getAccessToken();
-        const response = await fetch(
-          `https://sp-taskify-api.vercel.app/4-14/members?page=1&size=20&dashboardId=${dashboardId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const responseData = await response.json();
-        const MembersData = responseData.members;
-        setDashboardMembers(MembersData);
+        const { members } = await getDashboardMember({ dashboard: columnItem.dashboardId });
+        setDashboardMember(members);
       } catch (error) {
         console.error(error);
       }
@@ -44,52 +50,28 @@ const Column = ({ columnItem, cardList, index, dashboardId, dragDropItem }: I_Co
   }, []);
 
   return (
-    <Draggable draggableId={columnItem.id} index={index}>
-      {provided => (
-        <div
-          className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '
-          ref={provided.innerRef}
-          {...provided.draggableProps}>
-          <div className=' flex flex-col w-full gap-4  ' {...provided.dragHandleProps}>
-            <ColumnTitle
-              title={columnItem.title}
-              count={cardList.length}
-              columnId={columnItem.id}
-              dashboardId={dashboardId}
-            />
-            <AddButton onClick={handleToggeldModal} />
-            {isToggeldModal && (
-              <CreateWorkModal
-                handleModal={handleToggeldModal}
-                dashboardMembers={dashboardMembers}
-                dashboardId={dashboardId}
-                column={columnItem}
-                onClickFirstButton={handleToggeldModal}
-              />
-            )}
-          </div>
-          <Droppable droppableId={columnItem.id} type='card'>
-            {provided => (
-              <div className='flex flex-col w-full  gap-4' {...provided.droppableProps} ref={provided.innerRef}>
-                <>
-                  {cardList.map((card: I_CardItem, index: number) => (
-                    <Card
-                      key={card.id}
-                      cardItem={card}
-                      index={index}
-                      members={dashboardMembers}
-                      columnItem={columnItem}
-                      dragDropItem={dragDropItem}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </>
-              </div>
-            )}
-          </Droppable>
+    <div className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '>
+      <div className=' flex flex-col w-full gap-4  '>
+        <ColumnTitle
+          columnId={columnItem.id}
+          dashboardId={columnItem.dashboardId}
+          count={cardCount}
+          title={columnItem.title}
+        />
+        <AddButton onClick={handleToggleModal} />
+        {isShowModal && (
+          <CreateWorkModal handleModal={handleToggleModal} columnItem={columnItem} dashboardMembers={dashboardMember} />
+        )}
+      </div>
+      <div className='flex flex-col w-full  gap-4'>
+        <div className='flex flex-col w-full  gap-4'>
+          {cardList &&
+            cardList.map(card => (
+              <Card key={card.id} columnItem={columnItem} cardItem={card} dashboardMember={dashboardMember} />
+            ))}
         </div>
-      )}
-    </Draggable>
+      </div>
+    </div>
   );
 };
 

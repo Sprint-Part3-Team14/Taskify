@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { I_TagChip } from 'interface/Chip';
+
+export interface I_TagChip {
+  name: string;
+  size: 'large' | 'small';
+  onClick?: () => void;
+}
 
 const fontSizeSelect = {
   large: 'text-xs',

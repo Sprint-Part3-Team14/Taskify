@@ -1,26 +1,24 @@
-/* COLUMN LIST */
-
-export interface I_ColumnOrder_Columns {
-  id: number;
-  title: string;
-  teamId: string;
-  dashboardId: number;
-  createdAt: string;
-  updatedAt: string;
+export interface I_Column {
+  id?: number;
+  title?: string;
+  teamId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  dashboardId: string;
 }
 
-export interface I_ColumnOrder_Cards {
+export interface I_Card {
   id: number;
   title: string;
   description: string;
-  tags: Array<string>;
+  tags: string[];
   dueDate: string;
   assignee: {
     id: number;
     nickname: string;
-    profileImageUrl: any;
+    profileImageUrl: string | null;
   };
-  imageUrl: string;
+  imageUrl: string | null;
   teamId: string;
   dashboardId: number;
   columnId: number;
@@ -28,55 +26,7 @@ export interface I_ColumnOrder_Cards {
   updatedAt: string;
 }
 
-/* Drag and Drop */
-
-export interface I_DragDropItem {
-  cards: {
-    [key: string]: {
-      id: number;
-      content: {
-        title: string;
-        image: string;
-        description: string;
-        date: string;
-        tag: string[];
-        user: string;
-      };
-    };
-  };
-  columns: {
-    [key: string]: {
-      id: string;
-      title: string;
-      cardIds: number[];
-    };
-  };
-  columnOrder: string[];
-}
-
-export interface I_Column {
-  columnItem: I_ColumnList;
-  cardList: I_CardItem[];
-  index: number;
-  dashboardId: string;
-  dragDropItem: I_DragDropItem;
-  id?: number;
-  title?: string;
-}
-
-export interface I_ColumnList {
-  id: string;
-  title: string;
-  cardIds: [];
-}
-
-export interface I_CardItem {
-  content: { title: string; image: string; dsecription: string; date: string; tag: Array<string>; user: string };
-  id: number;
-  length: number;
-}
-
-export interface I_DashboardMember {
+export interface I_Members {
   id: number;
   email: string;
   nickname: string;
@@ -85,20 +35,4 @@ export interface I_DashboardMember {
   updatedAt: string;
   isOwner: boolean;
   userId: number;
-}
-
-export interface I_Card {
-  columnItem: I_ColumnList;
-  cardItem: I_CardItem;
-  index?: number;
-  dashboardId?: string;
-  dragDropItem: I_DragDropItem;
-  members: I_DashboardMember[];
-}
-
-export interface I_DashboardTitle {
-  title: string;
-  count: number;
-  columnId: string;
-  dashboardId: string;
 }

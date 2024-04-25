@@ -1,21 +1,21 @@
 import { getAccessToken } from '../handleToken';
 
-interface CreateDashborad {
+interface CreateColumnProps {
   title: string;
-  color: string;
+  dashboardId: number;
 }
 
-export const createDashborad = async ({ title, color }: CreateDashborad) => {
+export const createColumn = async ({ title, dashboardId }: CreateColumnProps) => {
   const accessToken = getAccessToken();
-  const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
+  const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       title: title,
-      color: color,
+      dashboardId: dashboardId,
     }),
   });
   const result = response.json();

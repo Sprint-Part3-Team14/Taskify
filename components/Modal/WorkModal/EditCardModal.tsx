@@ -1,58 +1,78 @@
 import { ChangeEvent, useState } from 'react';
-import InputImageButton from '../Button/InputImageButton';
-// import ModalDropdown from '../Input/ModalDropdown';
+
 import ModalLayout from '../ModalLayout';
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 import ProgressDropDown from './components/ProgressDropDown';
-import Image from 'next/image';
+
 import InputImageFile from '@/components/InputImage/InputImage';
 import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
 import { setAccessToken, getAccessToken } from '@/utils/handleToken';
-import { I_Card } from '@/interface/Dashboard';
+import { I_ModalToggle } from '../ModalType';
 import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
+import { changeCardImage } from '@/utils/api/changeCardImage';
 
-interface I_ModalCard extends I_Card {
+interface I_CreateWorkModal {
   handleModal: () => void;
+  columnItem: any;
+  cardItem: any;
+  dashboardMember: any;
   onClickFirstButton: () => void;
 }
 
-const EditCardModal = ({
-  handleModal,
-  onClickFirstButton,
-  members,
-  dragDropItem,
-  columnItem,
-  cardItem,
-}: I_ModalCard) => {
-  const [title, setTitle] = useState(cardItem.content.title);
-  const [descrpition, setDiscription] = useState(cardItem.content.dsecription);
-  const [date, setDate] = useState(cardItem.content.date);
-  const [tags, setTags] = useState<string[]>(cardItem.content.tag);
+interface I_Members {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: any;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+  userId: number;
+}
+
+const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
+  const [dashboardMember, setDashboardMember] = useState([]);
+  const [selectedMemberId, setSelectedMemberId] = useState<number>(0);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
-  const [image, setImage] = useState('');
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [image, setImage] = useState();
 
-  const handImage = image => {
-    setImage(image);
+  const handleEditCard = async () => {
+    setAccessToken(TEMP_TOKEN);
+
+    try {
+      const accessToken = getAccessToken();
+      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          assigneeUserId: 1764,
+          columnId: Number(columnItem.id),
+          title: title,
+          description: description,
+          dueDate: date,
+          tags: tags,
+          imageUrl: image,
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handletitle = (event: ChangeEvent<HTMLInputElement>) => {
-    const title = event.target.value;
-    setTitle(title);
+  const handleCardTitle = event => {
+    setTitle(event.target.value);
   };
 
-  const handledescrpition = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const description = event.target.value;
-    setDiscription(description);
-  };
-
-  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
-    const tagName = event.target.value;
-    setTagsName(tagName);
-  };
-
-  const removeTag = (tag: string) => {
-    setTags(prevTags => prevTags.filter(item => item !== tag));
+  const handleCardDescrpition = event => {
+    setDescription(event.target.value);
   };
 
   const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +101,10 @@ const EditCardModal = ({
     setDate(formattedDate);
   };
 
+  const handleTagName = (event: ChangeEvent<HTMLInputElement>) => {
+    setTagsName(event.target.value);
+  };
+
   const createTagChip = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -92,41 +116,21 @@ const EditCardModal = ({
     }
   };
 
-  const handleEditCard = async () => {
-    setAccessToken(TEMP_TOKEN);
+  const removeTag = (tag: string) => {
+    setTags(prevTags => prevTags.filter(item => item !== tag));
+  };
 
-    try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assigneeUserId: 1764,
-          columnId: Number(columnItem.id),
-          title: title,
-          description: descrpition,
-          dueDate: date,
-          tags: tags,
-          profileimageUrl: String(image),
-        }),
-      });
-      if (response.ok) {
-        handleModal;
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const handleCardImage = async ({ file }) => {
+    const { cardImageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
+    setImage(cardImageUrl);
   };
 
   return (
     <ModalLayout handleModal={handleModal} title='할 일 수정'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <ProgressDropDown dragDropItem={dragDropItem} column={columnItem} />
-          <PersonInChargeDropDown members={members} />
+          <ProgressDropDown columnIte={columnItem} />
+          <PersonInChargeDropDown dashboardmember={dashboardMember} setSelectedMemberId={setSelectedMemberId} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>
@@ -186,7 +190,7 @@ const EditCardModal = ({
             </div>
           </div>
         </div>
-        <InputImageFile size='small' handleImageFile={handImage} />
+        <InputImageFile size='small' apiCallback={handleCardImage} />
         <ModalButton
           buttonType='double'
           firstButton='취소'
