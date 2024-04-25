@@ -9,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang='ko'>
-      <body>{children}</body>
+      <body>
+        {children}
+        <div id='portal'></div>
+      </body>
     </html>
   );
 }
