@@ -11,7 +11,7 @@ interface DashboardInfoProps {
 
 export const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfoProps) => {
   return (
-    <div className='flex justify-center items-center gap-2'>
+    <div className='flex justify-center items-center gap-3'>
       {createdByMe && (
         <Link href={`/dashboard/${dashboardId}/edit`}>
           <button className='flex justify-center items-center w-[85px] border border-gray-400 rounded-lg'>

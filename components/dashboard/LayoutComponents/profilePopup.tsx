@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 const ProfilePopup = () => {
   const router = useRouter();
   const goMyPage = () => {
-    router.push('/myinvitation');
+    router.push('/account-menu');
   };
 
   const logout = () => {

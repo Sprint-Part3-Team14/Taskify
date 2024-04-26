@@ -1,11 +1,11 @@
 'use client';
 
-import { removeAccessToken } from '@/utils/handleToken';
+import { getAccessToken, removeAccessToken } from '@/utils/handleToken';
 import { CrownIcon, PlusBlueIcon, SettingIcon } from 'constant/importImage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import DashboardInfo from './dashboardInfo';
 import ProfileInfo from './profileInfo';
 
@@ -14,10 +14,61 @@ interface Props {
 }
 
 const DashboardHeader = ({ dashboardId }: Props) => {
-  const dashboardInfo = {
-    title: '임시 제목',
-    createdByMe: true,
-  };
+  const [dashboardInfo, setDashboardInfo] = useState({
+    id: 0,
+    title: '',
+    color: '',
+    createdAt: '',
+    updatedAt: '',
+    createdByMe: false,
+    userId: 0,
+  });
+
+  const [memberList, setMemberList] = useState({ members: [], totalCount: 0 });
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const token = getAccessToken();
+      try {
+        const dashboardResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        });
+        if (dashboardResponse.ok) {
+          const dashboardData = await dashboardResponse.json();
+          setDashboardInfo(dashboardData);
+        } else {
+          throw new Error('Failed to fetch dashboard details');
+        }
+
+        const membersResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/members`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (membersResponse.ok) {
+          const membersData = await membersResponse.json();
+          setMemberList({ members: membersData.members, totalCount: membersData.totalCount });
+        } else {
+          throw new Error('Failed to fetch members');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (dashboardId) {
+      fetchData();
+    }
+    console.log(dashboardInfo);
+    console.log(memberList);
+  }, [dashboardId]);
 
   const title = dashboardId ? dashboardInfo?.title : '내 대시보드';
   return (
@@ -31,11 +82,7 @@ const DashboardHeader = ({ dashboardId }: Props) => {
       <div className='flex justify-center right items-center text-base font-normal gap-3 tb:gap-8'>
         {/* <DarkModeButton /> */}
         {dashboardId && (
-          <DashboardInfo
-            createdByMe={dashboardInfo.createdByMe}
-            dashboardId={dashboardId}
-            // memberList={dashboardMembers}
-          />
+          <DashboardInfo createdByMe={dashboardInfo.createdByMe} dashboardId={dashboardId} memberList={memberList} />
         )}
         <ProfileInfo />
       </div>
