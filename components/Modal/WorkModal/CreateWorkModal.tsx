@@ -59,7 +59,6 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     const inputDate = event.target.value;
     const selectedDate = new Date(inputDate);
     const currentDate = new Date();
-
     if (selectedDate < currentDate) {
       alert('마감 기한을 제대로 선택해주세요.');
       event.target.value = '';
@@ -91,9 +90,8 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   };
 
   const handleCardImage = async ({ file }) => {
-    const { cardImageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
-    console.log({ cardImageUrl });
-    setImage(cardImageUrl);
+    const { imageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
+    setImage(imageUrl);
   };
 
   return (

@@ -107,8 +107,8 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
   };
 
   const handleCardImage = async ({ file }) => {
-    const { cardImageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
-    setImage(cardImageUrl);
+    const { imageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
+    setImage(imageUrl);
   };
 
   return (

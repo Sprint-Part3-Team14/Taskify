@@ -52,24 +52,22 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
 
       if (result) {
         handleToggledModal();
+        setInputValue(newColumnTitle);
       }
     } catch (error) {
       console.error(error);
     }
-    setInputValue(newColumnTitle);
   };
 
   const hanldeColumnDelete = async () => {
     if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
       try {
-        const result = await deleteColumn({ column: columnId });
-        if (result) {
-        }
-        handleToggledModal();
+        await deleteColumn({ column: columnId });
       } catch (error) {
         console.error(error);
       }
     }
+    handleToggledModal();
   };
 
   return (
@@ -79,13 +77,16 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
         <div className='text-lg text-tp-black_700'>{inputValue}</div>
         <NumberChip count={count} />
       </div>
-      <Image src={SettingIcon} alt='setting' width={24} height={24} onClick={handleToggledModal} />
+      <button onClick={handleToggledModal}>
+        <Image src={SettingIcon} alt='setting' width={24} height={24} />
+      </button>
       {isToggledModal && (
         <EditColumnModal
           handleModal={handleToggledModal}
           title='컬럼 관리'
           placeholder='이름을 입력해 주세요.'
           value={newColumnTitle}
+          newColumnTitle={newColumnTitle}
           onChange={handleChangeInputValue}
           onClickFirstButton={handleToggledModal}
           onClickSecondButton={handleChangeNewTitle}

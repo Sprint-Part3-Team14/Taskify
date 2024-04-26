@@ -8,7 +8,7 @@ import EditCardModal from './EditCardModal';
 import ModalComment from './components/ModalComment';
 import Popover from './components/Popover';
 import InformationChip from './components/InformationChip';
-import { CloseIcon, MoreVertIcon } from 'constant/importImage';
+import { CloseIcon, DEFAULTPROFILEIMAGE, MoreVertIcon, UnsubscribeIcon } from 'constant/importImage';
 
 import ProgressChip from '@/components/common/Chip/ProgressChip';
 import TagChip from '@/components/common/Chip/TagChip';
@@ -16,6 +16,7 @@ import { getCommentList, getAddCommentList, createCommentData } from '@/utils/ap
 import { getAccessToken } from '@/utils/handleToken';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { I_Column, I_Members, I_Card, I_Dashboard } from '@/interface/Dashboard';
+import { unsubscribe } from 'diagnostics_channel';
 
 interface I_WorkModal {
   handleModal: () => void;
@@ -150,8 +151,12 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
                   ))}
                 </div>
               </div>
-              <div className='flex flex-col gap-2.5 h-[15.625rem] rounded-lg overflow-hidden bg-tp-black_900'>
-                <img className='h-[15.625rem] object-cover ' src={cardItem.imageUrl} alt='user' />
+              <div className='flex flex-col gap-2.5 h-[15.625rem] rounded-lg overflow-hidden '>
+                {cardItem.imageUrl ? (
+                  <img className='h-[15.625rem] object-cover' src={cardItem.imageUrl} alt='user' />
+                ) : (
+                  <img className='h-[15.625rem] object-containr' src={'/images/icon/unsubscribe.svg'} alt='none' />
+                )}
               </div>
               <div className='flex flex-col gap-2.5 h-[7.5rem] overflow-hidden'>{cardItem.description}</div>
               <div className='flex flex-col gap-2.5 '>

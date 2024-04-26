@@ -20,32 +20,31 @@ const Dashboard = () => {
   const dashboardId = path.split('/')[2];
   const columnTitle = columnList.map(column => column.title);
 
+  const getDashboardColumnList = async () => {
+    try {
+      const { data } = await getColumnList({ id: dashboardId });
+      setColumnList(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const getDashboardColumnList = async () => {
-      try {
-        const { data } = await getColumnList({ id: dashboardId });
-        setColumnList(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     getDashboardColumnList();
   }, []);
 
   const handleCreateColumn = async () => {
-    if (newColumnTitle.trim() === '') {
-      alert('제목을 입력해주세요');
-      return;
-    }
-
     if (columnTitle.includes(newColumnTitle)) {
       alert('중복된 컬럼이 존재합니다.');
       return;
     }
 
     try {
-      const {} = await createColumn({ title: newColumnTitle, dashboardId: Number(dashboardId) });
-      handleToggleModal();
+      const result = await createColumn({ title: newColumnTitle, dashboardId: Number(dashboardId) });
+      if (result) {
+        handleToggleModal();
+        getDashboardColumnList();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -64,13 +63,14 @@ const Dashboard = () => {
             columnList.map(column => <Column key={column.id} columnItem={column} dashboardItem={columnList} />)}
         </div>
       </div>
-      <div className='min-w-[20rem] grow py-16 px-5 bg-tp-gray_500'>
+      <div className='mb:sticky mb:py-5 mb:bottom-0 min-w-[20rem] my-11 py-16 px-5 bg-tp-gray_500'>
         <AddButton onClick={handleToggleModal}>새로운 컬럼 추가하기</AddButton>
         {isShowModal && (
           <CreateColumnModal
             handleModal={handleToggleModal}
             onChange={handleNewColumn}
             onClickSecondButton={handleCreateColumn}
+            newColumnTitle={newColumnTitle}
           />
         )}
       </div>

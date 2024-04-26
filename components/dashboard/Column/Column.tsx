@@ -45,10 +45,9 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
   const getDashboardCardList = async () => {
     try {
       if (cardList.length === 0) {
-        const { cards, totalCount } = await getCardList({ column: columnItem.id });
+        const { cards } = await getCardList({ column: columnItem.id });
         const cardList = Array.isArray(cards) ? cards : [];
         setCardList(cards);
-        setCardCount(totalCount);
         if (cardList.length > 0) {
           setCursorId(cardList[cardList.length - 1].id);
         }
@@ -131,6 +130,3 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
 };
 
 export default Column;
-function getDashboardCardList() {
-  throw new Error('Function not implemented.');
-}
