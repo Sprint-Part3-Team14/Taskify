@@ -51,7 +51,7 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center border border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '>
+    <div className='flex flex-col items-center pc:border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '>
       <div className=' flex flex-col w-full gap-4  '>
         <ColumnTitle
           columnId={columnItem.id}
@@ -61,12 +61,7 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
         />
         <AddButton onClick={handleToggleModal} />
         {isShowModal && (
-          <CreateWorkModal
-            handleModal={handleToggleModal}
-            columnItem={columnItem}
-            dashboardMembers={dashboardMember}
-            dashboardItem={dashboardItem}
-          />
+          <CreateWorkModal handleModal={handleToggleModal} columnItem={columnItem} dashboardMembers={dashboardMember} />
         )}
       </div>
       <div className='flex flex-col w-full  gap-4'>

@@ -12,7 +12,7 @@ interface I_CardItem {
   cardItem: I_Card;
   columnItem: I_Column;
   dashboardMember: I_Members[];
-  dashboardItem: I_Dashboard;
+  dashboardItem: I_Dashboard[];
 }
 
 const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem }: I_CardItem) => {
@@ -23,7 +23,7 @@ const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem }: I_CardIt
   return (
     <>
       <div className='flex flex-col gap-2.5 p-5 w-full border border-solid border-tp-gray_700 bg-tp-white rounded-md'>
-        <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem]' onClick={handleToggleModal}>
+        <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem] ' onClick={handleToggleModal}>
           {cardItem.imageUrl && (
             <img
               className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full  rounded-md '

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getAccessToken } from '@/utils/handleToken';
+import { changeCommentData, deleteCommentData } from '@/utils/api/comment';
 
 interface I_CommentAuthor {
   id: number;
@@ -21,24 +21,13 @@ interface I_CommentItem {
 }
 
 const ModalComment = ({ commentList }: I_CommentItem) => {
-  const [editedCommentId, setEditedCommentId] = useState<number | null>(null);
-  const [modifiedContent, setModifiedContent] = useState<string>('');
+  const [changeComment, setChangeComment] = useState('');
+  const [editTarget, setEditTarget] = useState<number | null>(null);
 
-  const handleModifyComment = async (commentId: number) => {
+  const handleChangeComment = async (commentId: number) => {
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: modifiedContent,
-        }),
-      });
-
-      setEditedCommentId(null);
+      await changeCommentData({ id: commentId, content: changeComment });
+      setEditTarget(null);
     } catch (error) {
       console.error(error);
     }
@@ -46,82 +35,77 @@ const ModalComment = ({ commentList }: I_CommentItem) => {
 
   const handleDeleteComment = async (commentId: number) => {
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/comments/${commentId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const confirmed = window.confirm('댓글을 삭제하시겠습니까?');
+      if (confirmed) {
+        await deleteCommentData({ id: commentId });
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setModifiedContent(event.target.value);
+    const comment = event.target.value;
+    setChangeComment(comment);
   };
 
   const handleCancelEdit = () => {
-    setEditedCommentId(null);
-    setModifiedContent('');
+    setEditTarget(null);
+    setChangeComment('');
   };
 
   return (
-    <>
-      {commentList &&
-        commentList.map((comment, index) => {
-          const createdAtDate = new Date(comment.createdAt);
-          const formattedDate = createdAtDate.toISOString().split('T')[0];
-          return (
-            <div key={index} className='flex w-full flex-col gap-2.5'>
-              <div className='flex items-center gap-4'>
-                <div className='w-5 h-5 bg-tp-black_900'>{comment.author.profileImageUrl}</div>
-                <div className='flex flex-col w-[90%]'>
-                  <div className='flex items-baseline gap-3'>
-                    <div className='text-sm font-semibold'>{comment.author.nickname}</div>
-                    <div className='text-xs text-tp-gray_800'>{formattedDate}</div>
-                  </div>
-                  {editedCommentId === comment.id ? (
-                    <textarea
-                      value={modifiedContent}
-                      onChange={handleChange}
-                      className='w-full border border-solid border-gray-300 rounded-md p-2 overflow-hidden'
-                    />
-                  ) : (
-                    <div className='w-full'>{comment.content}</div>
-                  )}
-                </div>
+    commentList &&
+    commentList.map((comment, index) => {
+      const createdAtDate = new Date(comment.createdAt);
+      const formattedDate = createdAtDate.toISOString().split('T')[0];
+      return (
+        <div key={index} className='flex w-full flex-col gap-2.5'>
+          <div className='flex items-center gap-4'>
+            <div className='w-5 h-5 bg-tp-black_900'>{comment.author.profileImageUrl}</div>
+            <div className='flex flex-col w-[90%]'>
+              <div className='flex items-baseline gap-3'>
+                <div className='text-sm font-semibold'>{comment.author.nickname}</div>
+                <div className='text-xs text-tp-gray_800'>{formattedDate}</div>
               </div>
-              <div className='flex justify-end gap-4 text-xs text-tp-gray_800 pr-5 cursor-pointer'>
-                {editedCommentId === comment.id ? (
-                  <>
-                    <button type='button' onClick={() => handleModifyComment(comment.id)}>
-                      완료
-                    </button>
-                    <button type='button' onClick={handleCancelEdit}>
-                      취소
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setEditedCommentId(comment.id);
-                      setModifiedContent(comment.content);
-                    }}>
-                    수정
-                  </button>
-                )}
-                <button type='button' onClick={() => handleDeleteComment(comment.id)}>
-                  삭제
-                </button>
-              </div>
+              {editTarget === comment.id ? (
+                <textarea
+                  value={changeComment}
+                  onChange={handleChange}
+                  className='w-full border border-solid border-gray-300 rounded-md p-2 overflow-hidden'
+                />
+              ) : (
+                <div className='w-full'>{comment.content}</div>
+              )}
             </div>
-          );
-        })}
-    </>
+          </div>
+          <div className='flex justify-end gap-4 text-xs text-tp-gray_800 pr-5 cursor-pointer'>
+            {editTarget === comment.id ? (
+              <>
+                <button type='button' onClick={() => handleChangeComment(comment.id)}>
+                  완료
+                </button>
+                <button type='button' onClick={handleCancelEdit}>
+                  취소
+                </button>
+              </>
+            ) : (
+              <button
+                type='button'
+                onClick={() => {
+                  setEditTarget(comment.id);
+                  setChangeComment(comment.content);
+                }}>
+                수정
+              </button>
+            )}
+            <button type='button' onClick={() => handleDeleteComment(comment.id)}>
+              삭제
+            </button>
+          </div>
+        </div>
+      );
+    })
   );
 };
 

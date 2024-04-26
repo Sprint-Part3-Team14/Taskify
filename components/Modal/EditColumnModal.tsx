@@ -2,7 +2,7 @@ import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { MouseEvent } from 'react';
 
-interface Props {
+interface I_EditColumn {
   handleModal: (event: MouseEvent<HTMLElement>) => void;
   placeholder: string;
   title: string;
@@ -22,7 +22,7 @@ const EditColumnModal = ({
   onClickFirstButton,
   onClickSecondButton,
   onClick,
-}: Props) => {
+}: I_EditColumn) => {
   return (
     <ModalLayout handleModal={handleModal}>
       <form className='flex flex-col h-[11.25rem]'>
@@ -35,7 +35,7 @@ const EditColumnModal = ({
           value={value}
         />
         <div className='flex justify-between items-baseline text-tp-gray_800'>
-          <button className='text-sm underline' onClick={onClick}>
+          <button type='button' className='text-sm underline' onClick={onClick}>
             삭제하기
           </button>
           <ModalButton

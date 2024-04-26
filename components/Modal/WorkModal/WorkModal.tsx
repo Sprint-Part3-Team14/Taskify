@@ -1,26 +1,26 @@
 import { useEffect, useState, useRef } from 'react';
 
-import ModalLayout from '../ModalLayout';
-
 import Image from 'next/image';
-
-import TagChip from '@/components/common/Chip/TagChip';
-import { getAccessToken } from '@/utils/handleToken';
+import ModalLayout from '../ModalLayout';
 
 import ModalTextarea from '../input/ModalTextarea';
 import EditCardModal from './EditCardModal';
 import ModalComment from './components/ModalComment';
-import ProgressChip from '@/components/common/Chip/ProgressChip';
-import { CloseIcon, MoreVertIcon } from 'constant/importImage';
 import Popover from './components/Popover';
+import InformationChip from './components/InformationChip';
+import { CloseIcon, MoreVertIcon } from 'constant/importImage';
+
+import ProgressChip from '@/components/common/Chip/ProgressChip';
+import TagChip from '@/components/common/Chip/TagChip';
+import { getCommentList, getAddCommentList, createCommentData } from '@/utils/api/comment';
+import { getAccessToken } from '@/utils/handleToken';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { I_Column, I_Members, I_Card, I_Dashboard } from '@/interface/Dashboard';
-import { getCommentList, getAddCommentList } from '@/utils/api/getComment';
 
 interface I_WorkModal {
   handleModal: () => void;
   dashboardMember: I_Members[];
-  dashboardItem: I_Dashboard;
+  dashboardItem: I_Dashboard[];
   columnItem: I_Column;
   cardItem: I_Card;
 }
@@ -30,8 +30,22 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
   const [isToggledPopover, setIsToggledPopover] = useState(false);
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState([]);
-  const [newContent, setNewContent] = useState('');
   const [targetId, setCursorId] = useState('');
+
+  const handleCreateCommnet = async () => {
+    try {
+      await createCommentData({
+        content: comment,
+        cardId: cardItem.id,
+        columnId: cardItem.columnId,
+        dashboardId: cardItem.dashboardId,
+      });
+      getCommentData();
+      setComment('');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const intersectionObserverRef = useRef(null);
   useEffect(() => {
@@ -40,11 +54,6 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
 
   const handleToggledPopover = () => {
     setIsToggledPopover(!isToggledPopover);
-  };
-
-  const handleChange = event => {
-    setComment(event.target.value);
-    setNewContent(event.target.value);
   };
 
   const handleDeleteCard = async () => {
@@ -66,27 +75,6 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
       if (response.ok) {
         handleModal();
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleCreateCommnet = async () => {
-    try {
-      const accessToken = getAccessToken();
-      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/comments', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: comment,
-          cardId: cardItem.id,
-          columnId: cardItem.columnId,
-          dashboardId: columnItem.dashboardId,
-        }),
-      });
     } catch (error) {
       console.error(error);
     }
@@ -149,20 +137,7 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
     <>
       <ModalLayout handleModal={handleModal} title='새로운 일정 관리 Taskify'>
         <form className='relative '>
-          <div className='absolute top-[-70px] left-[300px] flex flex-col border border-solid p-2 rounded-md'>
-            <div className='flex  gap-3'>
-              <div className='font-semibold text-xs'>담당자</div>
-              <div className='flex gap-3'>
-                <div>{cardItem.assignee.profileImageUrl}</div>
-                <div className='text-xs'>{cardItem.assignee.nickname}</div>
-              </div>
-            </div>
-            <div className='flex  gap-3'>
-              <div className='font-semibold text-xs'>마감일</div>
-              <div className='text-xs'>{cardItem.dueDate}</div>
-            </div>
-          </div>
-
+          <InformationChip cardItem={cardItem} />
           <div className='flex gap-10 '>
             <div className='flex flex-col w-[28rem] gap-5 h-[6.25rem]bg-tp-white'>
               <div className='flex items-center w-full overflow-hidde`n gap-5'>
@@ -175,10 +150,10 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
                   ))}
                 </div>
               </div>
-              <div className='flex flex-col gap-2.5 h-[15.625rem] bg-tp-black_900'>
-                <img className='h-[15.625rem] object-cover' src={cardItem.imageUrl} alt='user' />
+              <div className='flex flex-col gap-2.5 h-[15.625rem] rounded-lg overflow-hidden bg-tp-black_900'>
+                <img className='h-[15.625rem] object-cover ' src={cardItem.imageUrl} alt='user' />
               </div>
-              <div className='flex flex-col gap-2.5 h-[7.5rem] overflow-y-scroll'>{cardItem.description}</div>
+              <div className='flex flex-col gap-2.5 h-[7.5rem] overflow-hidden'>{cardItem.description}</div>
               <div className='flex flex-col gap-2.5 '>
                 <ModalTextarea onClick={handleCreateCommnet} onChange={setComment} />
               </div>
@@ -193,7 +168,6 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
               <Image src={MoreVertIcon} alt='edit' width={28} height={28} />
             </button>
             {isToggledPopover && <Popover editCard={handleToggleModal} deleteCard={handleDeleteCard} />}
-
             <button type='button' onClick={handleModal}>
               <Image src={CloseIcon} alt='close' width={28} height={28} />
             </button>

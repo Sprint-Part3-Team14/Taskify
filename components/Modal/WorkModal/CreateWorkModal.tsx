@@ -10,18 +10,18 @@ import { changeCardImage } from '@/utils/api/changeCardImage';
 import InputImageFile from '@/components/InputImage/InputImage';
 import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
-import { getAccessToken } from '@/utils/handleToken';
+import { formatDate } from '@/utils/formatDate';
 import { I_ModalToggle } from '../ModalType';
-import { I_Column, I_Dashboard, I_Members } from '@/interface/Dashboard';
+import { I_Column, I_Members } from '@/interface/Dashboard';
+import { createCard } from '@/utils/api/createCard';
 
 interface I_CreateWorkModal extends I_ModalToggle {
   handleModal: () => void;
   columnItem: I_Column;
   dashboardMembers: I_Members[];
-  dashboardItem: I_Dashboard[];
 }
 
-const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardItem }: I_CreateWorkModal) => {
+const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_CreateWorkModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState();
@@ -31,35 +31,28 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardI
 
   const handleCreateCard = async () => {
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assigneeUserId: 1764,
-          dashboardId: Number(columnItem.dashboardId),
-          columnId: Number(columnItem.id),
-          title: title,
-          description: description,
-          dueDate: date,
-          tags: tags,
-          imageUrl: image,
-        }),
+      const result = await createCard({
+        title: title,
+        dashboardId: Number(columnItem.dashboardId),
+        columnId: Number(columnItem.id),
+        description: description,
+        dueDate: date,
+        tags: tags,
+        imageUrl: image,
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleCardTitle = event => {
-    setTitle(event.target.value);
+  const handleCardTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    setTitle(title);
   };
 
-  const handleCardDescrpition = event => {
-    setDescription(event.target.value);
+  const handleCardDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const description = event.target.value;
+    setDescription(description);
   };
 
   const handleCardDate = (event: ChangeEvent<HTMLInputElement>) => {
@@ -73,16 +66,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardI
       return;
     }
 
-    const formattedDate =
-      selectedDate.getFullYear() +
-      '-' +
-      ('0' + (selectedDate.getMonth() + 1)).slice(-2) +
-      '-' +
-      ('0' + selectedDate.getDate()).slice(-2) +
-      ' ' +
-      ('0' + selectedDate.getHours()).slice(-2) +
-      ':' +
-      ('0' + selectedDate.getMinutes()).slice(-2);
+    const formattedDate = formatDate(selectedDate);
 
     setDate(formattedDate);
   };
@@ -108,6 +92,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardI
 
   const handleCardImage = async ({ file }) => {
     const { cardImageUrl } = await changeCardImage({ file, columnId: Number(columnItem.id) });
+    console.log({ cardImageUrl });
     setImage(cardImageUrl);
   };
 
@@ -137,7 +122,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardI
               id='Comments'
               placeholder='설명을 입력해 주세요'
               className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
-              onChange={handleCardDescrpition}
+              onChange={handleCardDescription}
             />
           </div>
         </div>

@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-
 import Image from 'next/image';
 
 import EditColumnModal from 'components/Modal/EditColumnModal';
-
-import { getAccessToken } from 'utils/handleToken';
-
 import NumberChip from '../../common/Chip/NumberChip';
-
 import { EllipseIcon, SettingIcon } from 'constant/importImage';
+
+import { getColumnList } from '@/utils/api/getColumnList';
+import { I_Column } from '@/interface/Dashboard';
+import { changeNewColumnTitle } from '@/utils/api/changeCard';
+import { deleteColumn } from '@/utils/api/deleteColumn';
 
 const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
@@ -34,37 +34,23 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
     }
 
     try {
-      const accessToken = getAccessToken();
-      const checkDuplicateResponse = await fetch(
-        `https://sp-taskify-api.vercel.app/4-14/columns?dashboardId=${dashboardId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const responseData = await checkDuplicateResponse.json();
+      const { data } = await getColumnList({ id: dashboardId });
 
-      const checkDuplicate = responseData.data;
-      const isDuplicateTitle = checkDuplicate.some(column => column.title === newColumnTitle);
+      const isDuplicateTitle = data.some((column: I_Column) => column.title === newColumnTitle);
 
       if (isDuplicateTitle) {
         alert('중복된 컬럼 이름입니다');
         return;
       }
 
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const result = await changeNewColumnTitle({
+        column: columnId,
+        changeTitle: {
           title: newColumnTitle,
-        }),
+        },
       });
 
-      if (response.ok) {
+      if (result) {
         handleToggledModal();
       }
     } catch (error) {
@@ -76,17 +62,10 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
   const hanldeColumnDelete = async () => {
     if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
       try {
-        const accessToken = getAccessToken();
-        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${columnId}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (response.ok) {
-          handleToggledModal();
+        const result = await deleteColumn({ column: columnId });
+        if (result) {
         }
+        handleToggledModal();
       } catch (error) {
         console.error(error);
       }
