@@ -10,11 +10,13 @@ import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { getColumnList } from '@/utils/api/getColumnList';
 import { createColumn } from '@/utils/api/createColumn';
+import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 
 const Dashboard = () => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const [newColumnTitle, setNewColumnTitle] = useState('');
   const [columnList, setColumnList] = useState([]);
+  const [cardLists, setCardLists] = useState({});
 
   const path = usePathname();
   const dashboardId = path.split('/')[2];
@@ -55,14 +57,78 @@ const Dashboard = () => {
     setNewColumnTitle(title);
   };
 
+  const handleCardListChange = (columnId: number, newCardList: any[]) => {
+    setCardLists(prevState => ({
+      ...prevState,
+      [columnId]: newCardList,
+    }));
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId, type } = result;
+
+    console.log('>>> source', source);
+    console.log('>>> destination', destination);
+
+    if (!destination) {
+      return;
+    }
+
+    if (destination.droppableId === source.droppableId && source.index === destination.index) {
+      return;
+    }
+
+    if (type === 'column') {
+      const draggedColumnId = Number(draggableId);
+      const draggedColumn = columnList.find(column => column.id === draggedColumnId);
+      const newColumnList = Array.from(columnList);
+      newColumnList.splice(source.index, 1);
+      newColumnList.splice(destination.index, 0, draggedColumn);
+      setColumnList(newColumnList);
+    }
+
+    if (type === 'card') {
+      const draggedCardId = Number(draggableId);
+      const sourceColumnId = Number(source.droppableId);
+      const destinationColumnId = Number(destination.droppableId);
+      const draggedCard = cardLists[sourceColumnId].find(card => card.id === draggedCardId);
+      const newSourceColumn = Array.from(cardLists[sourceColumnId]);
+      newSourceColumn.splice(source.index, 1);
+      const newDestinationColumn = Array.from(cardLists[destinationColumnId]);
+      newDestinationColumn.splice(destination.index, 0, draggedCard);
+      setCardLists({
+        ...cardLists,
+        [sourceColumnId]: newSourceColumn,
+        [destinationColumnId]: newDestinationColumn,
+      });
+    }
+  };
+  console.log(cardLists);
+
   return (
     <div className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
-      <div className='flex justify-between'>
-        <div className='flex pc:flex-row mb:flex-col w-full'>
-          {columnList &&
-            columnList.map(column => <Column key={column.id} columnItem={column} dashboardItem={columnList} />)}
-        </div>
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId='column' direction='horizontal' type='column'>
+          {provided => (
+            <div className='flex justify-between' ref={provided.innerRef} {...provided.droppableProps}>
+              <div className='flex pc:flex-row mb:flex-col w-full'>
+                {columnList &&
+                  columnList.map((column, index) => (
+                    <Column
+                      key={column.id}
+                      columnItem={column}
+                      dashboardItem={columnList}
+                      index={index}
+                      onCardListChange={handleCardListChange}
+                      changeCardList={cardLists}
+                    />
+                  ))}
+              </div>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <div className='mb:sticky mb:py-5 mb:bottom-0 min-w-[20rem] my-11 py-16 px-5 bg-tp-gray_500'>
         <AddButton onClick={handleToggleModal}>새로운 컬럼 추가하기</AddButton>
         {isShowModal && (

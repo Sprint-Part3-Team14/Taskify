@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { Draggable } from '@hello-pangea/dnd';
 
 import TagChip from 'components/common/Chip/TagChip';
 
@@ -13,52 +14,60 @@ interface I_CardItem {
   columnItem: I_Column;
   dashboardMember: I_Members[];
   dashboardItem: I_Dashboard[];
+  index: number;
 }
 
-const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem }: I_CardItem) => {
+const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem, index }: I_CardItem) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const createdAtDate = new Date(cardItem.createdAt);
   const formattedDate = createdAtDate.toISOString().split('T')[0];
+  const isDragDisabled = String(cardItem.id) === '';
 
   return (
-    <>
-      <div className='flex flex-col gap-2.5 p-5 w-full border border-solid border-tp-gray_700 bg-tp-white rounded-md'>
-        <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem] ' onClick={handleToggleModal}>
-          {cardItem.imageUrl && (
-            <img
-              className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full  rounded-md '
-              src={cardItem.imageUrl}
-              alt='card'
-            />
-          )}
-          <div className='flex flex-col w-full gap-[0.625rem]'>
-            <div className=' font-semibold text-base'>{cardItem.title}</div>
-            <div className='flex gap-1.5'>
-              {cardItem.tags.map((tag, index) => (
-                <TagChip key={index} name={tag} size='large' />
-              ))}
-            </div>
-            <div className='flex justify-between'>
-              <div className='flex flex-wrap items-center gap-1.5'>
-                <Image src={CalendarTodayIcon} alt='calendar' width={18} height={18} />
-                <div className='text-xs font-medium text-tp-gray_900'>{formattedDate}</div>
+    <Draggable draggableId={String(cardItem.id)} index={index} isDragDisabled={isDragDisabled}>
+      {provided => (
+        <div
+          className='flex flex-col gap-2.5 p-5 w-full border border-solid border-tp-gray_700 bg-tp-white rounded-md'
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}>
+          <div className='flex pc:flex-col tb:flex-row mb:flex-col w-full gap-[0.625rem] ' onClick={handleToggleModal}>
+            {cardItem.imageUrl && (
+              <img
+                className='flex flex-col gap-[0.625rem] tb:w-[5.7rem]  pc:w-full  rounded-md '
+                src={cardItem.imageUrl}
+                alt='card'
+              />
+            )}
+            <div className='flex flex-col w-full gap-[0.625rem]'>
+              <div className=' font-semibold text-base'>{cardItem.title}</div>
+              <div className='flex gap-1.5'>
+                {cardItem.tags.map((tag, index) => (
+                  <TagChip key={index} name={tag} size='large' />
+                ))}
               </div>
-              <div>{cardItem.assignee.profileImageUrl}</div>
+              <div className='flex justify-between'>
+                <div className='flex flex-wrap items-center gap-1.5'>
+                  <Image src={CalendarTodayIcon} alt='calendar' width={18} height={18} />
+                  <div className='text-xs font-medium text-tp-gray_900'>{formattedDate}</div>
+                </div>
+                <div>{cardItem.assignee.profileImageUrl}</div>
+              </div>
             </div>
           </div>
+          {isShowModal && (
+            <WorkModal
+              handleModal={handleToggleModal}
+              dashboardMember={dashboardMember}
+              dashboardItem={dashboardItem}
+              columnItem={columnItem}
+              cardItem={cardItem}
+            />
+          )}
         </div>
-      </div>
-      {isShowModal && (
-        <WorkModal
-          handleModal={handleToggleModal}
-          dashboardMember={dashboardMember}
-          dashboardItem={dashboardItem}
-          columnItem={columnItem}
-          cardItem={cardItem}
-        />
       )}
-    </>
+    </Draggable>
   );
 };
 
-export default Card;
+export default React.memo(Card);
