@@ -27,7 +27,7 @@ const SigninPage = () => {
 
     if (accessToken) {
       console.log(accessToken);
-      router.push('/mydashboard');
+      router.push('/myinvitaion');
     }
   }, [router]);
 
