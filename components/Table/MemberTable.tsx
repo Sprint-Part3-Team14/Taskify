@@ -9,13 +9,10 @@ import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
 import { usePageNation } from '@/hooks/usePageNation';
 import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
 
-const MemberTable = () => {
+const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [members, setMembers] = useState(null);
-  const apiQuery = {
-    showCount: 4,
-    dashboardId: 5946,
-  };
+  const showCount = 5;
 
   console.log(members);
 
@@ -23,12 +20,12 @@ const MemberTable = () => {
     try {
       const { members, totalCount } = await getDashBoardMembers({
         currentPage: pageNation.currentPage,
-        showCount: apiQuery.showCount,
-        dashboardId: apiQuery.dashboardId,
+        showCount: showCount,
+        dashboardId: dashboardId,
       });
       setPageNation(prevState => ({
         ...prevState,
-        totalPage: Math.ceil(totalCount / apiQuery.showCount),
+        totalPage: Math.ceil(totalCount / showCount),
       }));
       setMembers(members);
     } catch (error: any) {

@@ -19,6 +19,7 @@ export type I_ModalTitle =
   | '새로운 일정 관리 Taskify';
 
 export interface I_ModalToggle {
+  dashboardId?: number;
   handleModal: (event: MouseEvent<HTMLElement>) => void;
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
