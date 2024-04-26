@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import ColumnTitle from '../ColumnTitle/ColumnTitle';
 import Card from '../Card/Card';
@@ -8,7 +8,7 @@ import Card from '../Card/Card';
 import AddButton from '@/components/common/button/add';
 import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
 
-import { getCardList } from '@/utils/api/getCardList';
+import { getAddCardList, getCardList } from '@/utils/api/getCardList';
 import { getDashboardMember } from '@/utils/api/getDashboardMember';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { I_Column, I_Dashboard } from '@/interface/Dashboard';
@@ -21,22 +21,9 @@ interface I_ColumnList {
 const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const [dashboardMember, setDashboardMember] = useState([]);
-  const [cardList, setCardList] = useState([]);
   const [cardCount, setCardCount] = useState(0);
-
-  useEffect(() => {
-    const getDashboardCardList = async () => {
-      try {
-        const { cards, totalCount } = await getCardList({ column: columnItem.id });
-        setCardList(cards);
-        setCardCount(totalCount);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getDashboardCardList();
-  }, [columnItem.id]);
+  const [cardList, setCardList] = useState([]);
+  const [targetId, setCursorId] = useState('');
 
   useEffect(() => {
     const getMyDashboardMembers = async () => {
@@ -49,6 +36,66 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
     };
     getMyDashboardMembers();
   }, []);
+
+  const intersectionObserverRef = useRef(null);
+  useEffect(() => {
+    getDashboardCardList();
+  }, []);
+
+  const getDashboardCardList = async () => {
+    try {
+      if (cardList.length === 0) {
+        const { cards, totalCount } = await getCardList({ column: columnItem.id });
+        const cardList = Array.isArray(cards) ? cards : [];
+        setCardList(cards);
+        setCardCount(totalCount);
+        if (cardList.length > 0) {
+          setCursorId(cardList[cardList.length - 1].id);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAddDashboardCardList = async () => {
+    try {
+      const { cards, totalCount } = await getAddCardList({ column: columnItem.id, targetId: targetId });
+      const newCardList = Array.isArray(cards) ? cards : [];
+      setCardList(prevList => [...prevList, ...newCardList]);
+      setCardCount(totalCount);
+      if (newCardList.length > 0) {
+        setCursorId(newCardList[newCardList.length - 1].id);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const intersectionObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            getAddDashboardCardList();
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+
+    if (intersectionObserverRef.current) {
+      intersectionObserver.observe(intersectionObserverRef.current);
+    }
+
+    return () => {
+      if (intersectionObserverRef.current) {
+        intersectionObserver.unobserve(intersectionObserverRef.current);
+      }
+    };
+  }, [targetId]);
 
   return (
     <div className='flex flex-col items-center pc:border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5 '>
@@ -76,6 +123,7 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
                 dashboardItem={dashboardItem}
               />
             ))}
+          <div ref={intersectionObserverRef}></div>
         </div>
       </div>
     </div>
@@ -83,3 +131,6 @@ const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
 };
 
 export default Column;
+function getDashboardCardList() {
+  throw new Error('Function not implemented.');
+}
