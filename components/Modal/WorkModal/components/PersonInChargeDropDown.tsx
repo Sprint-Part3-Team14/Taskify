@@ -1,3 +1,4 @@
+import { I_Dashboard, I_Members } from '@/interface/Dashboard';
 import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useState } from 'react';
@@ -6,22 +7,9 @@ interface I_PersonInCharge {
   dashboardMember: I_Members[];
 }
 
-interface I_Members {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: any;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-  userId: number;
-}
-
 const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
   const [openList, setOpenList] = useState(false);
-  const [selectItem, setSelectItem] = useState('');
-
-  console.log(dashboardMember);
+  const [selectItem, setSelectItem] = useState(dashboardMember[0].nickname);
 
   function handleOpenDropDown() {
     setOpenList(prevState => !prevState);

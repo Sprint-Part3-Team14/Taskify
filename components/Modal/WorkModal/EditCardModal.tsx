@@ -7,43 +7,30 @@ import ProgressDropDown from './components/ProgressDropDown';
 import InputImageFile from '@/components/InputImage/InputImage';
 import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
-import { setAccessToken, getAccessToken } from '@/utils/handleToken';
-import { I_ModalToggle } from '../ModalType';
-import { TEMP_TOKEN } from '@/app/(dashboard)/dashboard/constants';
-import { changeCardImage } from '@/utils/api/changeCardImage';
+import { getAccessToken } from '@/utils/handleToken';
 
-interface I_CreateWorkModal {
+import { changeCardImage } from '@/utils/api/changeCardImage';
+import { I_Card, I_Column, I_Members, I_Dashboard } from '@/interface/Dashboard';
+import { I_ModalToggle } from '../ModalType';
+
+interface I_EditWorkModal extends I_ModalToggle {
   handleModal: () => void;
-  columnItem: any;
-  cardItem: any;
-  dashboardMember: any;
+  columnItem: I_Column;
+  cardItem: I_Card;
+  dashboardMembers: I_Members[];
+  dashboardItem: I_Dashboard[];
   onClickFirstButton: () => void;
 }
 
-interface I_Members {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: any;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-  userId: number;
-}
-
-const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
-  const [dashboardMember, setDashboardMember] = useState([]);
-  const [selectedMemberId, setSelectedMemberId] = useState<number>(0);
-  const [tags, setTags] = useState<string[]>([]);
+const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, dashboardItem }: I_EditWorkModal) => {
+  const [title, setTitle] = useState(cardItem.title);
+  const [description, setDescription] = useState(cardItem.description);
+  const [image, setImage] = useState(cardItem.imageUrl);
+  const [tags, setTags] = useState<string[]>(cardItem.tags);
   const [tagsName, setTagsName] = useState('');
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [image, setImage] = useState();
+  const [date, setDate] = useState(cardItem.dueDate);
 
   const handleEditCard = async () => {
-    setAccessToken(TEMP_TOKEN);
-
     try {
       const accessToken = getAccessToken();
       const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
@@ -75,17 +62,16 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
     setDescription(event.target.value);
   };
 
-  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = new Date(event.target.value);
-    const currentTime = new Date();
+  const handleCardDate = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputDate = event.target.value;
+    const selectedDate = new Date(inputDate);
+    const currentDate = new Date();
 
-    const selectedHours = ('0' + selectedDate.getHours()).slice(-2);
-    const selectedMinutes = ('0' + selectedDate.getMinutes()).slice(-2);
-    const currentHours = ('0' + currentTime.getHours()).slice(-2);
-    const currentMinutes = ('0' + currentTime.getMinutes()).slice(-2);
-
-    const hours = selectedDate.toDateString() === currentTime.toDateString() ? currentHours : selectedHours;
-    const minutes = selectedDate.toDateString() === currentTime.toDateString() ? currentMinutes : selectedMinutes;
+    if (selectedDate < currentDate) {
+      alert('마감 기한을 제대로 선택해주세요.');
+      event.target.value = '';
+      return;
+    }
 
     const formattedDate =
       selectedDate.getFullYear() +
@@ -94,9 +80,9 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
       '-' +
       ('0' + selectedDate.getDate()).slice(-2) +
       ' ' +
-      hours +
+      ('0' + selectedDate.getHours()).slice(-2) +
       ':' +
-      minutes;
+      ('0' + selectedDate.getMinutes()).slice(-2);
 
     setDate(formattedDate);
   };
@@ -129,8 +115,8 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
     <ModalLayout handleModal={handleModal} title='할 일 수정'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <ProgressDropDown columnIte={columnItem} />
-          <PersonInChargeDropDown dashboardmember={dashboardMember} setSelectedMemberId={setSelectedMemberId} />
+          <ProgressDropDown columnItem={columnItem} dashboardItem={dashboardItem} />
+          <PersonInChargeDropDown dashboardMember={dashboardMembers} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>
@@ -140,7 +126,7 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
             type='text'
             placeholder='제목을 입력해 주세요'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 placeholder:text-sm'
-            onChange={handletitle}
+            onChange={handleCardTitle}
             value={title}
           />
         </div>
@@ -153,8 +139,8 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
               id='Comments'
               placeholder='설명을 입력해 주세요'
               className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
-              onChange={handledescrpition}
-              value={descrpition}
+              onChange={handleCardDescrpition}
+              value={description}
             />
           </div>
         </div>
@@ -166,7 +152,7 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
             required
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
-            onChange={handleDate}
+            onChange={handleCardDate}
             value={date}
           />
         </div>
@@ -195,7 +181,7 @@ const EditCardModal = ({ handleModal, columnItem }: I_CreateWorkModal) => {
           buttonType='double'
           firstButton='취소'
           secondButton='수정'
-          onClickFirstButton={onClickFirstButton}
+          onClickFirstButton={handleModal}
           onClickSecondButton={handleEditCard}
         />
       </form>

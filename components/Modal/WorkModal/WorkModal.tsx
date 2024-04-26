@@ -14,17 +14,18 @@ import ProgressChip from '@/components/common/Chip/ProgressChip';
 import { CloseIcon, MoreVertIcon } from 'constant/importImage';
 import Popover from './components/Popover';
 import { useHandleModal } from '@/hooks/useHandleModal';
-import { I_Column, I_Members, I_Card } from '@/interface/Dashboard';
+import { I_Column, I_Members, I_Card, I_Dashboard } from '@/interface/Dashboard';
 import { getCommentList, getAddCommentList } from '@/utils/api/getComment';
 
 interface I_WorkModal {
   handleModal: () => void;
   dashboardMember: I_Members[];
+  dashboardItem: I_Dashboard;
   columnItem: I_Column;
   cardItem: I_Card;
 }
 
-const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem }: I_WorkModal) => {
+const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboardItem }: I_WorkModal) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const [isToggledPopover, setIsToggledPopover] = useState(false);
   const [comment, setComment] = useState('');
@@ -202,7 +203,8 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem }: I_Wor
       {isShowModal && (
         <EditCardModal
           handleModal={handleToggleModal}
-          dashboardMember={dashboardMember}
+          dashboardMembers={dashboardMember}
+          dashboardItem={dashboardItem}
           columnItem={columnItem}
           cardItem={cardItem}
           onClickFirstButton={handleToggleModal}

@@ -6,15 +6,16 @@ import TagChip from 'components/common/Chip/TagChip';
 import { CalendarTodayIcon } from 'constant/importImage';
 import WorkModal from '@/components/Modal/WorkModal/WorkModal';
 import { useHandleModal } from '@/hooks/useHandleModal';
-import { I_Card, I_Column, I_Members } from '@/interface/Dashboard';
+import { I_Card, I_Column, I_Members, I_Dashboard } from '@/interface/Dashboard';
 
 interface I_CardItem {
   cardItem: I_Card;
   columnItem: I_Column;
   dashboardMember: I_Members[];
+  dashboardItem: I_Dashboard;
 }
 
-const Card = ({ cardItem, dashboardMember, columnItem }: I_CardItem) => {
+const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem }: I_CardItem) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const createdAtDate = new Date(cardItem.createdAt);
   const formattedDate = createdAtDate.toISOString().split('T')[0];
@@ -51,6 +52,7 @@ const Card = ({ cardItem, dashboardMember, columnItem }: I_CardItem) => {
         <WorkModal
           handleModal={handleToggleModal}
           dashboardMember={dashboardMember}
+          dashboardItem={dashboardItem}
           columnItem={columnItem}
           cardItem={cardItem}
         />

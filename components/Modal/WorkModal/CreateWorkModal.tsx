@@ -1,6 +1,6 @@
 'use clinet';
 
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import ModalLayout from '../ModalLayout';
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
@@ -12,23 +12,22 @@ import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
 import { getAccessToken } from '@/utils/handleToken';
 import { I_ModalToggle } from '../ModalType';
-import { I_Column, I_Members } from '@/interface/Dashboard';
+import { I_Column, I_Dashboard, I_Members } from '@/interface/Dashboard';
 
 interface I_CreateWorkModal extends I_ModalToggle {
   handleModal: () => void;
   columnItem: I_Column;
   dashboardMembers: I_Members[];
+  dashboardItem: I_Dashboard[];
 }
 
-const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_CreateWorkModal) => {
+const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, dashboardItem }: I_CreateWorkModal) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState();
   const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  const [image, setImage] = useState();
-
-  console.log(dashboardMembers);
 
   const handleCreateCard = async () => {
     try {
@@ -63,7 +62,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     setDescription(event.target.value);
   };
 
-  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCardDate = (event: ChangeEvent<HTMLInputElement>) => {
     const inputDate = event.target.value;
     const selectedDate = new Date(inputDate);
     const currentDate = new Date();
@@ -150,7 +149,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
             required
             aria-required='true'
             className='border border-solid border-tp-gray_700 p-4 rounded-lg outline-tp-violet_900 before:content-[attr(data-placeholder) w-full]'
-            onChange={handleDate}
+            onChange={handleCardDate}
           />
         </div>
         <div className='flex flex-col gap-2.5 h-[8rem]'>
@@ -178,8 +177,8 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
           buttonType='double'
           firstButton='취소'
           secondButton='생성'
-          onClickSecondButton={handleCreateCard}
           onClickFirstButton={handleModal}
+          onClickSecondButton={handleCreateCard}
         />
       </form>
     </ModalLayout>

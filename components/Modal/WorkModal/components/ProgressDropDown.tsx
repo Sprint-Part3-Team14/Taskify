@@ -2,19 +2,19 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import ProgressChip from 'components/common/Chip/ProgressChip';
-import { I_ColumnList, I_DragDropItem } from '@/interface/Dashboard';
-import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
 
-interface Props {
-  dragDropItem: I_DragDropItem;
-  column: I_ColumnList;
+import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
+import { I_Column, I_Dashboard } from '@/interface/Dashboard';
+
+interface I_ProgressDropDown {
+  columnItem: I_Column;
+  dashboardItem: I_Dashboard[];
 }
 
-const ProgressDropDown = ({ dragDropItem, column }: Props) => {
-  const columnList = Object.values(dragDropItem.columns);
+const ProgressDropDown = ({ columnItem, dashboardItem }: I_ProgressDropDown) => {
   const [openList, setOpenList] = useState(false);
-  const [selectedColumn, setSelectedColumn] = useState(column);
-  const [selectItem, setSelectItem] = useState(<ProgressChip size='large' title={column.title} />);
+  const [selectedColumn, setSelectedColumn] = useState<I_Column>(columnItem);
+  const [selectItem, setSelectItem] = useState(<ProgressChip size='large' title={dashboardItem[0].title} />);
 
   function handleOpenDropDown() {
     openList ? setOpenList(false) : setOpenList(true);
@@ -43,11 +43,11 @@ const ProgressDropDown = ({ dragDropItem, column }: Props) => {
       </button>
       {openList && (
         <div className='absolute left-0 z-10 mt-1 w-[13.6rem] bg-white shadow-lg ring-1 ring-black ring-opacity-5 last:rounded-b-md'>
-          {columnList.map(item => (
+          {dashboardItem.map(item => (
             <div
               className='flex gap-1.5 px-4 py-2 text-sm hover:bg-slate-50'
               key={item.id}
-              id={item.id}
+              id={String(item.id)}
               onClick={() => handleSelectItem(item)}>
               <div className={selectedColumn.title === item.title ? 'w-5 h-5 relative' : 'w-5 h-5 relative invisible'}>
                 <Image fill src={CheckIcon} alt='선택된 상태' />

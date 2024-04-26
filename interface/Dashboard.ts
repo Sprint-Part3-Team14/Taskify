@@ -36,3 +36,12 @@ export interface I_Members {
   isOwner: boolean;
   userId: number;
 }
+
+export interface I_Dashboard {
+  id: number;
+  title: string;
+  teamId: string;
+  dashboardId: number;
+  createdAt: string;
+  updatedAt: string;
+}

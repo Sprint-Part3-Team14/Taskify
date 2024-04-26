@@ -11,13 +11,14 @@ import CreateWorkModal from '@/components/Modal/WorkModal/CreateWorkModal';
 import { getCardList } from '@/utils/api/getCardList';
 import { getDashboardMember } from '@/utils/api/getDashboardMember';
 import { useHandleModal } from '@/hooks/useHandleModal';
-import { I_Column } from '@/interface/Dashboard';
+import { I_Column, I_Dashboard } from '@/interface/Dashboard';
 
 interface I_ColumnList {
   columnItem: I_Column;
+  dashboardItem: I_Dashboard[];
 }
 
-const Column = ({ columnItem }: I_ColumnList) => {
+const Column = ({ columnItem, dashboardItem }: I_ColumnList) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const [dashboardMember, setDashboardMember] = useState([]);
   const [cardList, setCardList] = useState([]);
@@ -60,14 +61,25 @@ const Column = ({ columnItem }: I_ColumnList) => {
         />
         <AddButton onClick={handleToggleModal} />
         {isShowModal && (
-          <CreateWorkModal handleModal={handleToggleModal} columnItem={columnItem} dashboardMembers={dashboardMember} />
+          <CreateWorkModal
+            handleModal={handleToggleModal}
+            columnItem={columnItem}
+            dashboardMembers={dashboardMember}
+            dashboardItem={dashboardItem}
+          />
         )}
       </div>
       <div className='flex flex-col w-full  gap-4'>
         <div className='flex flex-col w-full  gap-4'>
           {cardList &&
             cardList.map(card => (
-              <Card key={card.id} columnItem={columnItem} cardItem={card} dashboardMember={dashboardMember} />
+              <Card
+                key={card.id}
+                columnItem={columnItem}
+                cardItem={card}
+                dashboardMember={dashboardMember}
+                dashboardItem={dashboardItem}
+              />
             ))}
         </div>
       </div>

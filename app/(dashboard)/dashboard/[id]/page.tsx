@@ -34,7 +34,8 @@ const Dashboard = () => {
     <div className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
       <div className='flex justify-between'>
         <div className='flex pc:flex-row mb:flex-col w-full'>
-          {columnList && columnList.map(column => <Column key={column.id} columnItem={column} />)}
+          {columnList &&
+            columnList.map(column => <Column key={column.id} columnItem={column} dashboardItem={columnList} />)}
         </div>
       </div>
       <div className='w-fit grow py-16 px-5 bg-tp-gray_500'>
