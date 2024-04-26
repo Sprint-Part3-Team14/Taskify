@@ -1,3 +1,7 @@
+import Link from 'next/link';
+import Members from './members';
+import ProfilePopup from './profilePopup';
+
 const ProfileInfo = () => {
   const loginInfo = {
     id: 1,

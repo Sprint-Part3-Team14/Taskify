@@ -1,6 +1,7 @@
 import { PlusBlueIcon, SettingIcon } from 'constant/importImage';
 import Link from 'next/link';
 import Image from 'next/image';
+import { MembersProps } from './members';
 
 interface DashboardInfoProps {
   createdByMe?: boolean;
@@ -8,7 +9,7 @@ interface DashboardInfoProps {
   dashboardId: string;
 }
 
-const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfoProps) => {
+export const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfoProps) => {
   return (
     <div className='flex justify-center items-center gap-4'>
       {createdByMe && (
@@ -30,7 +31,7 @@ interface InvitationButtonProps {
   dashboardId: string;
 }
 
-const InvitationButton = ({ dashboardId }: InvitationButtonProps) => {
+export const InvitationButton = ({ dashboardId }: InvitationButtonProps) => {
   return (
     <>
       <button>
@@ -42,6 +43,3 @@ const InvitationButton = ({ dashboardId }: InvitationButtonProps) => {
     </>
   );
 };
-
-export default ManageButton;
-InvitationButton;
