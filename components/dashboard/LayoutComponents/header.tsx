@@ -30,13 +30,13 @@ const DashboardHeader = ({ dashboardId }: Props) => {
       </div>
       <div className='flex justify-center right items-center text-base font-normal gap-3 tb:gap-8'>
         {/* <DarkModeButton /> */}
-        {/* {dashboardId && (
+        {dashboardId && (
           <DashboardInfo
             createdByMe={dashboardInfo.createdByMe}
             dashboardId={dashboardId}
-            memberList={dashboardMembers}
+            // memberList={dashboardMembers}
           />
-        )} */}
+        )}
         <ProfileInfo />
       </div>
     </div>

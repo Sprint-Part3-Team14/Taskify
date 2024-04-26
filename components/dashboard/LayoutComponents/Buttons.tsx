@@ -11,11 +11,11 @@ interface DashboardInfoProps {
 
 export const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfoProps) => {
   return (
-    <div className='flex justify-center items-center gap-4'>
+    <div className='flex justify-center items-center gap-2'>
       {createdByMe && (
         <Link href={`/dashboard/${dashboardId}/edit`}>
-          <button>
-            <div className='hidden pr-8 tablet:block'>
+          <button className='flex justify-center items-center w-[85px] border border-gray-400 rounded-lg'>
+            <div className='hidden pr-2 tb:block'>
               <Image src={SettingIcon} alt='톱니바퀴' />
             </div>
             관리
@@ -34,8 +34,8 @@ interface InvitationButtonProps {
 export const InvitationButton = ({ dashboardId }: InvitationButtonProps) => {
   return (
     <>
-      <button>
-        <div className='hidden pr-8 tablet:block'>
+      <button className='flex justify-center items-center border w-[109px] border-gray-400 rounded-lg'>
+        <div className='hidden pr-2 tb:block'>
           <Image src={PlusBlueIcon} alt='더하기 버튼' />
         </div>
         초대하기
