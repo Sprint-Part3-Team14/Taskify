@@ -15,5 +15,15 @@ export const getDashBoardMembers = async ({ currentPage, showCount, dashboardId 
     },
   });
   const result = response.json();
-  return result;
+  switch (response.status) {
+    case 200: {
+      return result;
+    }
+    case 404: {
+      throw new Error('대쉬보드의 구성원이 존재하지 않습니다.');
+    }
+    default: {
+      throw new Error('알 수 없는 이유로 대시보드 구성원 조회에 실패했습니다. 다시 로그인해 주세요.');
+    }
+  }
 };
