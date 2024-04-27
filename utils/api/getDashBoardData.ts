@@ -8,11 +8,12 @@ export const getDashBoardData = async dashBoardId => {
     },
   });
 
-  const result = response.json();
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 200: {
-      return result;
-    }
     case 404: {
       throw new Error('대시보드가 존재하지 않습니다. 다시 시도해 주세요.');
     }

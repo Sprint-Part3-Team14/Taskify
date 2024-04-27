@@ -17,12 +17,13 @@ export const changeDashBoard = async ({ dashBoardId, changeData }: ChangeDashBoa
       Authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
 
   switch (response.status) {
-    case 200: {
-      return result;
-    }
     case 400: {
       throw new Error('수정할 내용을 입력해 주세요.');
     }

@@ -14,11 +14,13 @@ export const getDashBoardMembers = async ({ currentPage, showCount, dashboardId 
       Authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 200: {
-      return result;
-    }
     case 404: {
       throw new Error('대쉬보드의 구성원이 존재하지 않습니다.');
     }

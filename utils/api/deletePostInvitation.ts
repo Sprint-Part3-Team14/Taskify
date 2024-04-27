@@ -17,12 +17,12 @@ export const deletePostInvitation = async ({ dashboardId, invitationId }: I_Dele
     }
   );
 
-  const result = await response.json();
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
 
   switch (response.status) {
-    case 204: {
-      return 'success';
-    }
     case 403: {
       throw new Error('대시보드 초대 취소 권한이 없습니다. 다시 로그인해 주세요.');
     }

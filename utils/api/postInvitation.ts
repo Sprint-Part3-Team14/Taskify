@@ -10,11 +10,12 @@ export const postInvitation = async ({ email, dashboardId }: { email: string; da
     },
   });
 
-  const result = response.json();
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 201: {
-      return result;
-    }
     case 400: {
       throw new Error('이메일 형식이 올바르지 않습니다.');
     }

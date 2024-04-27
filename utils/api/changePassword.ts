@@ -14,10 +14,13 @@ export const changePassWord = async ({ changePasswordValue }: { changePasswordVa
       Authorization: ACCESS_TOKEN,
     },
   });
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 204: {
-      return 'success';
-    }
     case 400: {
       throw new Error('400');
     }

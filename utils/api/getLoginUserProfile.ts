@@ -8,11 +8,13 @@ export const getLoginUserProfile = async () => {
       authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 200: {
-      return result;
-    }
     case 401: {
       throw new Error('올바르지 않은 조회입니다. 다시 로그인해 주세요.');
     }

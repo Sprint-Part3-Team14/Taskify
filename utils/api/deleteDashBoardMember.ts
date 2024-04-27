@@ -9,10 +9,12 @@ export const deleteDashBoardMember = async ({ memberId }: { memberId }) => {
     },
   });
 
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 204: {
-      return 'success';
-    }
     case 403: {
       throw new Error('대시보드 구성원에 대한 삭제 권한이 없습니다. 다시 로그인해 주세요.');
     }

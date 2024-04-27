@@ -14,11 +14,13 @@ export const changeUserProfile = async ({ newProfileData }: { newProfileData: Ne
       Authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 200: {
-      return result;
-    }
     case 400: {
       throw new Error('닉네임은 10자 이하로 작성해 주세요.');
     }

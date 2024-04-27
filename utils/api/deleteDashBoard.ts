@@ -8,10 +8,13 @@ export const deleteDashBoard = async ({ dashboardId }: { dashboardId: number }) 
       Authorization: ACCESS_TOKEN,
     },
   });
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
   switch (response.status) {
-    case 204: {
-      return 'success';
-    }
     case 403: {
       throw new Error('대시보드 삭제 권한이 없습니다. 다시 로그인해 주세요.');
     }
