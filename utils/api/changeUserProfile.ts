@@ -15,5 +15,18 @@ export const changeUserProfile = async ({ newProfileData }: { newProfileData: Ne
     },
   });
   const result = response.json();
-  return result;
+  switch (response.status) {
+    case 200: {
+      return result;
+    }
+    case 400: {
+      throw new Error('닉네임은 10자 이하로 작성해 주세요.');
+    }
+    case 401: {
+      throw new Error('다시 로그인해 주세요.');
+    }
+    default: {
+      throw new Error('알 수 없는 이유로 회원정보 변경에 실패했습니다. 다시 로그인해 주세요.');
+    }
+  }
 };
