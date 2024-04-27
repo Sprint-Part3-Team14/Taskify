@@ -14,12 +14,18 @@ export const changePassWord = async ({ changePasswordValue }: { changePasswordVa
       Authorization: ACCESS_TOKEN,
     },
   });
-
-  if (response.status === 204) {
-    return 'success';
+  switch (response.status) {
+    case 204: {
+      return 'success';
+    }
+    case 400: {
+      throw new Error('400');
+    }
+    case 404: {
+      throw new Error('존재하지 않는 유저입니다.');
+    }
+    default: {
+      throw new Error('알 수 없는 이유로 비밀번호 변경에 실패했습니다. 다시 로그인해 주세요.');
+    }
   }
-
-  const result = response.json();
-
-  return result;
 };
