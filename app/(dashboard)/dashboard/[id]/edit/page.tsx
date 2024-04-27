@@ -6,9 +6,10 @@ import { deleteDashBoard } from '@/utils/api/deleteDashBoard';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowForwardIcon } from 'constant/importImage';
+import { useDashboardId } from '@/hooks/useDashboardId';
 
 const MydashBoard = () => {
-  const dashboardId = 6778;
+  const { dashboardId } = useDashboardId();
   const dashboardUrl = `/dashboard/${dashboardId}`;
 
   const handleDeleteDashBoard = async () => {
