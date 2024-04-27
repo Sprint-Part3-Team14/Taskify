@@ -82,16 +82,31 @@ const Dashboard = () => {
       newColumnList.splice(source.index, 1);
       newColumnList.splice(destination.index, 0, draggedColumn);
       setColumnList(newColumnList);
+
+      return;
     }
 
     if (type === 'card') {
-      const draggedCardId = Number(draggableId);
+      if (source.droppableId === destination.droppableId) {
+        const nextColumn = Array.from(cardLists[source.droppableId]);
+        const [draggedCard] = nextColumn.splice(source.index, 1);
+        nextColumn.splice(destination.index, 0, draggedCard);
+
+        setCardLists({
+          ...cardLists,
+          [source.droppableId]: nextColumn,
+        });
+
+        return;
+      }
+
       const sourceColumnId = Number(source.droppableId);
       const destinationColumnId = Number(destination.droppableId);
-      const draggedCard = cardLists[sourceColumnId].find(card => card.id === draggedCardId);
+
       const newSourceColumn = Array.from(cardLists[sourceColumnId]);
-      newSourceColumn.splice(source.index, 1);
       const newDestinationColumn = Array.from(cardLists[destinationColumnId]);
+
+      const [draggedCard] = newSourceColumn.splice(source.index, 1);
       newDestinationColumn.splice(destination.index, 0, draggedCard);
       setCardLists({
         ...cardLists,
