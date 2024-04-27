@@ -1,21 +1,21 @@
+import DashboardHeader from '@/components/dashboard/LayoutComponents/header';
+import SideMenu from '@/components/dashboard/LayoutComponents/sideMenu';
 import '@/styles/globals.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
 const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
+  const dashboardId = '6312';
   return (
-    <section className='flex min-h-screen  '>
-      <div className='flex min-h-full min-w-full w-full '>
-        <div className='w-72 bg-slate-500'>사이드바 임시 공간...</div>
-        <div className='w-full '>
-          <div className=' h-20 bg-slate-400'>헤더 임시 공간 ...</div>
-          <div className='p-5 bg-[#fafafa]'>{children}</div>
-        </div>
+    <section className='flex h-screen w-screen'>
+      <SideMenu dashboardId={dashboardId} />
+      <div className='w-full overflow-hidden'>
+        <DashboardHeader dashboardId={dashboardId} />
+        <div className='w-full overflow-auto bg-gray-100 h-[calc(100%-60px)] pc:h-[calc(100%-70px)]'>{children}</div>
       </div>
     </section>
   );
 };
 
 export default DashboardLayoutProfile;
-//  규헌님 레이아웃 가져다가 쓰겠습니다
