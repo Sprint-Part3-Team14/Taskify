@@ -12,10 +12,12 @@ import { I_Column } from '@/interface/Dashboard';
 import { changeNewColumnTitle } from '@/utils/api/changeCard';
 import { deleteColumn } from '@/utils/api/deleteColumn';
 
-const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
+const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState(title);
   const [inputValue, setInputValue] = useState(title);
+
+  const cardCount = changeCardList[columnId] ? changeCardList[columnId].length : 0;
 
   const handleToggledModal = () => {
     setNewColumnTitle(inputValue);
@@ -75,7 +77,7 @@ const ColumnTitle = ({ title, count, columnId, dashboardId }) => {
       <div className='flex items-center gap-3  text-lg font-bold'>
         <Image src={EllipseIcon} alt='ellipse' width={8} height={8} />
         <div className='text-lg text-tp-black_700'>{inputValue}</div>
-        <NumberChip count={count} />
+        <NumberChip count={cardCount} />
       </div>
       <button onClick={handleToggledModal}>
         <Image src={SettingIcon} alt='setting' width={24} height={24} />

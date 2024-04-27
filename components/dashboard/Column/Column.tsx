@@ -44,12 +44,8 @@ interface I_CardItem {
 const Column = ({ columnItem, dashboardItem, index, onCardListChange, changeCardList }: I_ColumnList) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const [dashboardMember, setDashboardMember] = useState([]);
-  const [cardCount, setCardCount] = useState(0);
   const [cardList, setCardList] = useState([]);
   const [targetId, setCursorId] = useState('');
-
-  console.log(changeCardList);
-  console.log(cardList);
 
   useEffect(() => {
     const getMyDashboardMembers = async () => {
@@ -92,7 +88,6 @@ const Column = ({ columnItem, dashboardItem, index, onCardListChange, changeCard
       const { cards, totalCount } = await getAddCardList({ column: columnItem.id, targetId: targetId });
       const newCardList = Array.isArray(cards) ? cards : [];
       setCardList(prevList => [...prevList, ...newCardList]);
-      setCardCount(totalCount);
       if (newCardList.length > 0) {
         setCursorId(newCardList[newCardList.length - 1].id);
       }
@@ -130,14 +125,14 @@ const Column = ({ columnItem, dashboardItem, index, onCardListChange, changeCard
     <Draggable draggableId={String(columnItem.id)} index={index}>
       {provided => (
         <div
-          className='flex flex-col items-center pc:border-r-[1px] border-dotted  bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5'
+          className='flex flex-col items-center pc:border-r-[1px] border-dotted h-full bg-tp-gray_500 gap-4 tb:w-full pc:w-96 tb:h-auto pc:min-h-screen p-5'
           ref={provided.innerRef}
           {...provided.draggableProps}>
-          <div className=' flex flex-col w-full gap-4' {...provided.dragHandleProps}>
+          <div className=' flex flex-col w-full  gap-4' {...provided.dragHandleProps}>
             <ColumnTitle
               columnId={columnItem.id}
               dashboardId={columnItem.dashboardId}
-              count={cardCount}
+              changeCardList={changeCardList}
               title={columnItem.title}
             />
             <AddButton onClick={handleToggleModal} />

@@ -67,9 +67,6 @@ const Dashboard = () => {
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
 
-    console.log('>>> source', source);
-    console.log('>>> destination', destination);
-
     if (!destination) {
       return;
     }
@@ -103,7 +100,6 @@ const Dashboard = () => {
       });
     }
   };
-  console.log(cardLists);
 
   return (
     <div className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
