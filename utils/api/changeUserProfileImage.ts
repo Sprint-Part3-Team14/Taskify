@@ -12,5 +12,12 @@ export const changeUserProfileImage = async ({ file }: { file: File }) => {
     },
   });
   const result = await response.json();
-  return result;
+  switch (response.status) {
+    case 201: {
+      return result;
+    }
+    default: {
+      throw new Error('프로필 이미지를 업로드할 수 없습니다. 사진을 변경해 주세요.');
+    }
+  }
 };
