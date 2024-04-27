@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import '../styles/globals.css';
+import '@/styles/globals.css';
 
 export const metadata = {
   title: 'Next.js',
@@ -9,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang='ko'>
-      <body>{children}</body>
+      <body>
+        {children}
+        <div id='portal'></div>
+      </body>
     </html>
   );
 }

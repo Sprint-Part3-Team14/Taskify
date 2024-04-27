@@ -9,6 +9,7 @@ import { ArrowForwardIcon } from 'constant/importImage';
 
 const MydashBoard = () => {
   const dashboardId = 6778;
+  const dashboardUrl = `/dashboard/${dashboardId}`;
 
   const handleDeleteDashBoard = async () => {
     try {
@@ -19,7 +20,7 @@ const MydashBoard = () => {
   };
   return (
     <>
-      <Link href='/boardid'>
+      <Link href={dashboardUrl}>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
             <Image fill src={ArrowForwardIcon} alt='뒤로 가기 버튼' />
