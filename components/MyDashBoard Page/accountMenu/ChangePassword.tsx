@@ -32,15 +32,11 @@ const ChangePassword = () => {
       };
       try {
         const result = await changePassWord({ changePasswordValue: tryChangePassword });
-
-        if (result.message && result.message === '현재 비밀번호가 틀렸습니다.') {
+        successChanged.handleToggleModal();
+      } catch (error: any) {
+        if (error.message === '400') {
           wrongPassword.handleToggleModal();
         }
-        if (result === 'success') {
-          successChanged.handleToggleModal();
-        }
-      } catch (error: any) {
-        console.error(error.message);
       }
     }
   };
