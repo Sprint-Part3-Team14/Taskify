@@ -14,6 +14,8 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
   const [members, setMembers] = useState(null);
   const showCount = 5;
 
+  console.log(members);
+
   const handleLoadMembers = async () => {
     try {
       const { members, totalCount } = await getDashBoardMembers({

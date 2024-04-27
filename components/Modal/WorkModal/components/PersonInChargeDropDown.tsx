@@ -1,63 +1,23 @@
-'use client';
+import { I_Dashboard, I_Members } from '@/interface/Dashboard';
 import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
-import { MouseEvent, useState, useEffect } from 'react';
+import { MouseEvent, useState } from 'react';
 
-// const memberData = {
-//   members: [
-//     {
-//       id: 8108,
-//       email: 'test@codeit.com',
-//       nickname: 'codeit14',
-//       profileImageUrl: null,
-//       createdAt: '2024-04-17T10:10:30.042Z',
-//       updatedAt: '2024-04-17T10:10:30.042Z',
-//       isOwner: true,
-//       userId: 1680,
-//     },
-//     {
-//       id: 8141,
-//       email: 'yukyoung@naver.com',
-//       nickname: 'yukyoung',
-//       profileImageUrl: null,
-//       createdAt: '2024-04-17T17:51:57.369Z',
-//       updatedAt: '2024-04-17T17:51:57.369Z',
-//       isOwner: false,
-//       userId: 1692,
-//     },
-//   ],
-//   totalCount: 2,
-// };
-
-// const { members } = memberData;
-
-interface ModalPorps {
-  members: Props[];
-  totalCount?: number;
-  handleModal?: () => void;
+interface I_PersonInCharge {
+  dashboardMember: I_Members[];
 }
 
-interface Props {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: any;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-  userId: number;
-}
-
-const PersonInChargeDropDown = ({ members }: ModalPorps) => {
+const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
   const [openList, setOpenList] = useState(false);
-  const [selectItem, setSelectItem] = useState(members[0].nickname);
+  const [selectItem, setSelectItem] = useState(dashboardMember[0].nickname);
 
   function handleOpenDropDown() {
-    openList ? setOpenList(false) : setOpenList(true);
+    setOpenList(prevState => !prevState);
   }
 
   function handleSelectItem(event: MouseEvent<HTMLElement>) {
-    setSelectItem(event.currentTarget.id);
+    const selectedNickname = event.currentTarget.id;
+    setSelectItem(selectedNickname);
   }
 
   return (
@@ -78,7 +38,7 @@ const PersonInChargeDropDown = ({ members }: ModalPorps) => {
       </button>
       {openList && (
         <div className='absolute left-0 z-10 mt-1 w-[13.6rem] bg-white shadow-lg ring-1 ring-black ring-opacity-5 last:rounded-b-md'>
-          {members.map(member => (
+          {dashboardMember.map(member => (
             <div
               className='flex gap-1.5 px-4 py-2 text-sm hover:bg-slate-50 items-center'
               key={member.id}

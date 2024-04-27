@@ -10,7 +10,13 @@ export interface I_Modals {
   createColumn: {};
 }
 
-export type I_ModalTitle = '초대하기' | '컬럼 관리' | '할 일 생성' | '새 컬럼 생성' | '할 일 수정';
+export type I_ModalTitle =
+  | '초대하기'
+  | '컬럼 관리'
+  | '할 일 생성'
+  | '새 컬럼 생성'
+  | '할 일 수정'
+  | '새로운 일정 관리 Taskify';
 
 export interface I_ModalToggle {
   dashboardId?: number;

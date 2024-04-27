@@ -8,6 +8,7 @@ const ModalButton = ({
   onClickFirstButton,
   onClickSecondButton,
   onClick,
+  isDisabled,
 }: {
   buttonType: 'double' | 'half' | 'single';
   firstButton?: string;
@@ -16,6 +17,7 @@ const ModalButton = ({
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  isDisabled?: boolean;
 }) => {
   switch (buttonType) {
     case 'double':
@@ -28,9 +30,10 @@ const ModalButton = ({
             {firstButton}
           </button>
           <button
-            className='font-medium text-white bg-tp-violet_900 px-[2.9rem] py-3.5 text-base rounded-lg active:bg-[#4729c2] '
+            className='font-medium text-white bg-tp-violet_900 px-[2.9rem] py-3.5 text-base rounded-lg active:bg-[#4729c2] disabled:bg-tp-gray_700 '
             type='button'
-            onClick={onClickSecondButton}>
+            onClick={onClickSecondButton}
+            disabled={isDisabled}>
             {secondButton}
           </button>
         </div>

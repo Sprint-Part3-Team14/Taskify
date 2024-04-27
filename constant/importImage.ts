@@ -22,6 +22,7 @@ import UnsubscribeIcon from '@/public/images/icon/unsubscribe.svg';
 import WhiteCheckIcon from '@/public/images/icon/white_check.svg';
 import VisibleEyeIcon from '@/public/images/icon/visible_eye.svg';
 import VioletPlusIcon from '@/public/images/icon/violet_plus.svg';
+import DeleteIcon from '@/public/images/icon/delete.svg';
 
 export {
   ArrowBackwardIcon,
@@ -48,6 +49,7 @@ export {
   WhiteCheckIcon,
   VisibleEyeIcon,
   VioletPlusIcon,
+  DeleteIcon,
 };
 
 // Image

@@ -1,35 +1,48 @@
-'use clinet';
+'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
-import { I_ModalToggle } from './ModalType';
 
-const CreateColumnModal = ({ handleModal, onChange, onClickFirstButton, onClickSecondButton }: I_ModalToggle) => {
-  const [inputValue, setInputValue] = useState('');
-  const handleInputValue = event => {
-    setInputValue(event.target.value);
-    onChange(event.target.value);
+interface I_CreateColumn {
+  handleModal: () => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickSecondButton: () => void;
+  newColumnTitle: string;
+}
+
+const CreateColumnModal = ({ handleModal, onChange, onClickSecondButton, newColumnTitle }: I_CreateColumn) => {
+  const isDisabled = newColumnTitle.trim() === '';
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onClickSecondButton();
   };
 
   return (
     <ModalLayout handleModal={handleModal} title='새 컬럼 생성'>
-      <form className='flex flex-col'>
+      <form onSubmit={handleSubmit} className='flex flex-col'>
         <label className='text-lg'>이름</label>
         <input
           className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-[30.0rem]'
           type='text'
           placeholder='새로운 프로젝트'
-          value={inputValue}
-          onChange={handleInputValue}
+          onChange={onChange}
+          ref={inputRef}
         />
-
         <ModalButton
-          onClickFirstButton={onClickFirstButton}
+          onClickFirstButton={handleModal}
           onClickSecondButton={onClickSecondButton}
           buttonType='double'
           firstButton='취소'
           secondButton='생성'
+          isDisabled={isDisabled}
         />
       </form>
     </ModalLayout>
