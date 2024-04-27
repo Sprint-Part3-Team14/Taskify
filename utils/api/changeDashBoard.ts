@@ -17,7 +17,23 @@ export const changeDashBoard = async ({ dashBoardId, changeData }: ChangeDashBoa
       Authorization: ACCESS_TOKEN,
     },
   });
-
   const result = response.json();
-  return result;
+
+  switch (response.status) {
+    case 200: {
+      return result;
+    }
+    case 400: {
+      throw new Error('수정할 내용을 입력해 주세요.');
+    }
+    case 403: {
+      throw new Error('대시보드가 존재하지 않습니다.');
+    }
+    case 404: {
+      throw new Error('대시보드가 존재하지 않습니다.');
+    }
+    default: {
+      throw new Error('알 수 없는 이유로 대시보드 정보 수정에 실패했습니다.');
+    }
+  }
 };
