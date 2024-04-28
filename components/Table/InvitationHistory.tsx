@@ -11,16 +11,15 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
+  const showCount = 5;
 
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
     const invitationId = Number(event.currentTarget.id);
     try {
-      const result = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
-      if (result.message) {
-        alert(result.message);
-      }
+      await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
+      alert('대시보드 초대가 취소되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
 
@@ -59,8 +58,6 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
       {/** 버튼 대체 예정 */}
     </div>
   );
-
-  const showCount = 5;
 
   const handleLoadInvitations = async () => {
     try {
