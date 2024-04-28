@@ -24,7 +24,7 @@ const EditProfile = () => {
         profileImageUrl: profileImageUrl,
       });
     } catch (error: any) {
-      console.error(error.message);
+      alert(error.message);
     }
   };
 

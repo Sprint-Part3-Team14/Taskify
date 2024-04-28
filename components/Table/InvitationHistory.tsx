@@ -60,7 +60,6 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
         className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-3 py-2 rounded-md tb:static absolute top-[3.5rem] right-1'>
         <img src='/images/icon/plus.svg' alt='초대하기 아이콘' /> 초대
       </button>
-      {/** 버튼 대체 예정 */}
     </div>
   );
 

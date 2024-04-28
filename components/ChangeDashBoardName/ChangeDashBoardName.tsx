@@ -23,7 +23,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
       const { title } = await getDashBoardData(dashBoardId);
       setBeforeDashboardName(title);
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
 
@@ -35,7 +35,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
     };
 
     try {
-      const result = await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
+      await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
       alert('대시보드 정보가 저장되었습니다.');
     } catch (error: any) {
       alert(error);
