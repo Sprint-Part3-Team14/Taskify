@@ -2,11 +2,15 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
+  id?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-const LoginButton = ({ children, onClick, disabled, ...rest }: Props) => {
+const LoginButton = ({ children, onClick, disabled, id, type = 'button', ...rest }: Props) => {
   return (
     <button
+      id={id}
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={
