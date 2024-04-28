@@ -3,7 +3,7 @@ import { getAccessToken } from '../handleToken';
 export const postInvitation = async ({ email, dashboardId }: { email: string; dashboardId: number }) => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    const response = await fetch(`https://sp-taskify-api.vercel.app/14/dashboards/${dashboardId}/invitations`, {
+    const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}/invitations`, {
       method: 'POST',
       body: JSON.stringify({ email }),
       headers: {

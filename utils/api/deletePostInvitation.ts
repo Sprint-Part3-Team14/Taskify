@@ -9,7 +9,7 @@ export const deletePostInvitation = async ({ dashboardId, invitationId }: I_Dele
   const accessToken = getAccessToken();
   if (accessToken) {
     const response = await fetch(
-      `https://sp-taskify-api.vercel.app/14/dashboards/${dashboardId}/invitations/${invitationId}`,
+      `https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}/invitations/${invitationId}`,
       {
         method: 'DELETE',
         headers: {

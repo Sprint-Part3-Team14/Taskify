@@ -3,7 +3,7 @@ import { getAccessToken } from '../handleToken';
 export const deleteDashBoard = async ({ dashboardId }: { dashboardId: number }) => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    const response = await fetch(`https://sp-taskify-api.vercel.app/14/dashboards/${dashboardId}`, {
+    const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

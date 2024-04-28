@@ -10,7 +10,7 @@ export const getInvitations = async ({ currentPage, showCount, dashboardId }: In
   const accessToken = getAccessToken();
   if (accessToken) {
     const response = await fetch(
-      `https://sp-taskify-api.vercel.app/14/dashboards/${dashboardId}/invitations?page=${currentPage}&size=${showCount}`,
+      `https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}/invitations?page=${currentPage}&size=${showCount}`,
       {
         headers: {
           'Contetn-Type': 'application/json',

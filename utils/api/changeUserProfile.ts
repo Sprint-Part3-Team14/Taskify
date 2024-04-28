@@ -8,7 +8,7 @@ interface NewProfileProps {
 export const changeUserProfile = async ({ newProfileData }: { newProfileData: NewProfileProps }) => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    const response = await fetch(`https://sp-taskify-api.vercel.app/14/users/me`, {
+    const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/users/me`, {
       method: 'PUT',
       body: JSON.stringify(newProfileData),
       headers: {

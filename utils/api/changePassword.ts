@@ -6,7 +6,7 @@ export interface PasswordData {
 }
 
 export const changePassWord = async ({ changePasswordValue }: { changePasswordValue: PasswordData }) => {
-  const response = await fetch(`https://sp-taskify-api.vercel.app/14/auth/password`, {
+  const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/auth/password`, {
     method: 'PUT',
     body: JSON.stringify(changePasswordValue),
     headers: {

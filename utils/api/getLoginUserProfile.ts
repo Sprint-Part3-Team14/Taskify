@@ -3,7 +3,7 @@ import { getAccessToken } from '../handleToken';
 export const getLoginUserProfile = async () => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    const response = await fetch('https://sp-taskify-api.vercel.app/14/users/me', {
+    const response = await fetch('https://sp-taskify-api.vercel.app/4-14/users/me', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',

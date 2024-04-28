@@ -7,6 +7,7 @@ import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useState } from 'react';
 import { COLOR_LIST } from './constant';
+import SingleButton from '../common/button/SingleButton';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
@@ -23,7 +24,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
       const { title } = await getDashBoardData(dashBoardId);
       setBeforeDashboardName(title);
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
 
@@ -35,7 +36,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
     };
 
     try {
-      const result = await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
+      await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
       alert('대시보드 정보가 저장되었습니다.');
     } catch (error: any) {
       alert(error);
@@ -48,7 +49,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
     <form
       onSubmit={handleChangeDashBoard}
       role='table-Container'
-      className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
+      className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] w-[19rem]'>
       <div role='header' className='flex justify-between'>
         <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
           {beforeDashboardName}
@@ -61,7 +62,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
                 key={color}
                 id={color}
                 onClick={handleSelectColor}
-                className='pc:w-[1.875rem] pc:h-[1.875rem] mb:w-7 mb:h-7 pc:block tb:block mb:hidden mb:first:block relative'>
+                className='pc:w-[1.875rem] pc:h-[1.875rem] w-7 h-7 pc:block tb:block hidden first:block relative'>
                 {selectColor === color && (
                   <div className='w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
                     <Image fill src={WhiteCheckIcon} alt='선택된 색상' />
@@ -86,12 +87,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
           value={newDashBoardName.inputValue}
         />
       </div>
-      <button
-        type='submit'
-        onSubmit={handleChangeDashBoard}
-        className='py-1.5 px-7 rounded-md bg-tp-violet_900 self-end text-white'>
-        변경
-      </button>
+      <SingleButton buttonText='변경' type='submit' onSubmit={handleChangeDashBoard} colorType='violet' />
     </form>
   );
 };

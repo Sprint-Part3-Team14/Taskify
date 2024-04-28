@@ -3,7 +3,7 @@ import { getAccessToken } from '../handleToken';
 export const getDashBoardData = async dashBoardId => {
   const accessToken = getAccessToken();
   if (accessToken) {
-    const response = await fetch(`https://sp-taskify-api.vercel.app/14/dashboards/${dashBoardId}`, {
+    const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashBoardId}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,

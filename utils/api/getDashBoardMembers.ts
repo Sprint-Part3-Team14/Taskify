@@ -10,7 +10,7 @@ export const getDashBoardMembers = async ({ currentPage, showCount, dashboardId 
   const accessToken = getAccessToken();
   if (accessToken) {
     const query = `?page=${currentPage}&size=${showCount}&dashboardId=${dashboardId}`;
-    const response = await fetch(`https://sp-taskify-api.vercel.app/14/members${query}`, {
+    const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/members${query}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
