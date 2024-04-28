@@ -11,9 +11,11 @@ import { getColumnList } from '@/utils/api/getColumnList';
 import { I_Column } from '@/interface/Dashboard';
 import { changeNewColumnTitle } from '@/utils/api/changeCard';
 import { deleteColumn } from '@/utils/api/deleteColumn';
+import { MESSAGE, PLACEHOLDER, TITLE } from '../constants';
 
 const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
+
   const [newColumnTitle, setNewColumnTitle] = useState(title);
   const [inputValue, setInputValue] = useState(title);
 
@@ -30,18 +32,13 @@ const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   };
 
   const handleChangeNewTitle = async () => {
-    if (newColumnTitle.trim() === '') {
-      alert('값을 입력해주세요.');
-      return;
-    }
-
     try {
       const { data } = await getColumnList({ id: dashboardId });
 
       const isDuplicateTitle = data.some((column: I_Column) => column.title === newColumnTitle);
 
       if (isDuplicateTitle) {
-        alert('중복된 컬럼 이름입니다');
+        alert(MESSAGE.IS_DUPLICATE_COLUMN);
         return;
       }
 
@@ -62,7 +59,7 @@ const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   };
 
   const hanldeColumnDelete = async () => {
-    if (window.confirm('컬럼의 모든 카드가 삭제됩니다')) {
+    if (window.confirm(MESSAGE.IS_DELETE)) {
       try {
         await deleteColumn({ column: columnId });
       } catch (error) {
@@ -70,6 +67,7 @@ const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
       }
     }
     handleToggledModal();
+    window.location.reload();
   };
 
   return (
@@ -85,8 +83,8 @@ const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
       {isToggledModal && (
         <EditColumnModal
           handleModal={handleToggledModal}
-          title='컬럼 관리'
-          placeholder='이름을 입력해 주세요.'
+          title={TITLE.CHANGE_NAME}
+          placeholder={PLACEHOLDER.INPUT_NAME}
           value={newColumnTitle}
           newColumnTitle={newColumnTitle}
           onChange={handleChangeInputValue}

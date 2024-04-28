@@ -8,9 +8,11 @@ interface I_createCard {
   dueDate: string;
   tags: Array<string>;
   imageUrl: string;
+  assigneeUserId: number;
 }
 
 export const createCard = async ({
+  assigneeUserId,
   title,
   dashboardId,
   dueDate,
@@ -27,7 +29,7 @@ export const createCard = async ({
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      assigneeUserId: 1764,
+      assigneeUserId: assigneeUserId,
       dashboardId: dashboardId,
       columnId: columnId,
       title: title,
@@ -37,6 +39,5 @@ export const createCard = async ({
       imageUrl: imageUrl,
     }),
   });
-  const result = response.json();
-  return result;
+  return response;
 };

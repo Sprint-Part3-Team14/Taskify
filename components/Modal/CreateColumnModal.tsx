@@ -14,6 +14,7 @@ interface I_CreateColumn {
 const CreateColumnModal = ({ handleModal, onChange, onClickSecondButton, newColumnTitle }: I_CreateColumn) => {
   const isDisabled = newColumnTitle.trim() === '';
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -30,7 +31,7 @@ const CreateColumnModal = ({ handleModal, onChange, onClickSecondButton, newColu
       <form onSubmit={handleSubmit} className='flex flex-col'>
         <label className='text-lg'>이름</label>
         <input
-          className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-[30.0rem]'
+          className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg tb:w-[30.0rem] mb:w-[25rem] '
           type='text'
           placeholder='새로운 프로젝트'
           onChange={onChange}

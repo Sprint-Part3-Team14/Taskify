@@ -37,7 +37,7 @@ const EditColumnModal = ({
       <form onSubmit={handleSubmit} className='flex flex-col h-[11.25rem]'>
         <label className='text-lg'>{title}</label>
         <input
-          className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-[30.0rem]'
+          className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg tb:w-[30.0rem] mb:w-[25rem]'
           type='text'
           placeholder={placeholder}
           onChange={onChange}
