@@ -6,12 +6,12 @@ import { getDashBoardData } from '@/utils/api/getDashBoardData';
 import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useState } from 'react';
+import { COLOR_LIST } from './constant';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
   const [beforeDashboardName, setBeforeDashboardName] = useState('');
   const newDashBoardName = useInputValue();
-  const selectColorList = ['#7AC555', '#760DDE', '#FFA500', '#76A5EA', '#E876EA'];
 
   const handleSelectColor = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -54,7 +54,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
           {beforeDashboardName}
         </h1>
         <div className='flex items-center gap-2.5 '>
-          {selectColorList.map(color => {
+          {COLOR_LIST.map(color => {
             return (
               <button
                 type='button'
