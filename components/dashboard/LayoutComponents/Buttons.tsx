@@ -2,7 +2,6 @@ import { PlusBlueIcon, SettingIcon } from 'constant/importImage';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MembersProps } from './members';
-
 interface DashboardInfoProps {
   createdByMe?: boolean;
   memberList?: MembersProps;

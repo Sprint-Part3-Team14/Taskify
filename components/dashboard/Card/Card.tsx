@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Draggable } from '@hello-pangea/dnd';
 
-import TagChip from 'components/common/Chip/TagChip';
+import TagChip from '@/components/common/Chip/TagChip';
 
 import { CalendarTodayIcon } from 'constant/importImage';
 import WorkModal from '@/components/Modal/WorkModal/WorkModal';

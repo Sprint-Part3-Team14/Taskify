@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import ProgressChip from 'components/common/Chip/ProgressChip';
+import ProgressChip from '@/components/common/Chip/ProgressChip';
 
 import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
 import { I_Column, I_Dashboard } from '@/interface/Dashboard';
