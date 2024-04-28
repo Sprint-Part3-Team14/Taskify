@@ -87,7 +87,9 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
           value={newDashBoardName.inputValue}
         />
       </div>
-      <SingleButton buttonText='변경' type='submit' onSubmit={handleChangeDashBoard} colorType='violet' />
+      <SingleButton type='submit' onSubmit={handleChangeDashBoard} colorType='violet'>
+        변경
+      </SingleButton>
     </form>
   );
 };

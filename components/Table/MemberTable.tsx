@@ -71,13 +71,9 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
                 </p>
               </div>
               <div className='pr-7'>
-                <SingleButton
-                  type='button'
-                  onClick={handleDeleteMember}
-                  colorType='white'
-                  id={member.id}
-                  buttonText='삭제'
-                />
+                <SingleButton type='button' onClick={handleDeleteMember} colorType='white' id={member.id}>
+                  삭제
+                </SingleButton>
               </div>
             </div>
           );
