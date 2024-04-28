@@ -8,6 +8,7 @@ import PageNationButton from '../PageNation/PageNationButton';
 import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
 import { usePageNation } from '@/hooks/usePageNation';
 import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
+import SingleButton from '../common/button/SingleButton';
 
 const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
@@ -69,13 +70,15 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
                   {member.nickname}
                 </p>
               </div>
-              <button
-                onClick={handleDeleteMember}
-                id={member.id}
-                type='button'
-                className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg pc:py-2 pc:px-7 mr-7 mb:py-1.5 mb:px-3'>
-                삭제
-              </button>
+              <div className='pr-7'>
+                <SingleButton
+                  type='button'
+                  onClick={handleDeleteMember}
+                  colorType='white'
+                  id={member.id}
+                  buttonText='삭제'
+                />
+              </div>
             </div>
           );
         })}
