@@ -85,7 +85,7 @@ const Column = ({ columnItem, dashboardItem, index, onCardListChange, changeCard
 
   const getAddDashboardCardList = async () => {
     try {
-      const { cards, totalCount } = await getAddCardList({ column: columnItem.id, targetId: targetId });
+      const { cards } = await getAddCardList({ column: columnItem.id, targetId: targetId });
       const newCardList = Array.isArray(cards) ? cards : [];
       setCardList(prevList => [...prevList, ...newCardList]);
       if (newCardList.length > 0) {

@@ -138,7 +138,7 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
             <textarea
               id='Comments'
               placeholder='설명을 입력해 주세요'
-              className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
+              className='text-sm tb:w-[28.125rem] mb:w-[25.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
               onChange={handleCardDescrpition}
               value={description}
             />
