@@ -25,9 +25,7 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   const InvitationList = (
     <>
-      <div>
-        <div className='flex items-center text-sm text-tp-gray_800 ml-7 mt-3 h-[3.5rem]'>이메일</div>
-      </div>
+      <div className='text-sm text-tp-gray_800 mt-6 -mb-6 ml-7 pc:-mb-2.5 pc:my-3 pc:h-auto h-10'>이메일</div>
       {invitations &&
         invitations.map(invitation => (
           <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
