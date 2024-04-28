@@ -15,11 +15,16 @@ export const changePassWord = async ({ changePasswordValue }: { changePasswordVa
     },
   });
 
-  if (response.status === 204) {
-    return 'success';
+  if (response.ok) {
+    return;
   }
 
-  const result = response.json();
-
-  return result;
+  switch (response.status) {
+    case 400: {
+      throw new Error('400');
+    }
+    case 404: {
+      throw new Error('유저 정보가 확인되지 않습니다. 다시 로그인해 주세요.');
+    }
+  }
 };
