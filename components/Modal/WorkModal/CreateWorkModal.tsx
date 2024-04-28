@@ -31,7 +31,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
 
   const handleCreateCard = async () => {
     try {
-      const result = await createCard({
+      await createCard({
         title: title,
         dashboardId: Number(columnItem.dashboardId),
         columnId: Number(columnItem.id),
@@ -60,7 +60,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     const selectedDate = new Date(inputDate);
     const currentDate = new Date();
     if (selectedDate < currentDate) {
-      alert('마감 기한을 제대로 선택해주세요.');
+      alert('마감 기한은 올바르게 선택해주세요');
       event.target.value = '';
       return;
     }
@@ -119,7 +119,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
             <textarea
               id='Comments'
               placeholder='설명을 입력해 주세요'
-              className='text-sm w-[28.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
+              className='text-sm tb:w-[28.125rem] mb:w-[25.125rem] h-[6rem] border border-solid border-tp-gray_700 rounded-lg pt-4 px-4 pb-11 outline-tp-violet_900 relative placeholder:text-sm'
               onChange={handleCardDescription}
             />
           </div>

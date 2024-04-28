@@ -1,6 +1,7 @@
 export const MESSAGE = {
   IS_DUPLICATE_COLUMN: '중복된 컬럼이 존재합니다.',
   IS_DELETE: '컬럼의 모든 카드가 삭제됩니다',
+  VALIDATE_DATE: '마감 기한은 올바르게 선택해주세요',
 };
 
 export const BUTTON = {

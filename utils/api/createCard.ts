@@ -37,6 +37,5 @@ export const createCard = async ({
       imageUrl: imageUrl,
     }),
   });
-  const result = response.json();
-  return result;
+  return response;
 };
