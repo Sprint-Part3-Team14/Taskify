@@ -7,8 +7,7 @@ import InvitationList from '../InvitationList/InvitationList';
 import SearchBar from '../SearchBar/SearchBar';
 import { INVITATION_TABLE, MESSAGE } from '../constants';
 import { getAddInvitationList, getMyInvitationList } from '@/utils/api/getMyInvitationList';
-
-import { getAccessToken } from 'utils/handleToken';
+import { acceptInvitationData, deleteInvitationData } from '@/utils/api/invitation';
 
 const InvitationSection = () => {
   const [invitationList, setInvitationList] = useState([]);
@@ -75,44 +74,27 @@ const InvitationSection = () => {
 
   const handleAcceptInvitation = async (id: number) => {
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ inviteAccepted: true }),
-      });
-
-      if (response.ok) {
+      const result = await acceptInvitationData({ id: id, inviteAccepted: false });
+      if (result) {
+        alert(MESSAGE.ACCEPT);
         setInvitationList(prevList => prevList.filter(list => list.id !== id));
       }
     } catch (error) {
       console.error(error);
     }
-    setInvitationList(prevList => prevList.filter(list => list.id !== id));
   };
 
   const handleRejectInvitation = async (id: number) => {
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/invitations/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ inviteAccepted: false }),
-      });
+      const result = await deleteInvitationData({ id: id, inviteAccepted: false });
 
-      if (response.ok) {
+      if (result) {
+        alert(MESSAGE.REJECT);
         setInvitationList(prevList => prevList.filter(list => list.id !== id));
       }
     } catch (error) {
       console.error(error);
     }
-    setInvitationList(prevList => prevList.filter(list => list.id !== id));
   };
 
   const handleSearchInvitation = (keyword: string) => {

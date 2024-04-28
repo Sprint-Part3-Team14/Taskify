@@ -17,7 +17,7 @@ import { usePageNation } from '@/hooks/usePageNation';
 import { useHandleModal } from '@/hooks/useHandleModal';
 
 import { ArrowBackwardIcon, CrownIcon } from 'constant/importImage';
-import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
+import { INITIAL_COLOR, BUTTON_TITLE, MESSAGE } from '../constants';
 
 const MyList = () => {
   const [newDashboardTitle, setNewDashBoardTitle] = useState('');
@@ -43,14 +43,14 @@ const MyList = () => {
         totalPage: Math.ceil(totalCount / apiQuery.showCount),
       }));
       setMyDashboardList(dashboards);
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
     }
   };
 
   const handleCreateDashboard = async () => {
     if (!newDashboardTitle.trim()) {
-      alert('대시보드 제목을 입력하세요.');
+      alert(MESSAGE.NO_DASHBOARD_TITLE);
       return;
     }
 
