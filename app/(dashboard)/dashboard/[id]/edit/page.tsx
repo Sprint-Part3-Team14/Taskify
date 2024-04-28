@@ -6,21 +6,22 @@ import { deleteDashBoard } from '@/utils/api/deleteDashBoard';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowForwardIcon } from 'constant/importImage';
+import { useDashboardId } from '@/hooks/useDashboardId';
 
 const MydashBoard = () => {
-  const dashboardId = 6778;
-  const dashboardUrl = `/dashboard/${dashboardId}`;
+  const { dashboardId } = useDashboardId();
 
   const handleDeleteDashBoard = async () => {
     try {
       await deleteDashBoard({ dashboardId });
+      alert('대시보드가 삭제되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
   return (
     <>
-      <Link href={dashboardUrl}>
+      <Link href={`/dashboard/${dashboardId}`}>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
             <Image fill src={ArrowForwardIcon} alt='뒤로 가기 버튼' />

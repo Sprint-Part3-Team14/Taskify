@@ -11,40 +11,44 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
+  const showCount = 5;
 
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
     const invitationId = Number(event.currentTarget.id);
     try {
-      const result = await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
-      if (result.message) {
-        alert(result.message);
-      }
+      await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
+      alert('대시보드 초대가 취소되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
 
-  const InvitationList =
-    invitations &&
-    invitations.map(invitation => (
-      <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
-        <div className='flex gap-3 items-center'>
-          <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[10rem]'>
-            {invitation.invitee.email}
-          </p>
-        </div>
-        <button
-          onClick={handleDeleteInvitation}
-          id={invitation.id}
-          type='button'
-          className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 mb:py-1.5 mb:px-3'>
-          취소
-        </button>
+  const InvitationList = (
+    <>
+      <div>
+        <div className='flex items-center text-sm text-tp-gray_800 ml-7 mt-3 h-[3.5rem]'>이메일</div>
       </div>
-    ));
-
+      {invitations &&
+        invitations.map(invitation => (
+          <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
+            <div className='flex gap-3 items-center'>
+              <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] w-[10rem]'>
+                {invitation.invitee.email}
+              </p>
+            </div>
+            <button
+              onClick={handleDeleteInvitation}
+              id={invitation.id}
+              type='button'
+              className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 py-1.5 px-3'>
+              취소
+            </button>
+          </div>
+        ))}
+    </>
+  );
   const invitationHeader = (
-    <div className='flex gap-2.5 items-self'>
+    <div className='flex gap-2.5 items-self relative'>
       <PageNationButton
         totalPage={pageNation.totalPage}
         currentPage={pageNation.currentPage}
@@ -53,14 +57,12 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
       <button
         onClick={handleToggleModal}
         type='button'
-        className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-4 rounded-md'>
+        className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-3 py-2 rounded-md tb:static absolute top-[3.5rem] right-1'>
         <img src='/images/icon/plus.svg' alt='초대하기 아이콘' /> 초대
       </button>
       {/** 버튼 대체 예정 */}
     </div>
   );
-
-  const showCount = 5;
 
   const handleLoadInvitations = async () => {
     try {

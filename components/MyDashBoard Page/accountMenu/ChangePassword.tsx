@@ -31,16 +31,10 @@ const ChangePassword = () => {
         newPassword: newPassword,
       };
       try {
-        const result = await changePassWord({ changePasswordValue: tryChangePassword });
-
-        if (result.message && result.message === '현재 비밀번호가 틀렸습니다.') {
-          wrongPassword.handleToggleModal();
-        }
-        if (result === 'success') {
-          successChanged.handleToggleModal();
-        }
+        await changePassWord({ changePasswordValue: tryChangePassword });
+        successChanged.handleToggleModal();
       } catch (error: any) {
-        console.error(error.message);
+        error.message === '400' ? wrongPassword.handleToggleModal() : alert(error.message);
       }
     }
   };

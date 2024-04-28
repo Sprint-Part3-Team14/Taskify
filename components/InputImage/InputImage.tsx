@@ -1,5 +1,5 @@
 import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
-import { VioletPlusIcon } from 'constant/importImage';
+import { EditIcon, VioletPlusIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 
@@ -73,7 +73,7 @@ const InputImageFile = ({
                     ? 'w-[1.4375rem] h-[1.4375rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20'
                     : 'w-[1.875rem] h-[1.875rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20'
                 }>
-                <Image fill src='/icon/edit.svg' alt='이미지 변경하기' />
+                <Image fill src={EditIcon} alt='이미지 변경하기' />
               </div>
               <div
                 className={
