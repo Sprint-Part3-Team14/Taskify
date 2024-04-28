@@ -20,7 +20,7 @@ const MydashBoard = () => {
     }
   };
   return (
-    <>
+    <div className='ml-4 mt-5 pb-7'>
       <Link href={`/dashboard/${dashboardId}`}>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
@@ -41,7 +41,7 @@ const MydashBoard = () => {
         </button>
         {/** 버튼 컴포넌트 대체 예정 */}
       </div>
-    </>
+    </div>
   );
 };
 
