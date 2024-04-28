@@ -49,7 +49,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
     <form
       onSubmit={handleChangeDashBoard}
       role='table-Container'
-      className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] w-[19rem]'>
+      className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[33rem] w-[19rem]'>
       <div role='header' className='flex justify-between'>
         <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
           {beforeDashboardName}

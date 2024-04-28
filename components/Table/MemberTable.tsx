@@ -49,7 +49,7 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
 
   const MemberList = (
     <>
-      <div className='text-sm text-tp-gray_800 ml-7 -mb-2.5 my-3'>이름</div>
+      <div className='text-sm text-tp-gray_800 ml-7 -mb-1 my-3'>이름</div>
       {members &&
         members.map(member => {
           return (
@@ -66,7 +66,7 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
                     <Image fill src={DEFAULTPROFILEIMAGE} alt='프로필 이미지' />
                   </div>
                 )}
-                <p className='text-base text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] mb:w-[7.5rem] '>
+                <p className='text-base text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[20rem] w-[6rem] '>
                   {member.nickname}
                 </p>
               </div>

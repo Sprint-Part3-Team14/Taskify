@@ -26,22 +26,20 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   const InvitationList = (
     <>
-      <div className='text-sm text-tp-gray_800 mt-6 -mb-6 ml-7 pc:-mb-2.5 pc:my-3 pc:h-auto h-10'>이메일</div>
+      <div className='text-sm text-tp-gray_800 mt-6 -mb-1 tb:-mb-2.5 pc:-mb-1 ml-7  pc:my-3 pc:h-auto h-10'>이메일</div>
       {invitations &&
         invitations.map(invitation => (
-          <div className='flex justify-between border-solid border-b-[1px] py-4 last:border-none'>
+          <div className='flex justify-between border-solid border-b-[1px] pc:py-[1.125rem] last:border-none py-4'>
             <div className='flex gap-3 items-center'>
-              <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[26rem] tb:w-[23rem] w-[10rem]'>
+              <p className='text-base text-tp-black_700 ml-7 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[28rem] tb:w-[23rem] w-[9rem]'>
                 {invitation.invitee.email}
               </p>
             </div>
-            <button
-              onClick={handleDeleteInvitation}
-              id={invitation.id}
-              type='button'
-              className='text-tp-violet_900 text-sm border border-solid border-tp-gray_700 rounded-lg mr-7 pc:py-2 pc:px-7 py-1.5 px-3'>
-              취소
-            </button>
+            <div className='pr-7'>
+              <SingleButton type='button' colorType='white' id={invitation.id} onClick={handleDeleteInvitation}>
+                취소
+              </SingleButton>
+            </div>
           </div>
         ))}
     </>
@@ -53,12 +51,14 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
         currentPage={pageNation.currentPage}
         handleCurrentPage={handleCurrentPage}
       />
-      <SingleButton colorType='violet' type='button' onClick={handleToggleModal}>
-        <div className='flex items-center gap-2.5 py-1'>
-          <img src='/images/icon/plus.svg' alt='초대하기 아이콘' />
-          <p>초대</p>
-        </div>
-      </SingleButton>
+      <div className='tb:static absolute top-[3.2rem] right-0'>
+        <SingleButton colorType='violet' type='button' onClick={handleToggleModal}>
+          <div className='flex items-center gap-2.5 py-1'>
+            <img src='/images/icon/plus.svg' alt='초대하기 아이콘' />
+            <p>초대</p>
+          </div>
+        </SingleButton>
+      </div>
     </div>
   );
 
