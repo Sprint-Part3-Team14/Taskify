@@ -40,7 +40,7 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          assigneeUserId: 1764,
+          assigneeUserId: cardItem.assignee.id,
           columnId: Number(columnItem.id),
           title: title,
           description: description,
