@@ -14,8 +14,9 @@ const MydashBoard = () => {
   const handleDeleteDashBoard = async () => {
     try {
       await deleteDashBoard({ dashboardId });
+      alert('대시보드가 삭제되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
   return (
