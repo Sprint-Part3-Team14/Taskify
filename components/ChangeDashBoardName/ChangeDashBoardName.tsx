@@ -1,18 +1,15 @@
 'use client';
+import { useEffectOnce } from '@/hooks/useEffectOnce';
 import { useInputValue } from '@/hooks/useInputValue';
 import { changeDashBoard } from '@/utils/api/changeDashBoard';
 import { getDashBoardData } from '@/utils/api/getDashBoardData';
 import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
-import { FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { FormEvent, MouseEvent, useState } from 'react';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
-  const [changeDashBoardData, setChangeDashBoardData] = useState({
-    title: '',
-    color: '',
-  });
-  const [oldDashBoardName, setOldDashBoardName] = useState('');
+  const [beforeDashboardName, setBeforeDashboardName] = useState('');
   const newDashBoardName = useInputValue();
   const selectColorList = ['#7AC555', '#760DDE', '#FFA500', '#76A5EA', '#E876EA'];
 
@@ -24,7 +21,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const handleLoadDashBoard = async dashBoardId => {
     try {
       const { title } = await getDashBoardData(dashBoardId);
-      setOldDashBoardName(title);
+      setBeforeDashboardName(title);
     } catch (error: any) {
       console.error(error);
     }
@@ -32,20 +29,20 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
 
   const handleChangeDashBoard = async (event: FormEvent<HTMLElement>) => {
     event.preventDefault();
-    setChangeDashBoardData({
+    const newDashBoardData = {
       title: newDashBoardName.inputValue,
       color: selectColor,
-    });
+    };
+
     try {
-      changeDashBoard({ dashBoardId: dashboardId, changeData: changeDashBoardData });
+      const result = await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
+      alert('대시보드 정보가 저장되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error);
     }
   };
 
-  useEffect(() => {
-    handleLoadDashBoard(dashboardId);
-  }, []);
+  useEffectOnce(() => handleLoadDashBoard(dashboardId));
 
   return (
     <form
@@ -54,7 +51,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
       className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
       <div role='header' className='flex justify-between'>
         <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
-          {oldDashBoardName}
+          {beforeDashboardName}
         </h1>
         <div className='flex items-center gap-2.5 '>
           {selectColorList.map(color => {
@@ -84,7 +81,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
           id='change-dashboard-title'
           type='text'
           className='rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 p-3'
-          placeholder={oldDashBoardName}
+          placeholder={beforeDashboardName}
           onChange={newDashBoardName.onChange}
           value={newDashBoardName.inputValue}
         />
