@@ -6,6 +6,7 @@ import PageNationButton from '../PageNation/PageNationButton';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import InviteModal from '../Modal/InviteModal';
 import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
+import SingleButton from '../common/button/SingleButton';
 
 const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
@@ -52,12 +53,12 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
         currentPage={pageNation.currentPage}
         handleCurrentPage={handleCurrentPage}
       />
-      <button
-        onClick={handleToggleModal}
-        type='button'
-        className='flex gap-2.5 items-center bg-tp-violet_900 text-white text-md px-3 py-2 rounded-md tb:static absolute top-[3.5rem] right-1'>
-        <img src='/images/icon/plus.svg' alt='초대하기 아이콘' /> 초대
-      </button>
+      <SingleButton colorType='violet' type='button' onClick={handleToggleModal}>
+        <div className='flex items-center gap-2.5 py-1'>
+          <img src='/images/icon/plus.svg' alt='초대하기 아이콘' />
+          <p>초대</p>
+        </div>
+      </SingleButton>
     </div>
   );
 
