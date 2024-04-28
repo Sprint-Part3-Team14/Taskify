@@ -4,13 +4,13 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 import AddButton from '@/components/common/button/add';
-import Column from '@/components/Dashboard/Column/Column';
 import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { getColumnList } from '@/utils/api/getColumnList';
 import { createColumn } from '@/utils/api/createColumn';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import Column from '@/components/dashboard/Column/Column';
 
 const Dashboard = () => {
   const { isShowModal, handleToggleModal } = useHandleModal();

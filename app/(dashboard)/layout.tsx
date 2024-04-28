@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '@/components/dashboard/LayoutComponents/header';
 import SideMenu from '@/components/dashboard/LayoutComponents/sideMenu';
