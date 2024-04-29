@@ -3,19 +3,20 @@
 import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useEffect, useState } from 'react';
-
 import PageNationButton from '../PageNation/PageNationButton';
 import SingleButton from '../common/button/SingleButton';
-
 import TableLayout from './TableLayout';
-
 import { usePageNation } from '@/hooks/usePageNation';
 import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
 import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
+import { useHandleToast } from '@/hooks/usehandleToast';
+import Toast from '../common/Toast/Toast';
 
 const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [members, setMembers] = useState(null);
+  const { isShowToast, handleToggleToast, setIsShowToast, type, handleToastType, message, handleToastMessage } =
+    useHandleToast();
   const showCount = 5;
 
   const handleLoadMembers = async () => {
@@ -40,9 +41,13 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
 
     try {
       await deleteDashBoardMember({ memberId });
-      alert('삭제되었습니다.');
+      handleToggleToast();
+      handleToastMessage('삭제가 완료되었습니다.');
+      handleToastType('complete');
     } catch (error: any) {
-      alert(error.message);
+      handleToggleToast();
+      handleToastMessage(error.message);
+      handleToastType('error');
     }
   };
 
@@ -52,6 +57,15 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
 
   const MemberList = (
     <>
+      {isShowToast && (
+        <Toast
+          type={type}
+          handleToast={handleToggleToast}
+          message={message}
+          isToast={isShowToast}
+          setShowToast={setIsShowToast}
+        />
+      )}
       <div className='text-sm text-tp-gray_800 ml-7 -mb-1 my-3'>이름</div>
       {members &&
         members.map(member => {
