@@ -28,8 +28,8 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
         type='button'
         className={
           openList
-            ? 'w-[13.6rem] border border-solid border-tp-violet_900 inline-flex justify-between rounded-md bg-white px-3 py-2 hover:bg-gray-50 '
-            : 'w-[13.6rem] border border-solid  inline-flex justify-between rounded-md bg-white px-3 py-2 hover:bg-gray-50 '
+            ? 'tb:w-[13.6rem] mb:w-[12rem] border border-solid border-tp-violet_900 inline-flex justify-between rounded-md bg-white px-3 py-2 hover:bg-gray-50 '
+            : 'tb:w-[13.6rem] mb:w-[12rem] border border-solid  inline-flex justify-between rounded-md bg-white px-3 py-2 hover:bg-gray-50 '
         }>
         {selectItem}
         <div className='w-6 h-6 relative'>
@@ -37,7 +37,7 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
         </div>
       </button>
       {openList && (
-        <div className='absolute left-0 z-10 mt-1 w-[13.6rem] bg-white shadow-lg ring-1 ring-black ring-opacity-5 last:rounded-b-md'>
+        <div className='absolute left-0 z-10 mt-1 tb:w-[13.6rem] mb:w-[12rem] bg-white shadow-lg ring-1 ring-black ring-opacity-5 last:rounded-b-md'>
           {dashboardMember.map(member => (
             <div
               className='flex gap-1.5 px-4 py-2 text-sm hover:bg-slate-50 items-center'

@@ -19,4 +19,11 @@ export const INVITATION_TABLE = {
 export const MESSAGE = {
   EMPTY: '아직 초대받은 대시보드가 없어요',
   NO_SEARCH: '검색 결과가 없습니다.',
+  ACCEPT: '초대를 수락하셨습니다',
+  REJECT: '초대를 거절하셨습니다.',
+  NO_DASHBOARD_TITLE: '대시보드 제목을 입력하세요.',
+};
+
+export const PLACEHOLDER = {
+  SEARCH: '검색',
 };

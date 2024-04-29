@@ -16,12 +16,16 @@ const EditProfile = () => {
   const newNickName = useInputValue();
 
   const getUserData = async () => {
-    const { email, nickname, profileImageUrl } = await getLoginUserProfile();
-    setUserData({
-      email: email,
-      nickname: nickname,
-      profileImageUrl: profileImageUrl,
-    });
+    try {
+      const { email, nickname, profileImageUrl } = await getLoginUserProfile();
+      setUserData({
+        email: email,
+        nickname: nickname,
+        profileImageUrl: profileImageUrl,
+      });
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   const changeProfile = async (event: FormEvent<HTMLElement>) => {
@@ -34,8 +38,9 @@ const EditProfile = () => {
 
     try {
       await changeUserProfile({ newProfileData });
+      alert('프로필이 저장되었습니다.');
     } catch (error: any) {
-      console.error(error);
+      alert(error.message);
     }
   };
 

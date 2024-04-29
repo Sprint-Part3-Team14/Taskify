@@ -16,6 +16,17 @@ export const getInvitations = async ({ currentPage, showCount, dashboardId }: In
       },
     }
   );
-  const result = await response.json();
-  return result;
+  if (response.ok) {
+    const result = await response.json();
+    return result;
+  }
+
+  switch (response.status) {
+    case 403: {
+      throw new Error('대시보드 초대 조회 권한이 없습니다.');
+    }
+    case 404: {
+      throw new Error('대시보드가 존재하지 않습니다.');
+    }
+  }
 };

@@ -14,6 +14,15 @@ export const getDashBoardMembers = async ({ currentPage, showCount, dashboardId 
       Authorization: ACCESS_TOKEN,
     },
   });
-  const result = response.json();
-  return result;
+
+  if (response.ok) {
+    const result = response.json();
+    return result;
+  }
+
+  switch (response.status) {
+    case 404: {
+      throw new Error('대시보드의 멤버가 아닙니다. 대시보드를 확인해 주세요.');
+    }
+  }
 };

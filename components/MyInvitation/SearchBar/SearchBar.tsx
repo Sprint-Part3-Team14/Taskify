@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { I_SearchBarProps } from 'interface/myInvitation';
 import { SearchIcon } from 'constant/importImage';
+import { PLACEHOLDER } from '../constants';
 
 const SearchBar = ({ onSearch }: I_SearchBarProps) => {
   const [keyword, setKeyword] = useState('');
@@ -21,7 +22,7 @@ const SearchBar = ({ onSearch }: I_SearchBarProps) => {
         <Image src={SearchIcon} alt='search' width={24} height={24} />
         <input
           className='w-full mb:text-sm tb:text-base outline-none placeholder:text-tp-gray_800'
-          placeholder='검색'
+          placeholder={PLACEHOLDER.SEARCH}
           value={keyword}
           onChange={handleChange}
         />

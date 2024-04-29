@@ -18,6 +18,6 @@ export const changeDashBoard = async ({ dashBoardId, changeData }: ChangeDashBoa
     },
   });
 
-  const result = response.json();
+  const result = await response.json();
   return result;
 };
