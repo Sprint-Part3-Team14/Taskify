@@ -13,7 +13,7 @@ import { WhiteCheckIcon } from 'constant/importImage';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
-  const [beforeDashboardData, setBeforeDashboardData] = useState({
+  const [currentDashboardData, setCurrentDashboardData] = useState({
     title: '',
     color: '',
   });
@@ -28,7 +28,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const handleLoadDashBoard = async dashBoardId => {
     try {
       const { title, color } = await getDashBoardData(dashBoardId);
-      setBeforeDashboardData({
+      setCurrentDashboardData({
         title: title,
         color: color,
       });
@@ -39,14 +39,15 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
 
   const handleChangeDashBoard = async (event: FormEvent<HTMLElement>) => {
     event.preventDefault();
-    const newDashBoardData = {
+    const newDashboardData = {
       title: newDashBoardName.inputValue,
       color: selectColor,
     };
 
     try {
-      await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
+      await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashboardData });
       handleToggleToast();
+      handleLoadDashBoard(dashboardId);
     } catch (error: any) {
       alert(error);
     }
@@ -69,9 +70,9 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
         onSubmit={handleChangeDashBoard}
         className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-6 pc:w-[38.75rem] tb:w-[33rem] w-[19rem]'>
         <div className='flex justify-between gap-2.5 items-center'>
-          <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: `${beforeDashboardData.color}` }} />
+          <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: `${currentDashboardData.color}` }} />
           <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[21rem] tb:w-[18rem] w-[11rem]'>
-            {beforeDashboardData.title}
+            {currentDashboardData.title}
           </h1>
           <div className='flex items-center gap-2.5 '>
             {COLOR_LIST.map(color => {
@@ -101,7 +102,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
             id='change-dashboard-title'
             type='text'
             className='rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 p-3'
-            placeholder={beforeDashboardData.title}
+            placeholder={currentDashboardData.title}
             onChange={newDashBoardName.onChange}
             value={newDashBoardName.inputValue}
           />

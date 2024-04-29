@@ -44,6 +44,7 @@ const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
       handleToggleToast();
       handleToastMessage('삭제가 완료되었습니다.');
       handleToastType('complete');
+      handleLoadMembers();
     } catch (error: any) {
       handleToggleToast();
       handleToastMessage(error.message);

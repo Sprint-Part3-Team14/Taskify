@@ -6,7 +6,7 @@ import { useInputValue } from '@/hooks/useInputValue';
 import { postInvitation } from '@/utils/api/postInvitation';
 import Toast from '../common/Toast/Toast';
 
-const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
+const InviteModal = ({ handleModal, dashboardId, dataHandler }: I_ModalToggle) => {
   const { inputValue, onChange } = useInputValue();
   const { isShowToast, handleToggleToast, setIsShowToast, type, handleToastType, message, handleToastMessage } =
     useHandleToast();
@@ -17,6 +17,7 @@ const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
       handleToggleToast();
       handleToastMessage('초대가 완료되었습니다.');
       handleToastType('complete');
+      dataHandler();
     } catch (error: any) {
       handleToggleToast();
       handleToastMessage(error.message);
