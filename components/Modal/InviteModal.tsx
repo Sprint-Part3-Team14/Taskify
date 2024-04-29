@@ -9,7 +9,7 @@ const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
 
   const handlePostInvitation = async () => {
     try {
-      const result = await postInvitation({ email: inputValue, dashboardId: dashboardId });
+      await postInvitation({ email: inputValue, dashboardId: dashboardId });
       alert('초대가 완료되었습니다.');
     } catch (error: any) {
       alert(error.message);

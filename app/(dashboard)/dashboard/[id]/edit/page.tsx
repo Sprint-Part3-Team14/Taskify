@@ -20,7 +20,7 @@ const MydashBoard = () => {
     }
   };
   return (
-    <>
+    <div className='ml-4 mt-5 pb-7'>
       <Link href={`/dashboard/${dashboardId}`}>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
@@ -39,9 +39,8 @@ const MydashBoard = () => {
           className='py-5 px-[5.9375rem] rounded-lg text-tp-black_700 border border-solid border-tp-gray_700 active:bg-tp-gray_600 mt-7 self-start'>
           대시보드 삭제하기
         </button>
-        {/** 버튼 컴포넌트 대체 예정 */}
       </div>
-    </>
+    </div>
   );
 };
 
