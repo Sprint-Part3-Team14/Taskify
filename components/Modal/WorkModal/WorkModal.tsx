@@ -162,7 +162,7 @@ const WorkModal = ({ handleModal, dashboardMember, columnItem, cardItem, dashboa
             </div>
             {isCommnetList && (
               <div className='flex flex-col gap-3 pc:w-[40rem] tb:[28rem] pc:h-[38rem] mb:h-[6rem] p-5 overflow-y-scroll  '>
-                <ModalComment commentList={commentList} />
+                <ModalComment commentList={commentList} setCommentList={setCommentList} cardItem={cardItem} />
                 <div ref={intersectionObserverRef}></div>
               </div>
             )}

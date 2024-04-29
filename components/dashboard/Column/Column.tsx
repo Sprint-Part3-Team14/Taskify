@@ -140,6 +140,7 @@ const Column = ({ columnItem, dashboardItem, index, onCardListChange, changeCard
                 handleModal={handleToggleModal}
                 columnItem={columnItem}
                 dashboardMembers={dashboardMember}
+                setCardList={setCardList}
               />
             )}
           </div>
