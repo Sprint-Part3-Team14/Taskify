@@ -4,11 +4,11 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { usePathname } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
+import Column from '@/components/Dashboard/Column/Column';
+import { BUTTON } from '@/components/Dashboard/constants';
 import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 import { MESSAGE } from '@/components/MyInvitation/constants';
 import AddButton from '@/components/common/button/add';
-import Column from '@/components/dashboard/Column/Column';
-import { BUTTON } from '@/components/dashboard/constants';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { createColumn } from '@/utils/api/createColumn';
 import { getColumnList } from '@/utils/api/getColumnList';
@@ -118,11 +118,11 @@ const Dashboard = () => {
   };
 
   return (
-    <div className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
+    <main className='flex mb:flex-col pc:flex-row pc:w-full bg-tp-gray_500'>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId='column' direction='horizontal' type='column'>
           {provided => (
-            <div className='flex justify-between' ref={provided.innerRef} {...provided.droppableProps}>
+            <section className='flex justify-between' ref={provided.innerRef} {...provided.droppableProps}>
               <div className='flex pc:flex-row mb:flex-col w-full'>
                 {columnList &&
                   columnList.map((column, index) => (
@@ -137,7 +137,7 @@ const Dashboard = () => {
                   ))}
               </div>
               {provided.placeholder}
-            </div>
+            </section>
           )}
         </Droppable>
       </DragDropContext>
@@ -152,7 +152,7 @@ const Dashboard = () => {
           />
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

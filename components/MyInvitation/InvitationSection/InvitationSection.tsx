@@ -8,7 +8,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import { INVITATION_TABLE, MESSAGE } from '../constants';
 
 import { getAddInvitationList, getMyInvitationList } from '@/utils/api/getMyInvitationList';
-import { acceptInvitationData, deleteInvitationData } from '@/utils/api/invitation';
+import { acceptInvitation, rejectInvitation } from '@/utils/api/invitationResponse';
 
 const InvitationSection = () => {
   const [invitationList, setInvitationList] = useState([]);
@@ -75,7 +75,7 @@ const InvitationSection = () => {
 
   const handleAcceptInvitation = async (id: number) => {
     try {
-      const result = await acceptInvitationData({ id: id, inviteAccepted: false });
+      const result = await acceptInvitation({ id: id, inviteAccepted: true });
       if (result) {
         alert(MESSAGE.ACCEPT);
         setInvitationList(prevList => prevList.filter(list => list.id !== id));
@@ -87,7 +87,7 @@ const InvitationSection = () => {
 
   const handleRejectInvitation = async (id: number) => {
     try {
-      const result = await deleteInvitationData({ id: id, inviteAccepted: false });
+      const result = await rejectInvitation({ id: id, inviteAccepted: false });
 
       if (result) {
         alert(MESSAGE.REJECT);

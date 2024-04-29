@@ -2,15 +2,12 @@
 
 import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
-import { MouseEvent, ChangeEvent, useState } from 'react';
-
+import { MouseEvent, ChangeEvent, useState, useRef, useEffect, FormEvent } from 'react';
 
 import { COLOR_LIST, INITIAL_COLOR } from '../MyInvitation/constants';
 
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
-
-
 
 interface I_ModalToggle {
   handleModal: (event: MouseEvent<HTMLElement>) => void;
@@ -19,6 +16,7 @@ interface I_ModalToggle {
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onClickFirstButton?: (event: MouseEvent<HTMLElement>) => void;
   onClickSecondButton?: (event: MouseEvent<HTMLElement>) => void;
+  handleSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 const CreateDashboardModal = ({
@@ -27,10 +25,18 @@ const CreateDashboardModal = ({
   onClickSecondButton,
   onSelectColor,
   onChange,
+  handleSubmit,
 }: I_ModalToggle) => {
   const [newDashboardTitle, setNewDashboardTitle] = useState('');
   const [selectColor, setSelectColor] = useState(INITIAL_COLOR);
   const selectColorList = COLOR_LIST;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
@@ -44,7 +50,7 @@ const CreateDashboardModal = ({
   };
   return (
     <ModalLayout handleModal={handleModal} title='컬럼 관리'>
-      <form className='flex flex-col h-[14.5rem] mb:w-[25rem] tb:w-[30rem]'>
+      <form className='flex flex-col h-[14.5rem] mb:w-[25rem] tb:w-[30rem]' onSubmit={handleSubmit}>
         <label className='text-lg'>새로운 대시 보드</label>
         <input
           className='p-4 border border-solid mt-2.5 mb-7 border-tp-gray_700 rounded-lg w-full'

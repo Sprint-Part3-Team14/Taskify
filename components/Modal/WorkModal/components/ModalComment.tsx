@@ -32,6 +32,7 @@ const ModalComment = ({ commentList }: I_CommentItem) => {
     } catch (error) {
       console.error(error);
     }
+    setChangeComment(changeComment);
   };
 
   const handleDeleteComment = async (commentId: number) => {
