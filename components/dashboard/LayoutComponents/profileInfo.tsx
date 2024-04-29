@@ -7,7 +7,7 @@ const ProfileInfo = () => {
   const loginInfo = {
     id: 1,
     nickname: '한규경',
-    profileImageUrl: 'https://unsplash.com/photos/a_specific_photo_id',
+    profileImageUrl: '',
   };
   const myProfile = {
     id: loginInfo.id ?? 1,
