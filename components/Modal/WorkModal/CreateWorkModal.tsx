@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from 'react';
 import ModalButton from '../Button/ModalButton';
 import ModalLayout from '../ModalLayout';
 import { I_ModalToggle } from '../ModalType';
+import { ERROR } from '../constant';
 
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 
@@ -31,6 +32,16 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   const [assigneeUserId, setAssigneeUserId] = useState<number | undefined>();
 
   const handleCreateCard = async () => {
+    if (!title) {
+      alert(ERROR.TITLE);
+      return;
+    }
+    if (!description) {
+      alert(ERROR.DESCRIPTION);
+    }
+    if (!date) {
+      alert(ERROR.DATE);
+    }
     try {
       await createCard({
         title: title,
@@ -62,7 +73,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     const selectedDate = new Date(inputDate);
     const currentDate = new Date();
     if (selectedDate < currentDate) {
-      alert('마감 기한은 올바르게 선택해주세요');
+      alert(ERROR.DUEDATE);
       event.target.value = '';
       return;
     }
