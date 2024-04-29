@@ -47,6 +47,7 @@ const EditProfile = () => {
       handleToastType('complete');
       handleToastMessage('프로필이 저장되었습니다.');
       handleToggleToast();
+      getUserData();
     } catch (error: any) {
       handleToastType('error');
       handleToastMessage(error.message);
@@ -74,18 +75,16 @@ const EditProfile = () => {
           setShowToast={setIsShowToast}
         />
       )}
-      <div
-        role='edit-profile-container'
-        className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-sm pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
-        <h2 className='pc:text-2xl tb:text-2xl mb:text-xl text-tp-black_700 font-bold mb-4'>프로필</h2>
+      <div className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-sm pc:w-[38.75rem] tb:w-[34rem] '>
+        <h2 className='pc:text-2xl tb:text-2xl text-tp-black_700 font-bold mb-4'>프로필</h2>
         <form
           role='edit-profile'
-          className='flex pc:flex-row tb:flex-row  mb:flex-col items-center justify-stretch gap-4 mb-12 relative'
+          className='flex pc:flex-row tb:flex-row items-center justify-stretch gap-4 mb-12 relative'
           onSubmit={changeProfile}>
           <InputImageFile size='large' defaultImg={userData.profileImageUrl} apiCallback={inputImageCallBack} />
           <div
             role='email-nickname-input-container'
-            className='flex flex-col gap-3.5 pc:w-[22.875rem] tb:w-[18.125rem] mb:w-[15.25rem]'>
+            className='flex flex-col gap-3.5 pc:w-[22.875rem] tb:w-[18.125rem]'>
             <div role='email-box' className='flex flex-col gap-2'>
               <label htmlFor='email' className='text-lg text-tp-black_700'>
                 이메일
