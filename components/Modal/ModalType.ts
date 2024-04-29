@@ -26,4 +26,5 @@ export interface I_ModalToggle {
   onSelectColor?: (color: string) => void;
   onChange?: (title: string) => void;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  dataHandler?: () => void;
 }

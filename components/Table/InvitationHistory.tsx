@@ -28,6 +28,7 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
       handleToggleToast();
       handleToastMessage('대시보드 초대가 취소되었습니다.');
       handleToastType('complete');
+      handleLoadInvitations();
     } catch (error: any) {
       handleToggleToast();
       handleToastMessage(error.message);
@@ -105,7 +106,9 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
           handleToast={handleToggleToast}
         />
       )}
-      {isShowModal && <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} />}
+      {isShowModal && (
+        <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} dataHandler={handleLoadInvitations} />
+      )}
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );
