@@ -1,20 +1,20 @@
 'use client';
 
+import { WhiteCheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { FormEvent, MouseEvent, useState } from 'react';
 
 import Toast from '../common/Toast/Toast';
-
-import { COLOR_LIST } from './constant';
-import { WhiteCheckIcon } from 'constant/importImage';
-
 import SingleButton from '../common/button/SingleButton';
 
+import { COLOR_LIST } from './constant';
+
+
+import { useEffectOnce } from '@/hooks/useEffectOnce';
 import { useInputValue } from '@/hooks/useInputValue';
 import { useHandleToast } from '@/hooks/usehandleToast';
-import { useEffectOnce } from '@/hooks/useEffectOnce';
-import { getDashBoardData } from '@/utils/api/getDashBoardData';
 import { changeDashBoard } from '@/utils/api/changeDashBoard';
+import { getDashBoardData } from '@/utils/api/getDashBoardData';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');

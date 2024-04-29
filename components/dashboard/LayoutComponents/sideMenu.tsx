@@ -7,13 +7,12 @@ import { useEffect, useState, memo } from 'react';
 
 import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import PageNationButton from '@/components/PageNation/PageNationButton';
-import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
-import { createDashborad } from '@/utils/api/createDashboard';
-
-import logo from '@/public/images/logo/logo_large.jpg';
-
-import { usePageNation } from '@/hooks/usePageNation';
 import { useHandleModal } from '@/hooks/useHandleModal';
+import { usePageNation } from '@/hooks/usePageNation';
+import logo from '@/public/images/logo/logo_large.jpg';
+import { createDashborad } from '@/utils/api/createDashboard';
+import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
+
 
 interface Props {
   dashboardId?: number;

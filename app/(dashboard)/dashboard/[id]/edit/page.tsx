@@ -7,12 +7,10 @@ import Link from 'next/link';
 import ChangeDashBoardName from '@/components/ChangeDashBoardName/ChangeDashBoardName';
 import InvitationHistory from '@/components/Table/InvitationHistory';
 import MemberTable from '@/components/Table/MemberTable';
-
-import { useDashboardId } from '@/hooks/useDashboardId';
-
-import { deleteDashBoard } from '@/utils/api/deleteDashBoard';
-import { useHandleToast } from '@/hooks/usehandleToast';
 import Toast from '@/components/common/Toast/Toast';
+import { useDashboardId } from '@/hooks/useDashboardId';
+import { useHandleToast } from '@/hooks/usehandleToast';
+import { deleteDashBoard } from '@/utils/api/deleteDashBoard';
 
 const MydashBoard = () => {
   const { dashboardId } = useDashboardId();
