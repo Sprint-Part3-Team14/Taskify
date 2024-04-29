@@ -19,8 +19,6 @@ const PersonInChargeDropDown = ({ dashboardMember, onSelectAssignee }: I_PersonI
     setOpenList(prevState => !prevState);
   }
 
-  console.log(dashboardMember);
-
   function handleSelectItem(event: MouseEvent<HTMLElement>) {
     const selectedNickname = event.currentTarget.id;
     setSelectItem(selectedNickname);

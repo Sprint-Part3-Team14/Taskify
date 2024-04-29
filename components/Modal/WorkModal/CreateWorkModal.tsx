@@ -53,6 +53,8 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
         imageUrl: image,
         assigneeUserId: selectedAssigneeId,
       });
+
+      handleModal();
     } catch (error) {
       console.error(error);
     }
