@@ -19,3 +19,10 @@ export const ModalPlaceHolder = {
   마감일: '날짜를 입력해 주세요',
   태그: '입력 후 Enter',
 };
+
+export const ERROR = {
+  TITLE: '제목을 입력해주세요',
+  DESCRIPTION: '내용을 입력해주세요',
+  DATE: '마감일을 지정해주세요',
+  DUEDATE: '마감 기한은 올바르게 선택해주세요',
+};

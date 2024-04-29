@@ -2,7 +2,7 @@ import { getAccessToken } from '../handleToken';
 
 export const deleteCard = async ({ cardId }: { cardId: number }) => {
   const accessToken = getAccessToken();
-  const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/columns/${cardId}`, {
+  const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -10,5 +10,7 @@ export const deleteCard = async ({ cardId }: { cardId: number }) => {
     },
   });
   const result = response.json();
-  return result;
+  if (response.ok) {
+    window.location.reload();
+  }
 };

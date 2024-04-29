@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import ModalButton from '../Button/ModalButton';
 import ModalLayout from '../ModalLayout';
 import { I_ModalToggle } from '../ModalType';
+import { ERROR } from '../constant';
 
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 import ProgressDropDown from './components/ProgressDropDown';
@@ -10,10 +11,9 @@ import ProgressDropDown from './components/ProgressDropDown';
 import InputImageFile from '@/components/InputImage/InputImage';
 import TagChip from '@/components/common/Chip/TagChip';
 import { I_Card, I_Column, I_Members, I_Dashboard } from '@/interface/Dashboard';
+import { changeCard } from '@/utils/api/changeCard';
 import { changeCardImage } from '@/utils/api/changeCardImage';
-import { getAccessToken } from '@/utils/handleToken';
-
-
+import { formatDate } from '@/utils/formatDate';
 
 interface I_EditWorkModal extends I_ModalToggle {
   handleModal: () => void;
@@ -31,29 +31,37 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
   const [tags, setTags] = useState<string[]>(cardItem.tags);
   const [tagsName, setTagsName] = useState('');
   const [date, setDate] = useState(cardItem.dueDate);
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState<number>();
 
   const handleEditCard = async () => {
+    if (!title) {
+      alert(ERROR.TITLE);
+      return;
+    }
+    if (!description) {
+      alert(ERROR.DESCRIPTION);
+    }
+    if (!date) {
+      alert(ERROR.DATE);
+    }
     try {
-      const accessToken = getAccessToken();
-      const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/cards/${cardItem.id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assigneeUserId: cardItem.assignee.id,
-          columnId: Number(columnItem.id),
-          title: title,
-          description: description,
-          dueDate: date,
-          tags: tags,
-          imageUrl: image,
-        }),
+      await changeCard({
+        assigneeUserId: selectedAssigneeId,
+        columnId: Number(columnItem.id),
+        title: title,
+        description: description,
+        dueDate: date,
+        tags: tags,
+        imageUrl: image,
+        id: cardItem.id,
       });
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSelectAssignee = (assigneeId: number) => {
+    setSelectedAssigneeId(assigneeId);
   };
 
   const handleCardTitle = event => {
@@ -75,16 +83,7 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
       return;
     }
 
-    const formattedDate =
-      selectedDate.getFullYear() +
-      '-' +
-      ('0' + (selectedDate.getMonth() + 1)).slice(-2) +
-      '-' +
-      ('0' + selectedDate.getDate()).slice(-2) +
-      ' ' +
-      ('0' + selectedDate.getHours()).slice(-2) +
-      ':' +
-      ('0' + selectedDate.getMinutes()).slice(-2);
+    const formattedDate = formatDate(selectedDate);
 
     setDate(formattedDate);
   };
@@ -118,7 +117,7 @@ const EditCardModal = ({ handleModal, columnItem, cardItem, dashboardMembers, da
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
           <ProgressDropDown columnItem={columnItem} dashboardItem={dashboardItem} />
-          <PersonInChargeDropDown dashboardMember={dashboardMembers} />
+          <PersonInChargeDropDown onSelectAssignee={handleSelectAssignee} dashboardMember={dashboardMembers} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>

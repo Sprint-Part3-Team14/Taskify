@@ -6,9 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-
 import { INITIAL_COLOR, BUTTON_TITLE } from '../constants';
-
 
 import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import PageNationButton from '@/components/PageNation/PageNationButton';
@@ -17,8 +15,6 @@ import { useHandleModal } from '@/hooks/useHandleModal';
 import { usePageNation } from '@/hooks/usePageNation';
 import { createDashborad } from '@/utils/api/createDashboard';
 import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
-
-
 
 const MyList = () => {
   const [newDashboardTitle, setNewDashBoardTitle] = useState('');
@@ -81,6 +77,11 @@ const MyList = () => {
     setSelectColor(color);
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleCreateDashboard();
+  };
+
   return (
     <section className='flex flex-col gap-1 max-w-[63.875rem]'>
       <div className='grid pc:grid-cols-3 tb:grid-cols-2 mb:grid-cols-1 gap-[0.625rem] pc:h-[9.5rem]  '>
@@ -92,6 +93,7 @@ const MyList = () => {
             onClickSecondButton={handleCreateDashboard}
             onSelectColor={handleSelectColor}
             onChange={handleDashboardNewTitle}
+            handleSubmit={handleSubmit}
           />
         )}
         {myDashboardList.map(({ title, color, id, createdByMe }, index) => (
