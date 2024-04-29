@@ -1,6 +1,6 @@
 import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useRef, useEffect } from 'react';
 
 import { I_Members } from '@/interface/Dashboard';
 
@@ -12,6 +12,8 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
   const [openList, setOpenList] = useState(false);
   const [selectItem, setSelectItem] = useState(dashboardMember[0].nickname);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   function handleOpenDropDown() {
     setOpenList(prevState => !prevState);
   }
@@ -21,8 +23,22 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
     setSelectItem(selectedNickname);
   }
 
+  const handleClickOutside = (event: any) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setOpenList(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className='relative'>
+    <div className='relative' ref={dropdownRef}>
       <h3 className='text-lg mb-2.5 font-extrabold'>담당자</h3>
       <button
         onClick={handleOpenDropDown}
@@ -49,8 +65,7 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
                 <Image fill src={CheckIcon} alt='선택된 상태' />
               </div>
               <div className='w-[1.625rem] h-[1.625rem] relative rounded-full overflow-hidden'>
-                <Image
-                  fill
+                <img
                   src={member.profileImageUrl ? member.profileImageUrl : DEFAULTPROFILEIMAGE}
                   alt={selectItem + '의 프로필 사진'}
                 />
