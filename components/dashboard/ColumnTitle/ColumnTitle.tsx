@@ -5,15 +5,13 @@ import { EllipseIcon, SettingIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { useState } from 'react';
 
-
 import NumberChip from '../../common/Chip/NumberChip';
 import { MESSAGE, PLACEHOLDER, TITLE } from '../constants';
 
 import { I_Column } from '@/interface/Dashboard';
-import { changeNewColumnTitle } from '@/utils/api/changeCard';
+import { changeNewColumnTitle } from '@/utils/api/changeColumn';
 import { deleteColumn } from '@/utils/api/deleteColumn';
 import { getColumnList } from '@/utils/api/getColumnList';
-
 
 const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);
