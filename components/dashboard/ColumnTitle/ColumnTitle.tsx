@@ -1,17 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-
 import EditColumnModal from 'components/Modal/EditColumnModal';
-import NumberChip from '../../common/Chip/NumberChip';
 import { EllipseIcon, SettingIcon } from 'constant/importImage';
+import Image from 'next/image';
+import { useState } from 'react';
 
-import { getColumnList } from '@/utils/api/getColumnList';
+
+import NumberChip from '../../common/Chip/NumberChip';
+import { MESSAGE, PLACEHOLDER, TITLE } from '../constants';
+
 import { I_Column } from '@/interface/Dashboard';
 import { changeNewColumnTitle } from '@/utils/api/changeCard';
 import { deleteColumn } from '@/utils/api/deleteColumn';
-import { MESSAGE, PLACEHOLDER, TITLE } from '../constants';
+import { getColumnList } from '@/utils/api/getColumnList';
+
 
 const ColumnTitle = ({ title, changeCardList, columnId, dashboardId }) => {
   const [isToggledModal, setIsToggeldModal] = useState(false);

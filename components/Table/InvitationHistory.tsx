@@ -1,12 +1,15 @@
-import { getInvitations } from '@/utils/api/getInvitations';
-import TableLayout from './TableLayout';
-import { usePageNation } from '@/hooks/usePageNation';
 import { MouseEvent, useEffect, useState } from 'react';
-import PageNationButton from '../PageNation/PageNationButton';
-import { useHandleModal } from '@/hooks/useHandleModal';
+
 import InviteModal from '../Modal/InviteModal';
-import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
+import PageNationButton from '../PageNation/PageNationButton';
 import SingleButton from '../common/button/SingleButton';
+
+import TableLayout from './TableLayout';
+
+import { useHandleModal } from '@/hooks/useHandleModal';
+import { usePageNation } from '@/hooks/usePageNation';
+import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
+import { getInvitations } from '@/utils/api/getInvitations';
 
 const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();

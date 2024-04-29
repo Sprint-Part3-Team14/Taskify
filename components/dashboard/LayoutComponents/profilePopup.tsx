@@ -1,6 +1,7 @@
-import { removeAccessToken } from '@/utils/handleToken';
 import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
+
+import { removeAccessToken } from '@/utils/handleToken';
 
 const ProfilePopup = () => {
   const router = useRouter();

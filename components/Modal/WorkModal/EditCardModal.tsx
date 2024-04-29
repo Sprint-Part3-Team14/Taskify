@@ -1,17 +1,19 @@
 import { ChangeEvent, useState } from 'react';
 
+import ModalButton from '../Button/ModalButton';
 import ModalLayout from '../ModalLayout';
+import { I_ModalToggle } from '../ModalType';
+
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 import ProgressDropDown from './components/ProgressDropDown';
 
 import InputImageFile from '@/components/InputImage/InputImage';
-import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
+import { I_Card, I_Column, I_Members, I_Dashboard } from '@/interface/Dashboard';
+import { changeCardImage } from '@/utils/api/changeCardImage';
 import { getAccessToken } from '@/utils/handleToken';
 
-import { changeCardImage } from '@/utils/api/changeCardImage';
-import { I_Card, I_Column, I_Members, I_Dashboard } from '@/interface/Dashboard';
-import { I_ModalToggle } from '../ModalType';
+
 
 interface I_EditWorkModal extends I_ModalToggle {
   handleModal: () => void;

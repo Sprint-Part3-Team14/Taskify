@@ -22,6 +22,7 @@ export const MESSAGE = {
   ACCEPT: '초대를 수락하셨습니다',
   REJECT: '초대를 거절하셨습니다.',
   NO_DASHBOARD_TITLE: '대시보드 제목을 입력하세요.',
+  IS_DUPLICATE_COLUMN: '중복된 컬럼입니다.',
 };
 
 export const PLACEHOLDER = {

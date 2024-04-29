@@ -1,7 +1,8 @@
+import Image from 'next/image';
+
 import EmailIcon from '@/public/images/icon/email.svg';
 import FaceBookIcon from '@/public/images/icon/facebook_icon.svg';
 import InstargramIcon from '@/public/images/icon/instagram_icon.svg';
-import Image from 'next/image';
 
 const Footer = () => {
   return (
