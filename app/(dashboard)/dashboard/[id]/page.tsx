@@ -141,7 +141,7 @@ const Dashboard = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <div className='mb:sticky mb:py-5 mb:bottom-0 min-w-[20rem] my-11 py-16 px-5 bg-tp-gray_500'>
+      <div className='mb:sticky mb:py-5 mb:bottom-0 min-w-[20rem]  pc:static pc:py-[4rem] px-5 bg-tp-gray_500'>
         <AddButton onClick={handleToggleModal}>{BUTTON.ADD_COLUMN}</AddButton>
         {isShowModal && (
           <CreateColumnModal
