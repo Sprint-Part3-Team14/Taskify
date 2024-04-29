@@ -70,9 +70,8 @@ function ImageMember({ profileImageUrl, index }: ImageMember) {
   return (
     <div
       className={`border-solid-white absolute h-[38px] w-38 items-center justify-center overflow-hidden rounded-full ${INDEX_POSITION[index]}`}>
-      <Image
+      <img
         src={profileImageUrl}
-        fill
         style={{
           objectFit: 'cover',
         }}
