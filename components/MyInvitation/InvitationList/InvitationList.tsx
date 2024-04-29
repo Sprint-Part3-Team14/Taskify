@@ -1,6 +1,6 @@
+import { I_MYInviteList } from 'interface/myInvitation';
 import { useState, useEffect } from 'react';
 
-import { I_MYInviteList } from 'interface/myInvitation';
 import { BUTTON_TITLE, INVITATION_TABLE } from '../constants';
 
 const InvitationList = ({ invitationList, handleAccept, handleReject }: I_MYInviteList) => {

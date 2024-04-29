@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import logo from '@/public/images/logo/logo_large.jpg';
-import Link from 'next/link';
 
 const Header = () => {
   return (

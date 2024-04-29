@@ -1,9 +1,12 @@
 'use client';
+
+import { ArrowForwardIcon } from 'constant/importImage';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import ChangePassword from '@/components/MyDashBoard Page/accountMenu/ChangePassword';
 import EditProfile from '@/components/MyDashBoard Page/accountMenu/EditProfile';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowForwardIcon } from 'constant/importImage';
+
 
 const AccountMenu = () => {
   return (

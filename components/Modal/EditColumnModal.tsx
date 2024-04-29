@@ -1,4 +1,5 @@
-import { MouseEvent, useRef, useEffect } from 'react';
+import { MouseEvent, useRef } from 'react';
+
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 

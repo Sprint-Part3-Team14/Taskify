@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { DeleteIcon, SettingIcon } from 'constant/importImage';
+import Image from 'next/image';
 
 interface I_Popover {
   editCard: () => void;

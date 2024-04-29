@@ -2,18 +2,18 @@
 
 import { ChangeEvent, useState } from 'react';
 
+import ModalButton from '../Button/ModalButton';
 import ModalLayout from '../ModalLayout';
+import { I_ModalToggle } from '../ModalType';
+
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 
-import { changeCardImage } from '@/utils/api/changeCardImage';
-
 import InputImageFile from '@/components/InputImage/InputImage';
-import ModalButton from '../Button/ModalButton';
 import TagChip from '@/components/common/Chip/TagChip';
-import { formatDate } from '@/utils/formatDate';
-import { I_ModalToggle } from '../ModalType';
 import { I_Column, I_Members } from '@/interface/Dashboard';
+import { changeCardImage } from '@/utils/api/changeCardImage';
 import { createCard } from '@/utils/api/createCard';
+import { formatDate } from '@/utils/formatDate';
 
 interface I_CreateWorkModal extends I_ModalToggle {
   handleModal: () => void;

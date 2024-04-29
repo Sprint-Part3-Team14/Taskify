@@ -1,6 +1,6 @@
+import { EllipseIcon } from 'constant/importImage';
 import Image from 'next/image';
 
-import { EllipseIcon } from 'constant/importImage';
 
 interface I_ProgressChip {
   title: string;

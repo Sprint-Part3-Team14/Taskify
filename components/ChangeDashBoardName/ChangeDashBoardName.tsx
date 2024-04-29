@@ -1,12 +1,15 @@
 'use client';
+import { WhiteCheckIcon } from 'constant/importImage';
+import Image from 'next/image';
+import { FormEvent, MouseEvent, useState } from 'react';
+
+import { COLOR_LIST } from './constant';
+
 import { useEffectOnce } from '@/hooks/useEffectOnce';
 import { useInputValue } from '@/hooks/useInputValue';
 import { changeDashBoard } from '@/utils/api/changeDashBoard';
 import { getDashBoardData } from '@/utils/api/getDashBoardData';
-import { WhiteCheckIcon } from 'constant/importImage';
-import Image from 'next/image';
-import { FormEvent, MouseEvent, useState } from 'react';
-import { COLOR_LIST } from './constant';
+
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');

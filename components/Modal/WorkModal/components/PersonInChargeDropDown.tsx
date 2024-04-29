@@ -1,7 +1,8 @@
-import { I_Dashboard, I_Members } from '@/interface/Dashboard';
 import { ArrowDropDownIcon, CheckIcon, DEFAULTPROFILEIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useState } from 'react';
+
+import { I_Members } from '@/interface/Dashboard';
 
 interface I_PersonInCharge {
   dashboardMember: I_Members[];

@@ -1,13 +1,13 @@
 'use client';
 
-import { getAccessToken, removeAccessToken } from '@/utils/handleToken';
-import { CrownIcon, PlusBlueIcon, SettingIcon } from 'constant/importImage';
+import { CrownIcon } from 'constant/importImage';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import DashboardInfo from './dashboardInfo';
 import ProfileInfo from './profileInfo';
+
+import { getAccessToken } from '@/utils/handleToken';
 
 interface Props {
   dashboardId?: string;

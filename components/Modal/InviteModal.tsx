@@ -1,7 +1,8 @@
-import { useInputValue } from '@/hooks/useInputValue';
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
+
+import { useInputValue } from '@/hooks/useInputValue';
 import { postInvitation } from '@/utils/api/postInvitation';
 
 const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {

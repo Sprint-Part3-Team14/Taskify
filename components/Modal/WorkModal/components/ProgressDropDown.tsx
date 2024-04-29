@@ -1,9 +1,10 @@
 'use client';
+import ProgressChip from 'components/common/Chip/ProgressChip';
+import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { useState } from 'react';
-import ProgressChip from 'components/common/Chip/ProgressChip';
 
-import { ArrowDropDownIcon, CheckIcon } from 'constant/importImage';
+
 import { I_Column, I_Dashboard } from '@/interface/Dashboard';
 
 interface I_ProgressDropDown {
