@@ -2,6 +2,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 import InputImageFile from '@/components/InputImage/InputImage';
+import SingleButton from '@/components/common/button/SingleButton';
 import { useInputValue } from '@/hooks/useInputValue';
 import { changeUserProfile } from '@/utils/api/changeUserProfile';
 import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
@@ -25,7 +26,7 @@ const EditProfile = () => {
         profileImageUrl: profileImageUrl,
       });
     } catch (error: any) {
-      console.error(error.message);
+      alert(error.message);
     }
   };
 
@@ -92,12 +93,11 @@ const EditProfile = () => {
             />
           </div>
         </div>
-        <button
-          type='submit'
-          onSubmit={changeProfile}
-          className='absolute right-1 -bottom-[3.4375rem] py-2.5 px-8 border border-solid border-tp-gray_700 rounded-lg self-end bg-tp-violet_900 text-white active:bg-violet-900'>
-          저장
-        </button>
+        <div className='absolute -bottom-[3.5rem] right-0'>
+          <SingleButton type='submit' colorType='violet' onSubmit={changeProfile}>
+            저장
+          </SingleButton>
+        </div>
       </form>
     </div>
   );
