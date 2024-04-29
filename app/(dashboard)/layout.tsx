@@ -11,7 +11,22 @@ import '@/styles/globals.css';
 
 import { getAccessToken } from '@/utils/handleToken';
 
+import { usePathname } from 'next/navigation';
+
 const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
+
+  const path = usePathname();
+  const dashboardId = path.split('/')[2];
+
+  const getDashboardColumnList = async () => {
+    try {
+      const { data } = await getColumnList({ id: dashboardId });
+      setColumnList(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [dashboardInfo, setDashboardInfo] = useState({
     id: '0',
     title: '',

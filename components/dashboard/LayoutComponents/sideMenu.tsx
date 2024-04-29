@@ -47,6 +47,7 @@ const SideMenu = ({ dashboardId }: Props) => {
         setIsLoading(false);
       }
     }
+  console.log(dashboardInfo);
 
     if (dashboardId) {
       fetchData();
