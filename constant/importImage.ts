@@ -25,6 +25,9 @@ import UnsubscribeIcon from '@/public/images/icon/unsubscribe.svg';
 import VioletPlusIcon from '@/public/images/icon/violet_plus.svg';
 import VisibleEyeIcon from '@/public/images/icon/visible_eye.svg';
 import WhiteCheckIcon from '@/public/images/icon/white_check.svg';
+import ErrorIcon from '@/public/images/icon/error.svg';
+import WarningIcon from '@/public/images/icon/warning.svg';
+import CompleteIcon from '@/public/images/icon/complete.svg';
 
 export {
   ArrowBackwardIcon,
@@ -54,6 +57,9 @@ export {
   DeleteIcon,
   NotFound,
   RightArrow,
+  ErrorIcon,
+  WarningIcon,
+  CompleteIcon,
 };
 
 import DEFAULTPROFILEIMAGE from '@/public/images/image/default_profile_image.jpg';

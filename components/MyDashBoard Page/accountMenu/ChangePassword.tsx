@@ -1,10 +1,10 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import SuccessPasswordChangeModal from '@/components/Modal/SuccessPasswordChangeModal';
 import WrongPasswordModal from '@/components/Modal/WrongPasswordModal';
 import SingleButton from '@/components/common/button/SingleButton';
-import { useHandleModal } from '@/hooks/useHandleModal';
 import { changePassWord } from '@/utils/api/changePassword';
+import { useHandleToast } from '@/hooks/usehandleToast';
+import Toast from '@/components/common/Toast/Toast';
 
 type Inputs = {
   currentPassword: string;
@@ -13,8 +13,8 @@ type Inputs = {
 };
 
 const ChangePassword = () => {
-  const wrongPassword = useHandleModal();
-  const successChanged = useHandleModal();
+  const { isShowToast, handleToggleToast, setIsShowToast, handleToastType, type, handleToastMessage, message } =
+    useHandleToast();
   const {
     register,
     handleSubmit,
@@ -34,9 +34,13 @@ const ChangePassword = () => {
       };
       try {
         await changePassWord({ changePasswordValue: tryChangePassword });
-        successChanged.handleToggleModal();
+        handleToggleToast();
+        handleToastMessage('비밀번호가 변경되었습니다.');
+        handleToastType('complete');
       } catch (error: any) {
-        error.message === '400' ? wrongPassword.handleToggleModal() : alert(error.message);
+        handleToggleToast();
+        handleToastMessage(error.message);
+        handleToastType('error');
       }
     }
   };
@@ -48,8 +52,15 @@ const ChangePassword = () => {
 
   return (
     <>
-      {successChanged.isShowModal && <SuccessPasswordChangeModal handleModal={successChanged.handleToggleModal} />}
-      {wrongPassword.isShowModal && <WrongPasswordModal handleModal={wrongPassword.handleToggleModal} />}
+      {isShowToast && (
+        <Toast
+          type={type}
+          message={message}
+          isToast={isShowToast}
+          setShowToast={setIsShowToast}
+          handleToast={handleToggleToast}
+        />
+      )}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-md pc:w-[38.75rem] tb:w-[34rem] w-[17.75rem]'>

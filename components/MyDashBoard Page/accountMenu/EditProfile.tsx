@@ -7,6 +7,8 @@ import { useInputValue } from '@/hooks/useInputValue';
 import { changeUserProfile } from '@/utils/api/changeUserProfile';
 import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
 import { getLoginUserProfile } from '@/utils/api/getLoginUserProfile';
+import { useHandleToast } from '@/hooks/usehandleToast';
+import Toast from '@/components/common/Toast/Toast';
 
 const EditProfile = () => {
   const [imageURL, setImageURL] = useState('');
@@ -16,6 +18,8 @@ const EditProfile = () => {
     profileImageUrl: '',
   });
   const newNickName = useInputValue();
+  const { isShowToast, handleToggleToast, setIsShowToast, handleToastType, type, handleToastMessage, message } =
+    useHandleToast();
 
   const getUserData = async () => {
     try {
@@ -40,9 +44,13 @@ const EditProfile = () => {
 
     try {
       await changeUserProfile({ newProfileData });
-      alert('프로필이 저장되었습니다.');
+      handleToastType('complete');
+      handleToastMessage('프로필이 저장되었습니다.');
+      handleToggleToast();
     } catch (error: any) {
-      alert(error.message);
+      handleToastType('error');
+      handleToastMessage(error.message);
+      handleToggleToast();
     }
   };
 
@@ -56,50 +64,61 @@ const EditProfile = () => {
   }, []);
 
   return (
-    <div
-      role='edit-profile-container'
-      className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-sm pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
-      <h2 className='pc:text-2xl tb:text-2xl mb:text-xl text-tp-black_700 font-bold mb-4'>프로필</h2>
-      <form
-        role='edit-profile'
-        className='flex pc:flex-row tb:flex-row  mb:flex-col items-center justify-stretch gap-4 mb-12 relative'
-        onSubmit={changeProfile}>
-        <InputImageFile size='large' defaultImg={userData.profileImageUrl} apiCallback={inputImageCallBack} />
-        <div
-          role='email-nickname-input-container'
-          className='flex flex-col gap-3.5 pc:w-[22.875rem] tb:w-[18.125rem] mb:w-[15.25rem]'>
-          <div role='email-box' className='flex flex-col gap-2'>
-            <label htmlFor='email' className='text-lg text-tp-black_700'>
-              이메일
-            </label>
-            <input
-              type='email'
-              id='email'
-              value={userData.email}
-              disabled={true}
-              className='p-2.5 rounded-md border border-solid border-tp-gray_700 text-tp-gray_700 disabled:bg-white'
-            />
+    <>
+      {isShowToast && (
+        <Toast
+          type={type}
+          handleToast={handleToggleToast}
+          message={message}
+          isToast={isShowToast}
+          setShowToast={setIsShowToast}
+        />
+      )}
+      <div
+        role='edit-profile-container'
+        className='flex flex-col pt-8 px-7 pb-7 bg-white rounded-lg shadow-sm pc:w-[38.75rem] tb:w-[34rem] mb:w-[17.75rem]'>
+        <h2 className='pc:text-2xl tb:text-2xl mb:text-xl text-tp-black_700 font-bold mb-4'>프로필</h2>
+        <form
+          role='edit-profile'
+          className='flex pc:flex-row tb:flex-row  mb:flex-col items-center justify-stretch gap-4 mb-12 relative'
+          onSubmit={changeProfile}>
+          <InputImageFile size='large' defaultImg={userData.profileImageUrl} apiCallback={inputImageCallBack} />
+          <div
+            role='email-nickname-input-container'
+            className='flex flex-col gap-3.5 pc:w-[22.875rem] tb:w-[18.125rem] mb:w-[15.25rem]'>
+            <div role='email-box' className='flex flex-col gap-2'>
+              <label htmlFor='email' className='text-lg text-tp-black_700'>
+                이메일
+              </label>
+              <input
+                type='email'
+                id='email'
+                value={userData.email}
+                disabled={true}
+                className='p-2.5 rounded-md border border-solid border-tp-gray_700 text-tp-gray_700 disabled:bg-white'
+              />
+            </div>
+            <div role='nickname-input-box' className='flex flex-col gap-2'>
+              <label htmlFor='change-nickname' className='text-lg text-tp-black_700'>
+                닉네임
+              </label>
+              <input
+                type='text'
+                id='change-nickname'
+                placeholder={userData.nickname}
+                onChange={newNickName.onChange}
+                className='p-2.5 rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 disabled:bg-white'
+              />
+            </div>
           </div>
-          <div role='nickname-input-box' className='flex flex-col gap-2'>
-            <label htmlFor='change-nickname' className='text-lg text-tp-black_700'>
-              닉네임
-            </label>
-            <input
-              type='text'
-              id='change-nickname'
-              placeholder={userData.nickname}
-              onChange={newNickName.onChange}
-              className='p-2.5 rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 disabled:bg-white'
-            />
+          <div className='absolute -bottom-[3.5rem] right-0'>
+            <SingleButton type='submit' colorType='violet' onSubmit={changeProfile}>
+              저장
+            </SingleButton>
           </div>
-        </div>
-        <div className='absolute -bottom-[3.5rem] right-0'>
-          <SingleButton type='submit' colorType='violet' onSubmit={changeProfile}>
-            저장
-          </SingleButton>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 };
 
