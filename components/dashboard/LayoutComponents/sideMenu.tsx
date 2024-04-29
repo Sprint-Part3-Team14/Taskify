@@ -27,8 +27,57 @@ const SideMenu = ({ dashboardId }: Props) => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [dashboardTitle, setDashboardTitle] = useState('');
+  const [dashboardColor, setDashboardColor] = useState('');
 
   const toggleModal = () => setShowModal(!showModal);
+
+  const handleTitleChange = (title) => {
+    setDashboardTitle(title);
+  };
+
+  const handleColorSelect = (color) => {
+    setDashboardColor(color);
+  };
+
+  const handleCancel = () => {
+    toggleModal(); // 모달을 닫습니다.
+  };
+
+  const handleCreate = async () => {
+    const token = getAccessToken();
+    
+    const requestBody = {
+      title: dashboardTitle,
+      color: dashboardColor,
+    };
+  
+    try {
+      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create dashboard');
+      }
+  
+      const result = await response.json();
+      console.log('Dashboard created:', result); 
+      toggleModal(); 
+      setDashboardTitle('');
+      setDashboardColor('');
+  
+    } catch (error) {
+      console.error('Error creating dashboard:', error);
+      alert('Failed to create dashboard.'); 
+    }
+  };
+
 
   useEffect(() => {
     async function fetchData() {
@@ -79,11 +128,11 @@ const SideMenu = ({ dashboardId }: Props) => {
       </div>
       {showModal && (
         <CreateDashboardModal
-          handleModal={toggleModal}
-          onChange={title => console.log('Title changed:', title)}
-          onSelectColor={color => console.log('Color selected:', color)}
-          onClickFirstButton={() => console.log('Cancel button clicked')}
-          onClickSecondButton={() => console.log('Create button clicked')}
+        handleModal={toggleModal}
+        onChange={handleTitleChange}
+        onSelectColor={handleColorSelect}
+        onClickFirstButton={handleCancel}
+        onClickSecondButton={handleCreate}
         />
       )}
       <ul className='flex flex-col gap-2 p-4 overflow-y-auto'>
