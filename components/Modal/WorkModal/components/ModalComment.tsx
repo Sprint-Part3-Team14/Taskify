@@ -63,7 +63,11 @@ const ModalComment = ({ commentList }: I_CommentItem) => {
       return (
         <div key={index} className='flex w-full flex-col gap-2.5'>
           <div className='flex items-center gap-4'>
-            <div className='w-5 h-5 bg-tp-black_900'>{comment.author.profileImageUrl}</div>
+            <img
+              className='w-10 h-10 rounded-full bg-tp-black_900'
+              src={comment.author.profileImageUrl}
+              alt='profile'
+            />
             <div className='flex flex-col w-[90%]'>
               <div className='flex items-baseline gap-3'>
                 <div className='text-sm font-semibold'>{comment.author.nickname}</div>
