@@ -1,10 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import SuccessPasswordChangeModal from '@/components/Modal/SuccessPasswordChangeModal';
-import WrongPasswordModal from '@/components/Modal/WrongPasswordModal';
 import SingleButton from '@/components/common/button/SingleButton';
+import Toast from '@/components/common/Toast/Toast';
 import { changePassWord } from '@/utils/api/changePassword';
 import { useHandleToast } from '@/hooks/usehandleToast';
-import Toast from '@/components/common/Toast/Toast';
 
 type Inputs = {
   currentPassword: string;

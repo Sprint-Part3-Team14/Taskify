@@ -1,14 +1,17 @@
 'use client';
+
 import { FormEvent, useEffect, useState } from 'react';
 
 import InputImageFile from '@/components/InputImage/InputImage';
 import SingleButton from '@/components/common/button/SingleButton';
-import { useInputValue } from '@/hooks/useInputValue';
+import Toast from '@/components/common/Toast/Toast';
+
 import { changeUserProfile } from '@/utils/api/changeUserProfile';
 import { changeUserProfileImage } from '@/utils/api/changeUserProfileImage';
 import { getLoginUserProfile } from '@/utils/api/getLoginUserProfile';
+
+import { useInputValue } from '@/hooks/useInputValue';
 import { useHandleToast } from '@/hooks/usehandleToast';
-import Toast from '@/components/common/Toast/Toast';
 
 const EditProfile = () => {
   const [imageURL, setImageURL] = useState('');

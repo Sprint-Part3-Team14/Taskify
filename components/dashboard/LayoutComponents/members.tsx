@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 const INDEX_POSITION = [
   'right-0 flex',
   'right-[28px] flex',

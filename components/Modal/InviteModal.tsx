@@ -1,10 +1,12 @@
 import { useHandleToast } from '@/hooks/usehandleToast';
+import { useInputValue } from '@/hooks/useInputValue';
+
+import { postInvitation } from '@/utils/api/postInvitation';
+
+import Toast from '../common/Toast/Toast';
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
-import { useInputValue } from '@/hooks/useInputValue';
-import { postInvitation } from '@/utils/api/postInvitation';
-import Toast from '../common/Toast/Toast';
 
 const InviteModal = ({ handleModal, dashboardId }: I_ModalToggle) => {
   const { inputValue, onChange } = useInputValue();

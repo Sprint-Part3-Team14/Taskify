@@ -8,6 +8,7 @@ import DashboardInfo from './dashboardInfo';
 import ProfileInfo from './profileInfo';
 
 import { getDashboardMember } from '@/utils/api/getDashboardMember';
+
 import { getDashBoardData } from '@/utils/api/getDashBoardData';
 
 interface Props {
