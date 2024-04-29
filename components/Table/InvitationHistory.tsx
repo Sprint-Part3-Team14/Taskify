@@ -3,27 +3,33 @@ import { MouseEvent, useEffect, useState } from 'react';
 import InviteModal from '../Modal/InviteModal';
 import PageNationButton from '../PageNation/PageNationButton';
 import SingleButton from '../common/button/SingleButton';
-
 import TableLayout from './TableLayout';
-
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { usePageNation } from '@/hooks/usePageNation';
 import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
 import { getInvitations } from '@/utils/api/getInvitations';
+import { useHandleToast } from '@/hooks/usehandleToast';
+import Toast from '../common/Toast/Toast';
 
 const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
+  const { isShowToast, handleToggleToast, setIsShowToast, type, handleToastType, message, handleToastMessage } =
+    useHandleToast();
   const showCount = 5;
 
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
     const invitationId = Number(event.currentTarget.id);
     try {
       await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
-      alert('대시보드 초대가 취소되었습니다.');
+      handleToggleToast();
+      handleToastMessage('대시보드 초대가 취소되었습니다.');
+      handleToastType('complete');
     } catch (error: any) {
-      alert(error.message);
+      handleToggleToast();
+      handleToastMessage(error.message);
+      handleToastType('error');
     }
   };
 
@@ -88,6 +94,15 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   return (
     <>
+      {isShowToast && (
+        <Toast
+          type={type}
+          message={message}
+          isToast={isShowToast}
+          setShowToast={setIsShowToast}
+          handleToast={handleToggleToast}
+        />
+      )}
       {isShowModal && <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} />}
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>

@@ -36,8 +36,8 @@ const Toast = ({ message, type, isToast, handleToast, setShowToast }: I_Toast) =
             <div
               className={
                 up
-                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
-                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
+                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50'
+                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50'
               }>
               <div className='inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg'>
                 <div className='relative w-5 h-5'>
@@ -65,8 +65,8 @@ const Toast = ({ message, type, isToast, handleToast, setShowToast }: I_Toast) =
             <div
               className={
                 up
-                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
-                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
+                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50 '
+                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50 '
               }>
               <div className='inline-flex items-center justify-center flex-shrink-0 text-green-500 bg-green-100 rounded-lg '>
                 <div className='relative w-7 h-7'>
@@ -77,7 +77,7 @@ const Toast = ({ message, type, isToast, handleToast, setShowToast }: I_Toast) =
               <button
                 onClick={handleToast}
                 type='button'
-                className='absolute right-2.5 inline-flex items-center justify-center ml-1.5 h-8 w-8 -my-1.5 p-1.5 rounded-lg bg-white text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-200 '>
+                className='absolute right-2.5 inline-flex items-center justify-center ml-1.5 h-8 w-8 -my-1.5 p-1.5 rounded-lg bg-white text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-200'>
                 <div className='relative w-5 h-5'>
                   <Image fill src={CloseIcon} alt='창 닫기' />
                 </div>
@@ -94,8 +94,8 @@ const Toast = ({ message, type, isToast, handleToast, setShowToast }: I_Toast) =
             <div
               className={
                 up
-                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
-                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow '
+                  ? 'fixed animate-showToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50'
+                  : 'fixed animate-closeToast top-[5rem] left-1/2 -translate-x-1/2 flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow z-50'
               }>
               <div className='inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg '>
                 <div className='relative w-5 h-5'>
