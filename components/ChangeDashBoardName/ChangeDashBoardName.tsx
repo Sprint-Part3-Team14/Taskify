@@ -1,22 +1,24 @@
 'use client';
-import { WhiteCheckIcon } from 'constant/importImage';
-import Image from 'next/image';
 import { FormEvent, MouseEvent, useState } from 'react';
-
-import SingleButton from '../common/button/SingleButton';
-
-import { COLOR_LIST } from './constant';
-
-import { useEffectOnce } from '@/hooks/useEffectOnce';
+import Toast from '../common/Toast/Toast';
 import { useInputValue } from '@/hooks/useInputValue';
-import { changeDashBoard } from '@/utils/api/changeDashBoard';
+import { useHandleToast } from '@/hooks/usehandleToast';
 import { getDashBoardData } from '@/utils/api/getDashBoardData';
-
+import { changeDashBoard } from '@/utils/api/changeDashBoard';
+import { useEffectOnce } from '@/hooks/useEffectOnce';
+import { COLOR_LIST } from './constant';
+import Image from 'next/image';
+import SingleButton from '../common/button/SingleButton';
+import { WhiteCheckIcon } from 'constant/importImage';
 
 const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   const [selectColor, setSelectColor] = useState('#7AC555');
-  const [beforeDashboardName, setBeforeDashboardName] = useState('');
+  const [beforeDashboardData, setBeforeDashboardData] = useState({
+    title: '',
+    color: '',
+  });
   const newDashBoardName = useInputValue();
+  const { isShowToast, handleToggleToast, setIsShowToast } = useHandleToast();
 
   const handleSelectColor = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -25,8 +27,11 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
 
   const handleLoadDashBoard = async dashBoardId => {
     try {
-      const { title } = await getDashBoardData(dashBoardId);
-      setBeforeDashboardName(title);
+      const { title, color } = await getDashBoardData(dashBoardId);
+      setBeforeDashboardData({
+        title: title,
+        color: color,
+      });
     } catch (error: any) {
       alert(error.message);
     }
@@ -41,7 +46,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
 
     try {
       await changeDashBoard({ dashBoardId: dashboardId, changeData: newDashBoardData });
-      alert('대시보드 정보가 저장되었습니다.');
+      handleToggleToast();
     } catch (error: any) {
       alert(error);
     }
@@ -50,51 +55,62 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
   useEffectOnce(() => handleLoadDashBoard(dashboardId));
 
   return (
-    <form
-      onSubmit={handleChangeDashBoard}
-      role='table-Container'
-      className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-8 pc:w-[38.75rem] tb:w-[33rem] w-[19rem]'>
-      <div role='header' className='flex justify-between'>
-        <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[22rem] tb:w-[18rem] w-[11rem]'>
-          {beforeDashboardName}
-        </h1>
-        <div className='flex items-center gap-2.5 '>
-          {COLOR_LIST.map(color => {
-            return (
-              <button
-                type='button'
-                key={color}
-                id={color}
-                onClick={handleSelectColor}
-                className='pc:w-[1.875rem] pc:h-[1.875rem] w-7 h-7 pc:block tb:block hidden first:block relative'>
-                {selectColor === color && (
-                  <div className='w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                    <Image fill src={WhiteCheckIcon} alt='선택된 색상' />
-                  </div>
-                )}
-                <div className='min-w-full min-h-full rounded-full' style={{ backgroundColor: color }} />
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div role='change-title-container' className='flex flex-col gap-2.5'>
-        <label htmlFor='change-dashboard-title' className='text-lg text-tp-black_700'>
-          대시보드 이름
-        </label>
-        <input
-          id='change-dashboard-title'
-          type='text'
-          className='rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 p-3'
-          placeholder={beforeDashboardName}
-          onChange={newDashBoardName.onChange}
-          value={newDashBoardName.inputValue}
+    <>
+      {isShowToast && (
+        <Toast
+          type='complete'
+          handleToast={handleToggleToast}
+          setShowToast={setIsShowToast}
+          message='대시보드 정보가 변경되었습니다.'
+          isToast={isShowToast}
         />
-      </div>
-      <SingleButton type='submit' onSubmit={handleChangeDashBoard} colorType='violet'>
-        변경
-      </SingleButton>
-    </form>
+      )}
+      <form
+        onSubmit={handleChangeDashBoard}
+        className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-6 pc:w-[38.75rem] tb:w-[33rem] w-[19rem]'>
+        <div className='flex justify-between gap-2.5 items-center'>
+          <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: `${beforeDashboardData.color}` }} />
+          <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[21rem] tb:w-[18rem] w-[11rem]'>
+            {beforeDashboardData.title}
+          </h1>
+          <div className='flex items-center gap-2.5 '>
+            {COLOR_LIST.map(color => {
+              return (
+                <button
+                  type='button'
+                  key={color}
+                  id={color}
+                  onClick={handleSelectColor}
+                  className='pc:w-[1.875rem] pc:h-[1.875rem] w-7 h-7 pc:block tb:block hidden first:block relative'>
+                  {selectColor === color && (
+                    <div className='w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                      <Image fill src={WhiteCheckIcon} alt='선택된 색상' />
+                    </div>
+                  )}
+                  <div className='min-w-full min-h-full rounded-full' style={{ backgroundColor: color }} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className='flex flex-col gap-2.5'>
+          <label htmlFor='change-dashboard-title' className='text-lg text-tp-black_700'>
+            대시보드 이름
+          </label>
+          <input
+            id='change-dashboard-title'
+            type='text'
+            className='rounded-md border border-solid border-tp-gray_700 outline-tp-violet_900 p-3'
+            placeholder={beforeDashboardData.title}
+            onChange={newDashBoardName.onChange}
+            value={newDashBoardName.inputValue}
+          />
+        </div>
+        <SingleButton type='submit' onSubmit={handleChangeDashBoard} colorType='violet'>
+          변경
+        </SingleButton>
+      </form>
+    </>
   );
 };
 

@@ -15,8 +15,19 @@ module.exports = {
       pc: '1024px',
     },
     extend: {
+      keyframes: {
+        showToast: {
+          from: { opacity: '0', top: '0' },
+          to: { opacity: '1', top: '5rem' },
+        },
+        closeToast: {
+          from: { opacity: '1', top: '5rem' },
+          to: { opacity: '0', top: '0' },
+        },
+      },
       animation: {
-        buttonHover: 'buttonHover 0.3s ease forwards',
+        showToast: 'showToast 1.1s ease-in-out',
+        closeToast: 'closeToast 1.1s ease-in-out',
       },
       colors: {
         tp: {
@@ -39,21 +50,6 @@ module.exports = {
           blue: '#76A5EA',
           pink: '#E876EA',
         },
-      },
-      keyframes: (props: { theme: any }) => {
-        const { theme } = props;
-        return {
-          buttonHover: {
-            '0%': {
-              backgroundColor: theme('colors.tp.blue300'),
-              boxShadow: theme('boxShadow.none'),
-            },
-            '100%': {
-              backgroundColor: theme('colors.tp.blue400'),
-              boxShadow: theme('boxShadow.lg'),
-            },
-          },
-        };
       },
       screens: {
         mb: '375px',
