@@ -29,7 +29,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
   const [date, setDate] = useState('');
-  const [assigneeUserId, setAssigneeUserId] = useState<number | undefined>();
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState<number>();
 
   const handleCreateCard = async () => {
     if (!title) {
@@ -51,11 +51,15 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
         dueDate: date,
         tags: tags,
         imageUrl: image,
-        assigneeUserId: assigneeUserId,
+        assigneeUserId: selectedAssigneeId,
       });
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSelectAssignee = (assigneeId: number) => {
+    setSelectedAssigneeId(assigneeId);
   };
 
   const handleCardTitle = (event: ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +115,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     <ModalLayout handleModal={handleModal} title='할 일 생성'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <PersonInChargeDropDown dashboardMember={dashboardMembers} />
+          <PersonInChargeDropDown onSelectAssignee={handleSelectAssignee} dashboardMember={dashboardMembers} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>

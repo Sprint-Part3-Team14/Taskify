@@ -50,7 +50,7 @@ const Card = ({ cardItem, dashboardMember, columnItem, dashboardItem, index }: I
                   <Image src={CalendarTodayIcon} alt='calendar' width={18} height={18} />
                   <div className='text-xs font-medium text-tp-gray_900'>{formattedDate}</div>
                 </div>
-                <img className='w-10 h-10 rounded-full' src={cardItem.assignee.profileImageUrl} alt='profile' />
+                <img className='w-10 h-10 rounded-full' src={cardItem.assignee?.profileImageUrl} alt='profile' />
               </div>
             </div>
           </div>

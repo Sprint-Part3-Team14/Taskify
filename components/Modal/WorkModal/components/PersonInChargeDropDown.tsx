@@ -6,9 +6,10 @@ import { I_Members } from '@/interface/Dashboard';
 
 interface I_PersonInCharge {
   dashboardMember: I_Members[];
+  onSelectAssignee: (assigneeId: number) => void;
 }
 
-const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
+const PersonInChargeDropDown = ({ dashboardMember, onSelectAssignee }: I_PersonInCharge) => {
   const [openList, setOpenList] = useState(false);
   const [selectItem, setSelectItem] = useState(dashboardMember[0].nickname);
 
@@ -18,9 +19,15 @@ const PersonInChargeDropDown = ({ dashboardMember }: I_PersonInCharge) => {
     setOpenList(prevState => !prevState);
   }
 
+  console.log(dashboardMember);
+
   function handleSelectItem(event: MouseEvent<HTMLElement>) {
     const selectedNickname = event.currentTarget.id;
     setSelectItem(selectedNickname);
+    const selectedMember = dashboardMember.find(member => member.nickname === selectedNickname);
+    if (selectedMember) {
+      onSelectAssignee(selectedMember.userId);
+    }
   }
 
   const handleClickOutside = (event: any) => {
