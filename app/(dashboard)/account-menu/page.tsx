@@ -10,7 +10,7 @@ import EditProfile from '@/components/MyDashBoard Page/accountMenu/EditProfile';
 
 const AccountMenu = () => {
   return (
-    <>
+    <div className='ml-4 mt-5 pb-7'>
       <Link href='/boardid'>
         <button type='button' className='text-base text-tp-black_700 flex gap-1.5 items-center mb-6'>
           <div className='w-5 h-5 relative'>
@@ -23,7 +23,7 @@ const AccountMenu = () => {
         <EditProfile />
         <ChangePassword />
       </div>
-    </>
+    </div>
   );
 };
 
