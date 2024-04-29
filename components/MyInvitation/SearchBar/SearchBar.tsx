@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { I_SearchBarProps } from 'interface/myInvitation';
-import { SEARCH_ICON } from '../constants';
 import { SearchIcon } from 'constant/importImage';
 
 const SearchBar = ({ onSearch }: I_SearchBarProps) => {
