@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from 'react';
 import ModalButton from '../Button/ModalButton';
 import ModalLayout from '../ModalLayout';
 import { I_ModalToggle } from '../ModalType';
+import { ERROR } from '../constant';
 
 import PersonInChargeDropDown from './components/PersonInChargeDropDown';
 
@@ -28,9 +29,19 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
   const [date, setDate] = useState('');
-  const [assigneeUserId, setAssigneeUserId] = useState<number | undefined>();
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState<number>();
 
   const handleCreateCard = async () => {
+    if (!title) {
+      alert(ERROR.TITLE);
+      return;
+    }
+    if (!description) {
+      alert(ERROR.DESCRIPTION);
+    }
+    if (!date) {
+      alert(ERROR.DATE);
+    }
     try {
       await createCard({
         title: title,
@@ -40,11 +51,17 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
         dueDate: date,
         tags: tags,
         imageUrl: image,
-        assigneeUserId: assigneeUserId,
+        assigneeUserId: selectedAssigneeId,
       });
+
+      handleModal();
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSelectAssignee = (assigneeId: number) => {
+    setSelectedAssigneeId(assigneeId);
   };
 
   const handleCardTitle = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +79,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     const selectedDate = new Date(inputDate);
     const currentDate = new Date();
     if (selectedDate < currentDate) {
-      alert('마감 기한은 올바르게 선택해주세요');
+      alert(ERROR.DUEDATE);
       event.target.value = '';
       return;
     }
@@ -100,7 +117,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
     <ModalLayout handleModal={handleModal} title='할 일 생성'>
       <form>
         <div className='flex gap-4 h-[6.25rem]'>
-          <PersonInChargeDropDown dashboardMember={dashboardMembers} />
+          <PersonInChargeDropDown onSelectAssignee={handleSelectAssignee} dashboardMember={dashboardMembers} />
         </div>
         <div className='flex flex-col gap-2.5 h-[7.5rem]'>
           <label className='flex gap-1 font-extrabold text-lg'>
