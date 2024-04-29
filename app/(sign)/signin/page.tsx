@@ -1,6 +1,7 @@
 'use client';
 
 import { ERROR_MESSAGES } from 'constant/errorMessage';
+import { MAINSITELOGO } from 'constant/importImage';
 import { REG_EXP } from 'constant/regexp';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +10,6 @@ import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { getAccessToken, setAccessToken } from '@/utils/handleToken';
-import { MAINSITELOGO } from 'constant/importImage';
 
 
 interface FormData {
