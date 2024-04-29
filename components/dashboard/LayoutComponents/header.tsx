@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 import DashboardInfo from './dashboardInfo';
 import ProfileInfo from './profileInfo';
 
+import { getDashboardMember } from '@/utils/api/getDashboardMember';
 import { getAccessToken } from '@/utils/handleToken';
 
 interface Props {
-  dashboardId?: string;
+  dashboardId?: number;
 }
 
 const DashboardHeader = ({ dashboardId }: Props) => {
@@ -24,38 +25,39 @@ const DashboardHeader = ({ dashboardId }: Props) => {
     userId: 0,
   });
 
+  const fetchDataWithAuth = async (url, token) => {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data from ${url}`);
+    }
+    return response.json();
+  };
+  
+
   const [memberList, setMemberList] = useState({ members: [], totalCount: 0 });
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = async () => {
+      if (!dashboardId) return;
+      
       setIsLoading(true);
       const token = getAccessToken();
-      try {
-        const dashboardResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
-        if (dashboardResponse.ok) {
-          const dashboardData = await dashboardResponse.json();
-          setDashboardInfo(dashboardData);
-        } else {
-          throw new Error('Failed to fetch dashboard details');
-        }
 
-        const membersResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/members`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (membersResponse.ok) {
-          const membersData = await membersResponse.json();
-          setMemberList({ members: membersData.members, totalCount: membersData.totalCount });
-        } else {
-          throw new Error('Failed to fetch members');
-        }
+      try {
+        const dashboardDataUrl = `https://sp-taskify-api.vercel.app/4-14/dashboards/?dashboardId=${dashboardId}`;
+        const dashboardData = await fetchDataWithAuth(dashboardDataUrl, token);
+        setDashboardInfo(dashboardData);
+
+        const [members, totalCount] = await getDashboardMember({ dashboard: Number(dashboardId) });
+        setMemberList({ members: members, totalCount: totalCount });
+        console.log("Members :", members);
+        console.log("totalcount : " ,totalCount);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -63,13 +65,12 @@ const DashboardHeader = ({ dashboardId }: Props) => {
       }
     };
 
-    if (dashboardId) {
-      fetchData();
-    }
-    console.log(dashboardInfo);
-    console.log(memberList);
+    loadData();
   }, [dashboardId]);
-
+  
+  console.log(dashboardInfo);
+  console.log(memberList);
+  
   const title = dashboardId ? dashboardInfo?.title : '내 대시보드';
   return (
     <div className='sticky top-0 z-10 flex h-[60px] w-full flex-row items-center justify-between border-b border-solid border-tp-gray-300 bg-white pl-[24px] pr-[12px] tb:h-[70px] tb:px-[40px] pc:flex-row pc:pr-[80px]'>

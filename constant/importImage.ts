@@ -24,6 +24,7 @@ import SettingIcon from '@/public/images/icon/setting.svg';
 import UnsubscribeIcon from '@/public/images/icon/unsubscribe.svg';
 import VioletPlusIcon from '@/public/images/icon/violet_plus.svg';
 import VisibleEyeIcon from '@/public/images/icon/visible_eye.svg';
+// eslint-disable-next-line import/order
 import WhiteCheckIcon from '@/public/images/icon/white_check.svg';
 import ErrorIcon from '@/public/images/icon/error.svg';
 import WarningIcon from '@/public/images/icon/warning.svg';
@@ -62,7 +63,21 @@ export {
   CompleteIcon,
 };
 
+// Image
+
 import DEFAULTPROFILEIMAGE from '@/public/images/image/default_profile_image.jpg';
 import DESKTOPIMAGE from '@/public/images/image/desktop.jpg';
+import LANDINGIMAGE1  from '@/public/images/image/landing1.jpg';
+import LANDINGIMAGE2 from '@/public/images/image/landing2.jpg';
+import LANDINGIMAGE3 from '@/public/images/image/landing3.jpg';
+import LANDINGIMAGE4 from '@/public/images/image/landing4.jpg';
+// eslint-disable-next-line import/order
+import LANDINGIMAGE5 from '@/public/images/image/landing5.jpg';
 
-export { DEFAULTPROFILEIMAGE, DESKTOPIMAGE };
+export { DEFAULTPROFILEIMAGE, DESKTOPIMAGE, LANDINGIMAGE1,LANDINGIMAGE2,LANDINGIMAGE3,LANDINGIMAGE4,LANDINGIMAGE5 };
+
+// Logo
+import LOGO from '@/public/images/logo/logo_large.jpg';
+import MAINSITELOGO from '@/public/images/logo/main_site_logo.png';
+
+export {LOGO, MAINSITELOGO};

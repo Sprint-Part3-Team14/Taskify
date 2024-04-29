@@ -1,13 +1,16 @@
 import { PlusBlueIcon, SettingIcon } from 'constant/importImage';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { MembersProps } from './members';
+
+import InviteModal from '@/components/Modal/InviteModal';
 
 interface DashboardInfoProps {
   createdByMe?: boolean;
   memberList?: MembersProps;
-  dashboardId: string;
+  dashboardId: number;
 }
 
 export const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfoProps) => {
@@ -29,18 +32,31 @@ export const ManageButton = ({ createdByMe = false, dashboardId }: DashboardInfo
 };
 
 interface InvitationButtonProps {
-  dashboardId: string;
+  dashboardId: number;
 }
-
 export const InvitationButton = ({ dashboardId }: InvitationButtonProps) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => setShowModal(!showModal);
+
   return (
     <>
-      <button className='flex justify-center items-center border w-[109px] border-gray-400 rounded-lg'>
+      <button
+        className='flex justify-center items-center border w-[109px] border-gray-400 rounded-lg'
+        onClick={toggleModal}
+      >
         <div className='hidden pr-2 tb:block'>
           <Image src={PlusBlueIcon} alt='더하기 버튼' />
         </div>
         초대하기
       </button>
+
+      {showModal && (
+        <InviteModal
+          handleModal={toggleModal}
+          dashboardId={dashboardId}
+        />
+      )}
     </>
   );
 };

@@ -1,6 +1,5 @@
+import { LANDINGIMAGE1 } from 'constant/importImage';
 import Image from 'next/image';
-
-const DashBoardImage = '/image/landing1.jpg';
 
 const MainSection = () => {
   return (
@@ -12,7 +11,7 @@ const MainSection = () => {
           <div className='mb-25 whitespace-nowrap text-[36px] font-bold tb:text-[48px]'>관리하세요</div>
         </div>
         <div className='rounded-md relative ml-auto mt-22 flex h-250 w-296 items-end tb:mt-120 tb:h-435 tb:w-[32.5rem] pc:mt-28 pc:h-500 pc:w-[37.125rem]'>
-          <Image src={DashBoardImage} alt='Illustration' fill />
+          <Image src={LANDINGIMAGE1} alt='Illustration' fill />
         </div>
       </div>
     </div>

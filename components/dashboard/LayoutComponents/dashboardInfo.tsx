@@ -4,7 +4,7 @@ import Members, { MembersProps } from './members';
 interface DashboardInfoProps {
   createdByMe?: boolean;
   memberList?: MembersProps;
-  dashboardId: string;
+  dashboardId: number;
 }
 
 const DashboardInfo = ({ createdByMe = false, memberList, dashboardId }: DashboardInfoProps) => {

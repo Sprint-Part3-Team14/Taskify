@@ -5,11 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState, memo } from 'react';
 
+import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import logo from '@/public/images/logo/logo_large.jpg';
 import { getAccessToken } from '@/utils/handleToken';
 
 interface Props {
-  dashboardId?: string;
+  dashboardId?: number;
 }
 
 const SideMenu = ({ dashboardId }: Props) => {
@@ -25,21 +26,78 @@ const SideMenu = ({ dashboardId }: Props) => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [dashboardTitle, setDashboardTitle] = useState('');
+  const [dashboardColor, setDashboardColor] = useState('');
+
+  const toggleModal = () => setShowModal(!showModal);
+
+  const handleTitleChange = (title) => {
+    setDashboardTitle(title);
+  };
+
+  const handleColorSelect = (color) => {
+    setDashboardColor(color);
+  };
+
+  const handleCancel = () => {
+    toggleModal(); // 모달을 닫습니다.
+  };
+
+  const handleCreate = async () => {
+    const token = getAccessToken();
+    
+    const requestBody = {
+      title: dashboardTitle,
+      color: dashboardColor,
+    };
+  
+    try {
+      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create dashboard');
+      }
+  
+      const result = await response.json();
+      console.log('Dashboard created:', result); 
+      toggleModal(); 
+      setDashboardTitle('');
+      setDashboardColor('');
+  
+    } catch (error) {
+      console.error('Error creating dashboard:', error);
+      alert('Failed to create dashboard.'); 
+    }
+  };
+
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       const token = getAccessToken();
       try {
-        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
+        const response = await fetch(
+          `https://sp-taskify-api.vercel.app/4-14/dashboards?navigationMethod=pagination&page=1&size=10`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+          }
+        );
         if (!response.ok) throw new Error('Failed to fetch dashboard details');
         const data = await response.json();
-        setDashboardInfo(data);
+
+        const dashboardList = data.dashboards;
+        setDashboardInfo(dashboardList);
       } catch (error) {
         console.error('Error fetching data:', error);
         alert('Failed to load dashboard data.');
@@ -51,7 +109,7 @@ const SideMenu = ({ dashboardId }: Props) => {
     if (dashboardId) {
       fetchData();
     }
-  }, [dashboardId]);
+  }, []);
 
   return (
     <div className='sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-300 flex flex-col'>
@@ -64,10 +122,19 @@ const SideMenu = ({ dashboardId }: Props) => {
       </div>
       <div className='flex items-center justify-between p-8 mt-12'>
         <p className='text-xs font-bold text-gray-700'>Dashboards</p>
-        <button aria-label='Add new dashboard' onClick={() => console.log('Add Modal connection')}>
+        <button aria-label='Add new dashboard' onClick={toggleModal}>
           <Image src={PlusIcon} width={20} height={20} alt='Add new dashboard' />
         </button>
       </div>
+      {showModal && (
+        <CreateDashboardModal
+        handleModal={toggleModal}
+        onChange={handleTitleChange}
+        onSelectColor={handleColorSelect}
+        onClickFirstButton={handleCancel}
+        onClickSecondButton={handleCreate}
+        />
+      )}
       <ul className='flex flex-col gap-2 p-4 overflow-y-auto'>
         {dashboardInfo.map(dashboard => (
           <li key={dashboard.id}>
@@ -111,7 +178,7 @@ const DashboardCard = memo(({ title, color, createdByMe, id, selected = false }:
   return (
     <Link href={`/dashboard/${id}`}>
       <div
-        className={`flex-center h-[40px] w-full rounded-sm tb:h-[45px] tb:justify-start ${
+        className={`flex items-center h-[40px] w-full rounded-sm tb:h-[45px] tb:justify-start ${
           selected ? 'bg-tp-violet_100' : 'hover:bg-gray-100'
         }`}
         aria-label={`Go to dashboard ${title}`}>
