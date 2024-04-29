@@ -5,11 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState, memo } from 'react';
 
+import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import logo from '@/public/images/logo/logo_large.jpg';
 import { getAccessToken } from '@/utils/handleToken';
 
 interface Props {
-  dashboardId?: string;
+  dashboardId?: number;
 }
 
 const SideMenu = ({ dashboardId }: Props) => {
@@ -25,13 +26,16 @@ const SideMenu = ({ dashboardId }: Props) => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       const token = getAccessToken();
       try {
-        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
+        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/members?page=1&size=20&dashboardId=${dashboardId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -54,6 +58,7 @@ const SideMenu = ({ dashboardId }: Props) => {
     }
   }, [dashboardId]);
 
+
   return (
     <div className='sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-300 flex flex-col'>
       <div className='flex items-center ml-2 p-6'>
@@ -65,10 +70,19 @@ const SideMenu = ({ dashboardId }: Props) => {
       </div>
       <div className='flex items-center justify-between p-8 mt-12'>
         <p className='text-xs font-bold text-gray-700'>Dashboards</p>
-        <button aria-label='Add new dashboard' onClick={() => console.log('Add Modal connection')}>
+        <button aria-label='Add new dashboard' onClick={toggleModal}>
           <Image src={PlusIcon} width={20} height={20} alt='Add new dashboard' />
         </button>
       </div>
+      {showModal && (
+        <CreateDashboardModal
+          handleModal={toggleModal}
+          onChange={(title) => console.log('Title changed:', title)}
+          onSelectColor={(color) => console.log('Color selected:', color)}
+          onClickFirstButton={() => console.log('Cancel button clicked')}
+          onClickSecondButton={() => console.log('Create button clicked')}
+        />
+      )}
       <ul className='flex flex-col gap-2 p-4 overflow-y-auto'>
         {dashboardInfo.map(dashboard => (
           <li key={dashboard.id}>

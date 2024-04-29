@@ -31,6 +31,9 @@ const SigninPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginInfo, setLoginInfo] = useState<LoginInfo>({ isLoggedIn: false });
 
+  const email = watch('email');
+  const password = watch('password');
+
   useEffect(() => {
     const accessToken = getAccessToken();
     if (accessToken) {
@@ -53,7 +56,7 @@ const SigninPage = () => {
       console.log(responseData);
 
       if (response.ok) {
-        const { accessToken, user } = responseData; // user 정보가 응답에 포함되어 있다고 가정
+        const { accessToken, user } = responseData; 
         setAccessToken(accessToken);
 
         const newLoginInfo = {
@@ -67,7 +70,7 @@ const SigninPage = () => {
         localStorage.setItem('loginInfo', JSON.stringify(newLoginInfo));
         setLoginInfo(newLoginInfo);
 
-        router.push('/myinvitation');
+        router.push('/dashboard');
       } else {
         console.error('Failed to log in:', responseData.error);
         alert('비밀번호가 일치하지 않습니다.');

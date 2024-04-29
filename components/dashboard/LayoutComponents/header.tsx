@@ -10,7 +10,7 @@ import ProfileInfo from './profileInfo';
 import { getAccessToken } from '@/utils/handleToken';
 
 interface Props {
-  dashboardId?: string;
+  dashboardId?: number;
 }
 
 const DashboardHeader = ({ dashboardId }: Props) => {
@@ -32,7 +32,7 @@ const DashboardHeader = ({ dashboardId }: Props) => {
       setIsLoading(true);
       const token = getAccessToken();
       try {
-        const dashboardResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/${dashboardId}`, {
+        const dashboardResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/dashboards/?dashboardId=${dashboardId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -45,7 +45,8 @@ const DashboardHeader = ({ dashboardId }: Props) => {
           throw new Error('Failed to fetch dashboard details');
         }
 
-        const membersResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/members`, {
+        const query = `?page=1&size=20&dashboardId=${dashboardId}`;
+        const membersResponse = await fetch(`https://sp-taskify-api.vercel.app/4-14/members${query}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
