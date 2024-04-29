@@ -6,8 +6,14 @@ import Link from 'next/link';
 import { useEffect, useState, memo } from 'react';
 
 import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
+import PageNationButton from '@/components/PageNation/PageNationButton';
+import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
+import { createDashborad } from '@/utils/api/createDashboard';
+
 import logo from '@/public/images/logo/logo_large.jpg';
-import { getAccessToken } from '@/utils/handleToken';
+
+import { usePageNation } from '@/hooks/usePageNation';
+import { useHandleModal } from '@/hooks/useHandleModal';
 
 interface Props {
   dashboardId?: number;
@@ -26,90 +32,56 @@ const SideMenu = ({ dashboardId }: Props) => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const { isShowModal, handleToggleModal } = useHandleModal();
   const [dashboardTitle, setDashboardTitle] = useState('');
   const [dashboardColor, setDashboardColor] = useState('');
+  const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
 
-  const toggleModal = () => setShowModal(!showModal);
-
-  const handleTitleChange = (title) => {
+  const handleTitleChange = title => {
     setDashboardTitle(title);
   };
 
-  const handleColorSelect = (color) => {
+  const handleColorSelect = color => {
     setDashboardColor(color);
   };
 
-  const handleCancel = () => {
-    toggleModal(); // 모달을 닫습니다.
-  };
-
-  const handleCreate = async () => {
-    const token = getAccessToken();
-    
+  const handleCreateDashborad = async () => {
     const requestBody = {
       title: dashboardTitle,
       color: dashboardColor,
     };
-  
+
     try {
-      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to create dashboard');
-      }
-  
-      const result = await response.json();
-      console.log('Dashboard created:', result); 
-      toggleModal(); 
-      setDashboardTitle('');
-      setDashboardColor('');
-  
-    } catch (error) {
+      await createDashborad(requestBody);
+      handleToggleModal();
+    } catch (error: any) {
       console.error('Error creating dashboard:', error);
-      alert('Failed to create dashboard.'); 
+      alert('Failed to create dashboard.');
     }
   };
 
+  const handleLoadDashboardList = async () => {
+    try {
+      const { dashboards, totalCount } = await getMyDashboardList({
+        currentPage: pageNation.currentPage,
+        showCount: 10,
+      });
+      setDashboardInfo(dashboards);
+      setPageNation(prev => ({
+        ...prev,
+        totalPage: Math.ceil(totalCount / 10),
+      }));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      alert('Failed to load dashboard data.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const token = getAccessToken();
-      try {
-        const response = await fetch(
-          `https://sp-taskify-api.vercel.app/4-14/dashboards?navigationMethod=pagination&page=1&size=10`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json',
-            },
-          }
-        );
-        if (!response.ok) throw new Error('Failed to fetch dashboard details');
-        const data = await response.json();
-
-        const dashboardList = data.dashboards;
-        setDashboardInfo(dashboardList);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        alert('Failed to load dashboard data.');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (dashboardId) {
-      fetchData();
-    }
-  }, []);
+    handleLoadDashboardList();
+  }, [pageNation.currentPage]);
 
   return (
     <div className='sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-300 flex flex-col'>
@@ -122,17 +94,17 @@ const SideMenu = ({ dashboardId }: Props) => {
       </div>
       <div className='flex items-center justify-between p-8 mt-12'>
         <p className='text-xs font-bold text-gray-700'>Dashboards</p>
-        <button aria-label='Add new dashboard' onClick={toggleModal}>
+        <button aria-label='Add new dashboard' onClick={handleToggleModal}>
           <Image src={PlusIcon} width={20} height={20} alt='Add new dashboard' />
         </button>
       </div>
-      {showModal && (
+      {isShowModal && (
         <CreateDashboardModal
-        handleModal={toggleModal}
-        onChange={handleTitleChange}
-        onSelectColor={handleColorSelect}
-        onClickFirstButton={handleCancel}
-        onClickSecondButton={handleCreate}
+          handleModal={handleToggleModal}
+          onChange={handleTitleChange}
+          onSelectColor={handleColorSelect}
+          onClickFirstButton={handleToggleModal}
+          onClickSecondButton={handleCreateDashborad}
         />
       )}
       <ul className='flex flex-col gap-2 p-4 overflow-y-auto'>
@@ -148,6 +120,14 @@ const SideMenu = ({ dashboardId }: Props) => {
           </li>
         ))}
       </ul>
+      <div className='absolute bottom-2.5 left-2.5'>
+        <PageNationButton
+          hiddenCount={true}
+          totalPage={pageNation.totalPage}
+          currentPage={pageNation.currentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      </div>
     </div>
   );
 };

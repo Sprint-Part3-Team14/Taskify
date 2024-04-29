@@ -3,13 +3,15 @@ import { MouseEvent, useEffect, useState } from 'react';
 import InviteModal from '../Modal/InviteModal';
 import PageNationButton from '../PageNation/PageNationButton';
 import SingleButton from '../common/button/SingleButton';
+import Toast from '../common/Toast/Toast';
 import TableLayout from './TableLayout';
+
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { usePageNation } from '@/hooks/usePageNation';
+import { useHandleToast } from '@/hooks/usehandleToast';
+
 import { deletePostInvitation } from '@/utils/api/deletePostInvitation';
 import { getInvitations } from '@/utils/api/getInvitations';
-import { useHandleToast } from '@/hooks/usehandleToast';
-import Toast from '../common/Toast/Toast';
 
 const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();

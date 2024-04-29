@@ -6,14 +6,22 @@ interface PageNationButtonProps {
   currentPage: number;
   totalPage: number;
   handleCurrentPage: (event: MouseEvent<HTMLButtonElement>) => void;
+  hiddenCount?: boolean;
 }
 
-const PageNationButton = ({ currentPage, totalPage, handleCurrentPage }: PageNationButtonProps) => {
+const PageNationButton = ({
+  currentPage,
+  totalPage,
+  handleCurrentPage,
+  hiddenCount = false,
+}: PageNationButtonProps) => {
   return (
     <div className='flex items-center pc:gap-4 mb:gap-2.5 '>
-      <p className='text-sm text-tp-black_700'>
-        {totalPage} 페이지 중 {currentPage}
-      </p>
+      {!hiddenCount && (
+        <p className='text-sm text-tp-black_700'>
+          {totalPage} 페이지 중 {currentPage}
+        </p>
+      )}
       <div className='flex justyfy-center items-center'>
         <button
           id='previous'
