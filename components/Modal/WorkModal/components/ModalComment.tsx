@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { changeCommentData, deleteCommentData } from '@/utils/api/comment';
+import { I_Card } from '@/interface/Dashboard';
+import { changeCommentData, deleteCommentData, getCommentList } from '@/utils/api/comment';
 
 interface I_CommentAuthor {
   id: number;
@@ -19,16 +20,36 @@ interface I_Comment {
 
 interface I_CommentItem {
   commentList: I_Comment[];
+  setCommentList: any;
+  cardItem: I_Card;
 }
 
-const ModalComment = ({ commentList }: I_CommentItem) => {
+const ModalComment = ({ commentList, setCommentList, cardItem }: I_CommentItem) => {
   const [changeComment, setChangeComment] = useState('');
   const [editTarget, setEditTarget] = useState<number | null>(null);
+
+  const getCommentData = async () => {
+    try {
+      const { comments } = await getCommentList({ cardId: cardItem.id });
+      const commentList = Array.isArray(comments) ? comments : [];
+      setCommentList(commentList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const reloadComment = () => {
+      getCommentData();
+    };
+    reloadComment();
+  }, [commentList]);
 
   const handleChangeComment = async (commentId: number) => {
     try {
       await changeCommentData({ id: commentId, content: changeComment });
       setEditTarget(null);
+      getCommentData();
     } catch (error) {
       console.error(error);
     }
@@ -41,6 +62,7 @@ const ModalComment = ({ commentList }: I_CommentItem) => {
       if (confirmed) {
         await deleteCommentData({ id: commentId });
       }
+      getCommentData();
     } catch (error) {
       console.error(error);
     }

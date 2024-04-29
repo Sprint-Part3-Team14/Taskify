@@ -14,15 +14,17 @@ import TagChip from '@/components/common/Chip/TagChip';
 import { I_Column, I_Members } from '@/interface/Dashboard';
 import { changeCardImage } from '@/utils/api/changeCardImage';
 import { createCard } from '@/utils/api/createCard';
+import { getCardList } from '@/utils/api/getCardList';
 import { formatDate } from '@/utils/formatDate';
 
 interface I_CreateWorkModal extends I_ModalToggle {
   handleModal: () => void;
   columnItem: I_Column;
   dashboardMembers: I_Members[];
+  setCardList: any;
 }
 
-const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_CreateWorkModal) => {
+const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers, setCardList }: I_CreateWorkModal) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState();
@@ -30,6 +32,15 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   const [tagsName, setTagsName] = useState('');
   const [date, setDate] = useState('');
   const [selectedAssigneeId, setSelectedAssigneeId] = useState<number>();
+
+  const getDashboardCardList = async () => {
+    try {
+      const { cards } = await getCardList({ column: columnItem.id });
+      setCardList(cards);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleCreateCard = async () => {
     if (!title) {
@@ -54,6 +65,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
         assigneeUserId: selectedAssigneeId,
       });
 
+      getDashboardCardList();
       handleModal();
     } catch (error) {
       console.error(error);

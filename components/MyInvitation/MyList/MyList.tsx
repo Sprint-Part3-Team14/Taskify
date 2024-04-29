@@ -96,24 +96,25 @@ const MyList = () => {
             handleSubmit={handleSubmit}
           />
         )}
-        {myDashboardList.map(({ title, color, id, createdByMe }, index) => (
-          <Link className='w-full ' key={index} href={`dashboard/${id}`}>
-            <div className='flex justify-between items-center gap-2.5 px-5 w-full  tb:min-w-0  h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700 hover:bg-tp-gray_500 hover:border-tp-gray_800'>
-              <div className='flex items-center gap-4'>
-                <div>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6' fill={color}>
-                    <circle cx='3' cy='3' r='3' fill={color} />
-                  </svg>
+        {myDashboardList &&
+          myDashboardList.map(({ title, color, id, createdByMe }, index) => (
+            <Link className='w-full ' key={index} href={`dashboard/${id}`}>
+              <div className='flex justify-between items-center gap-2.5 px-5 w-full  tb:min-w-0  h-[4.375rem] py-1 tb:py-2 rounded-md bg-tp-white border border-solid border-tp-gray_700 hover:bg-tp-gray_500 hover:border-tp-gray_800'>
+                <div className='flex items-center gap-4'>
+                  <div>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='6' height='6' viewBox='0 0 6 6' fill={color}>
+                      <circle cx='3' cy='3' r='3' fill={color} />
+                    </svg>
+                  </div>
+                  <div className='w-full  flex gap-3 overflow-hidden text-ellipsis whitespace-nowrap'>
+                    <div className='w-full  text-lg font-bold overflow-hidden text-ellipsis'>{title}</div>
+                    {createdByMe && <Image src={CrownIcon} alt='byme' width={20} height={16} />}
+                  </div>
                 </div>
-                <div className='w-full  flex gap-3 overflow-hidden text-ellipsis whitespace-nowrap'>
-                  <div className='w-full  text-lg font-bold overflow-hidden text-ellipsis'>{title}</div>
-                  {createdByMe && <Image src={CrownIcon} alt='byme' width={20} height={16} />}
-                </div>
+                <Image src={ArrowBackwardIcon} alt='arrow' width={18} height={18} />
               </div>
-              <Image src={ArrowBackwardIcon} alt='arrow' width={18} height={18} />
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </div>
       <div className='flex justify-end items-center w-full gap-4'>
         <div className='flex'>
