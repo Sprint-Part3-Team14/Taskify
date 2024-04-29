@@ -38,13 +38,6 @@ const ModalComment = ({ commentList, setCommentList, cardItem }: I_CommentItem) 
     }
   };
 
-  useEffect(() => {
-    const reloadComment = () => {
-      getCommentData();
-    };
-    reloadComment();
-  }, [commentList]);
-
   const handleChangeComment = async (commentId: number) => {
     try {
       await changeCommentData({ id: commentId, content: changeComment });
@@ -77,6 +70,10 @@ const ModalComment = ({ commentList, setCommentList, cardItem }: I_CommentItem) 
     setEditTarget(null);
     setChangeComment('');
   };
+
+  useEffect(() => {
+    getCommentData();
+  }, [changeComment]);
 
   return (
     commentList &&
