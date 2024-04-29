@@ -1,35 +1,44 @@
 'use client';
 
+
 import { ERROR_MESSAGES } from 'constant/errorMessage';
+import { MAINSITELOGO } from 'constant/importImage';
 import { REG_EXP } from 'constant/regexp';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { getAccessToken, setAccessToken } from '@/utils/handleToken';
 
+interface LoginInfo {
+  isLoggedIn: boolean;
+  id?: number;
+  email?: string;
+  nickname?: string;
+  profileImageUrl?: string;
+}
 
 interface FormData {
   email: string;
   password: string;
-  watch: string;
 }
 
 const SigninPage = () => {
   const { control, handleSubmit, watch } = useForm<FormData>();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginInfo, setLoginInfo] = useState<LoginInfo>({ isLoggedIn: false });
 
   const email = watch('email');
   const password = watch('password');
+
   useEffect(() => {
     const accessToken = getAccessToken();
-
     if (accessToken) {
       console.log(accessToken);
-      router.push('/myinvitaion');
+      router.push('/myinvitation');
     }
   }, [router]);
 
@@ -47,9 +56,21 @@ const SigninPage = () => {
       console.log(responseData);
 
       if (response.ok) {
-        const { accessToken } = responseData;
+        const { accessToken, user } = responseData; 
         setAccessToken(accessToken);
-        router.push('/myinvitation');
+
+        const newLoginInfo = {
+          isLoggedIn: true,
+          id: user.id,
+          email: user.email,
+          nickname: user.nickname,
+          profileImageUrl: user.profileImageUrl,
+        };
+
+        localStorage.setItem('loginInfo', JSON.stringify(newLoginInfo));
+        setLoginInfo(newLoginInfo);
+
+        router.push('/dashboard');
       } else {
         console.error('Failed to log in:', responseData.error);
         alert('비밀번호가 일치하지 않습니다.');
@@ -64,7 +85,7 @@ const SigninPage = () => {
       <div className='mx-auto max-h-fit min-h-screen w-full max-w-lg flex-col px-12 py-16 text-center'>
         <Link href='/'>
           <div className='mx-auto my-0 inline-block justify-center'>
-            <Image src='/logo/main_site_logo.png' alt='메인 로고 이미지' width={200} height={279} />
+            <Image src={MAINSITELOGO} alt='메인 로고 이미지' width={200} height={279} />
           </div>
         </Link>
         <h1 className='mt-[10px] text-lg font-GS font-extrabold'>오늘도 만나서 반가워요!</h1>

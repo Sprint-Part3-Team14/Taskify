@@ -1,6 +1,7 @@
 'use client';
 
 import { ERROR_MESSAGES } from 'constant/errorMessage';
+import { MAINSITELOGO } from 'constant/importImage';
 import { REG_EXP } from 'constant/regexp';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -65,7 +66,7 @@ const SignupPage = () => {
       <div className='mx-auto max-h-fit min-h-screen w-full max-w-lg flex-col px-12 py-16 text-center'>
         <Link href='/'>
           <div className='mx-auto my-0 inline-block justify-center'>
-            <Image src='/logo/main_site_logo.png' alt='메인 로고 이미지' width={200} height={279} />
+            <Image src={MAINSITELOGO} alt='메인 로고 이미지' width={200} height={279} />
           </div>
         </Link>
         <h1 className='mt-[10px] text-lg font-GS font-extrabold'>첫 방문을 환영합니다!</h1>

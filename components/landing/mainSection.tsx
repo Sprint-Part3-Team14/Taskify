@@ -1,14 +1,12 @@
+import { DESKTOPIMAGE } from 'constant/importImage';
 import Image from 'next/image';
 import Link from 'next/link';
-
-// import { Button } from '@/components/common/button';
-const Desktop = '/image/desktop.jpg';
 
 const MainSection = () => {
   return (
     <div className='flex-center mb-100 flex-col tb:justify-center mb-24'>
       <div className='flex justify-center items-center'>
-        <Image src={Desktop} alt='Illustration' width={722} height={422.761} />
+        <Image src={DESKTOPIMAGE} alt='Illustration' width={722} height={422.761} />
       </div>
       <div className='flex flex-center pt-12 mt-50 flex-col text-[40px] tb:flex-row tb:justify-center tb:text-[42px] pc:text-[50px]'>
         <div className='text-center font-bold tb:mr-6'>새로운 일정 관리</div>

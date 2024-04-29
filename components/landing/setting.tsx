@@ -1,6 +1,6 @@
 import Image from 'next/image';
 interface FeatureSectionProps {
-  imageUrl: string;
+  imageUrl: any;
   title: string;
   description: string;
 }
