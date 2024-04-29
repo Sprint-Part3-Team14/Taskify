@@ -69,7 +69,7 @@ const ChangeDashBoardName = ({ dashboardId }: { dashboardId: number }) => {
         onSubmit={handleChangeDashBoard}
         className='flex flex-col rounded-md bg-tp-white px-7 pt-8 pb-7 shadow-sm gap-6 pc:w-[38.75rem] tb:w-[33rem] w-[19rem]'>
         <div className='flex justify-between gap-2.5 items-center'>
-          <div className={`w-3 h-3 rounded-full bg-[${beforeDashboardData.color}]`} />
+          <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: `${beforeDashboardData.color}` }} />
           <h1 className='text-[1.25rem] font-bold text-tp-black_700 whitespace-nowrap text-ellipsis overflow-hidden pc:w-[21rem] tb:w-[18rem] w-[11rem]'>
             {beforeDashboardData.title}
           </h1>
