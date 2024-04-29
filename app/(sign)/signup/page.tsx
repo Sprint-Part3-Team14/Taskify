@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { ERROR_MESSAGES } from 'constant/errorMessage';
+import { REG_EXP } from 'constant/regexp';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { REG_EXP } from 'constant/regexp';
-import { ERROR_MESSAGES } from 'constant/errorMessage';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 interface FormData {
   email: string;

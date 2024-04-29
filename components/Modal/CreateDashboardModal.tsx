@@ -1,14 +1,16 @@
 'use Client';
 
+import { WhiteCheckIcon } from 'constant/importImage';
+import Image from 'next/image';
 import { MouseEvent, ChangeEvent, useState } from 'react';
 
-import Image from 'next/image';
-
-import ModalLayout from './ModalLayout';
-import ModalButton from './Button/ModalButton';
 
 import { COLOR_LIST, INITIAL_COLOR } from '../MyInvitation/constants';
-import { WhiteCheckIcon } from 'constant/importImage';
+
+import ModalButton from './Button/ModalButton';
+import ModalLayout from './ModalLayout';
+
+
 
 interface I_ModalToggle {
   handleModal: (event: MouseEvent<HTMLElement>) => void;

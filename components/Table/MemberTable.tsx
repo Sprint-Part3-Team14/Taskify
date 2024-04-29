@@ -1,14 +1,17 @@
 'use client';
 
-import Image from 'next/image';
-import TableLayout from './TableLayout';
-import { MouseEvent, useEffect, useState } from 'react';
-import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
-import PageNationButton from '../PageNation/PageNationButton';
-import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
-import { usePageNation } from '@/hooks/usePageNation';
 import { DEFAULTPROFILEIMAGE } from 'constant/importImage';
+import Image from 'next/image';
+import { MouseEvent, useEffect, useState } from 'react';
+
+import PageNationButton from '../PageNation/PageNationButton';
 import SingleButton from '../common/button/SingleButton';
+
+import TableLayout from './TableLayout';
+
+import { usePageNation } from '@/hooks/usePageNation';
+import { deleteDashBoardMember } from '@/utils/api/deleteDashBoardMember';
+import { getDashBoardMembers } from '@/utils/api/getDashBoardMembers';
 
 const MemberTable = ({ dashboardId }: { dashboardId: number }) => {
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();

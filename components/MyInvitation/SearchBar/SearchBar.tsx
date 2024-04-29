@@ -1,10 +1,10 @@
 'use client';
 
+import { SearchIcon } from 'constant/importImage';
+import { I_SearchBarProps } from 'interface/myInvitation';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { I_SearchBarProps } from 'interface/myInvitation';
-import { SearchIcon } from 'constant/importImage';
 import { PLACEHOLDER } from '../constants';
 
 const SearchBar = ({ onSearch }: I_SearchBarProps) => {

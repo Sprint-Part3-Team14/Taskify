@@ -1,6 +1,6 @@
+import { UnsubscribeIcon } from 'constant/importImage';
 import Image from 'next/image';
 
-import { UnsubscribeIcon } from 'constant/importImage';
 
 const EmptyMessage = ({ message }: { message: string }) => {
   return (

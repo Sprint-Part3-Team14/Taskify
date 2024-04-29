@@ -1,7 +1,7 @@
-import ModalLayout from './ModalLayout';
-import { ModalComments } from './constant';
-import { I_ModalToggle } from './ModalType';
 import ModalButton from './Button/ModalButton';
+import ModalLayout from './ModalLayout';
+import { I_ModalToggle } from './ModalType';
+import { ModalComments } from './constant';
 
 // 반응형이 적용이 안됨
 const WrongPasswordModal = ({ handleModal }: I_ModalToggle) => {
