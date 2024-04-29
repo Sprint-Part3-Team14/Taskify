@@ -7,10 +7,11 @@ import { useEffect, useState, memo } from 'react';
 
 import CreateDashboardModal from '@/components/Modal/CreateDashboardModal';
 import logo from '@/public/images/logo/logo_large.jpg';
-import { getAccessToken } from '@/utils/handleToken';
 import { getMyDashboardList } from '@/utils/api/getMyDashboardList';
 import PageNationButton from '@/components/PageNation/PageNationButton';
 import { usePageNation } from '@/hooks/usePageNation';
+import { createDashborad } from '@/utils/api/createDashboard';
+import { useHandleModal } from '@/hooks/useHandleModal';
 
 interface Props {
   dashboardId?: number;
@@ -29,12 +30,10 @@ const SideMenu = ({ dashboardId }: Props) => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const { isShowModal, handleToggleModal } = useHandleModal();
   const [dashboardTitle, setDashboardTitle] = useState('');
   const [dashboardColor, setDashboardColor] = useState('');
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
-
-  const toggleModal = () => setShowModal(!showModal);
 
   const handleTitleChange = title => {
     setDashboardTitle(title);
@@ -44,37 +43,16 @@ const SideMenu = ({ dashboardId }: Props) => {
     setDashboardColor(color);
   };
 
-  const handleCancel = () => {
-    toggleModal();
-  };
-
-  const handleCreate = async () => {
-    const token = getAccessToken();
-
+  const handleCreateDashborad = async () => {
     const requestBody = {
       title: dashboardTitle,
       color: dashboardColor,
     };
 
     try {
-      const response = await fetch('https://sp-taskify-api.vercel.app/4-14/dashboards', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create dashboard');
-      }
-
-      const result = await response.json();
-      toggleModal();
-      setDashboardTitle('');
-      setDashboardColor('');
-    } catch (error) {
+      await createDashborad(requestBody);
+      handleToggleModal();
+    } catch (error: any) {
       console.error('Error creating dashboard:', error);
       alert('Failed to create dashboard.');
     }
@@ -114,17 +92,17 @@ const SideMenu = ({ dashboardId }: Props) => {
       </div>
       <div className='flex items-center justify-between p-8 mt-12'>
         <p className='text-xs font-bold text-gray-700'>Dashboards</p>
-        <button aria-label='Add new dashboard' onClick={toggleModal}>
+        <button aria-label='Add new dashboard' onClick={handleToggleModal}>
           <Image src={PlusIcon} width={20} height={20} alt='Add new dashboard' />
         </button>
       </div>
-      {showModal && (
+      {isShowModal && (
         <CreateDashboardModal
-          handleModal={toggleModal}
+          handleModal={handleToggleModal}
           onChange={handleTitleChange}
           onSelectColor={handleColorSelect}
-          onClickFirstButton={handleCancel}
-          onClickSecondButton={handleCreate}
+          onClickFirstButton={handleToggleModal}
+          onClickSecondButton={handleCreateDashborad}
         />
       )}
       <ul className='flex flex-col gap-2 p-4 overflow-y-auto'>
