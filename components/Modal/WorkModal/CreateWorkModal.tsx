@@ -28,6 +28,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
   const [tags, setTags] = useState<string[]>([]);
   const [tagsName, setTagsName] = useState('');
   const [date, setDate] = useState('');
+  const [assigneeUserId, setAssigneeUserId] = useState<number | undefined>();
 
   const handleCreateCard = async () => {
     try {
@@ -39,6 +40,7 @@ const CreateWorkModal = ({ handleModal, columnItem, dashboardMembers }: I_Create
         dueDate: date,
         tags: tags,
         imageUrl: image,
+        assigneeUserId: assigneeUserId,
       });
     } catch (error) {
       console.error(error);
