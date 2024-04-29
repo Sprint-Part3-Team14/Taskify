@@ -35,15 +35,20 @@ const SideMenu = ({ dashboardId }: Props) => {
       setIsLoading(true);
       const token = getAccessToken();
       try {
-        const response = await fetch(`https://sp-taskify-api.vercel.app/4-14/members?page=1&size=20&dashboardId=${dashboardId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-          },
-        });
+        const response = await fetch(
+          `https://sp-taskify-api.vercel.app/4-14/dashboards?navigationMethod=pagination&page=1&size=10`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
+            },
+          }
+        );
         if (!response.ok) throw new Error('Failed to fetch dashboard details');
         const data = await response.json();
-        setDashboardInfo(data);
+
+        const dashboardList = data.dashboards;
+        setDashboardInfo(dashboardList);
       } catch (error) {
         console.error('Error fetching data:', error);
         alert('Failed to load dashboard data.');
@@ -51,13 +56,11 @@ const SideMenu = ({ dashboardId }: Props) => {
         setIsLoading(false);
       }
     }
-  console.log(dashboardInfo);
 
     if (dashboardId) {
       fetchData();
     }
-  }, [dashboardId]);
-
+  }, []);
 
   return (
     <div className='sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-300 flex flex-col'>
@@ -77,8 +80,8 @@ const SideMenu = ({ dashboardId }: Props) => {
       {showModal && (
         <CreateDashboardModal
           handleModal={toggleModal}
-          onChange={(title) => console.log('Title changed:', title)}
-          onSelectColor={(color) => console.log('Color selected:', color)}
+          onChange={title => console.log('Title changed:', title)}
+          onSelectColor={color => console.log('Color selected:', color)}
           onClickFirstButton={() => console.log('Cancel button clicked')}
           onClickSecondButton={() => console.log('Create button clicked')}
         />
@@ -126,7 +129,7 @@ const DashboardCard = memo(({ title, color, createdByMe, id, selected = false }:
   return (
     <Link href={`/dashboard/${id}`}>
       <div
-        className={`flex-center h-[40px] w-full rounded-sm tb:h-[45px] tb:justify-start ${
+        className={`flex items-center h-[40px] w-full rounded-sm tb:h-[45px] tb:justify-start ${
           selected ? 'bg-tp-violet_100' : 'hover:bg-gray-100'
         }`}
         aria-label={`Go to dashboard ${title}`}>
