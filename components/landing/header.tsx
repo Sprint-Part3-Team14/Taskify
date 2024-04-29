@@ -1,7 +1,7 @@
+import { LOGO } from 'constant/importImage';
+
 import Image from 'next/image';
 import Link from 'next/link';
-
-import { LOGO } from 'constant/importImage';
 
 const Header = () => {
   return (
