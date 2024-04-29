@@ -26,6 +26,7 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
       handleToggleToast();
       handleToastMessage('대시보드 초대가 취소되었습니다.');
       handleToastType('complete');
+      handleLoadInvitations();
     } catch (error: any) {
       handleToggleToast();
       handleToastMessage(error.message);
