@@ -1,9 +1,14 @@
-import DashboardHeader from '@/components/dashboard/LayoutComponents/header';
-import SideMenu from '@/components/dashboard/LayoutComponents/sideMenu';
+'use client';
+import React, { useState, useEffect } from 'react';
+
 import '@/styles/globals.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
+
+import DashboardHeader from '@/components/dashboard/LayoutComponents/header';
+import SideMenu from '@/components/dashboard/LayoutComponents/sideMenu';
+import { getAccessToken } from '@/utils/handleToken';
 
 const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
   const dashboardId = '6312';

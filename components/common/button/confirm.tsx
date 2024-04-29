@@ -1,5 +1,6 @@
-import { BUTTON_TITLE } from '@/components/MyInvitation/constants';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
+
+import { BUTTON_TITLE } from '@/components/MyInvitation/constants';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;

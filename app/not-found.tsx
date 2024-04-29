@@ -1,7 +1,8 @@
 import '@/styles/globals.css';
-import { NotFound, RightArrow } from 'constant/importImage';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { NotFound, RightArrow } from '@/constant/importImage';
 
 const NotFoundPage = () => {
   return (
