@@ -38,7 +38,7 @@ const SigninPage = () => {
     const accessToken = getAccessToken();
     if (accessToken) {
       console.log(accessToken);
-      router.push('/myinvitation');
+      router.push('/dashboard/8228');
     }
   }, [router]);
 
@@ -70,7 +70,7 @@ const SigninPage = () => {
         localStorage.setItem('loginInfo', JSON.stringify(newLoginInfo));
         setLoginInfo(newLoginInfo);
 
-        router.push('/dashboard');
+        router.push('/dashboard/8228');
       } else {
         console.error('Failed to log in:', responseData.error);
         alert('비밀번호가 일치하지 않습니다.');

@@ -1,8 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import SingleButton from '@/components/common/button/SingleButton';
+
 import Toast from '@/components/common/Toast/Toast';
-import { changePassWord } from '@/utils/api/changePassword';
+import SingleButton from '@/components/common/button/SingleButton';
 import { useHandleToast } from '@/hooks/usehandleToast';
+import { changePassWord } from '@/utils/api/changePassword';
 
 type Inputs = {
   currentPassword: string;

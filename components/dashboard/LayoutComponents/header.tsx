@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 import DashboardInfo from './dashboardInfo';
 import ProfileInfo from './profileInfo';
 
+import { getDashBoardData } from '@/utils/api/getDashBoardData';
 import { getDashboardMember } from '@/utils/api/getDashboardMember';
 
-import { getDashBoardData } from '@/utils/api/getDashBoardData';
 
 interface Props {
   dashboardId?: number;

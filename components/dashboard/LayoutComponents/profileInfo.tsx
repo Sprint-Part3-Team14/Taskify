@@ -6,12 +6,12 @@ import ProfilePopup from './profilePopup';
 const ProfileInfo = () => {
   const loginInfo = {
     id: 1,
-    nickname: '홍길동',
+    nickname: '한규경',
     profileImageUrl: '',
   };
   const myProfile = {
     id: loginInfo.id ?? 1,
-    nickname: loginInfo.nickname ?? '홍길동',
+    nickname: loginInfo.nickname ?? '한규경',
     profileImageUrl: loginInfo.profileImageUrl ?? 'https://unsplash.com/photos/a_specific_photo_id',
   };
 

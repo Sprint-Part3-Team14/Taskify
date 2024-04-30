@@ -1,9 +1,9 @@
+import { CloseIcon, CompleteIcon, ErrorIcon, WarningIcon } from 'constant/importImage';
 import Image from 'next/image';
 import { MouseEvent, useEffect, useState } from 'react';
 
 import ModalPortal from '@/components/Modal/Portal';
 
-import { CloseIcon, CompleteIcon, ErrorIcon, WarningIcon } from 'constant/importImage';
 
 interface I_Toast {
   message: string;

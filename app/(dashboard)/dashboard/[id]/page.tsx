@@ -4,11 +4,13 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { usePathname } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import Column from '@/components/Dashboard/Column/Column';
-import { BUTTON } from '@/components/Dashboard/constants';
+
+
 import CreateColumnModal from '@/components/Modal/CreateColumnModal';
 import { MESSAGE } from '@/components/MyInvitation/constants';
 import AddButton from '@/components/common/button/add';
+import Column from '@/components/dashboard/Column/Column';
+import { BUTTON } from '@/components/dashboard/constants';
 import { useHandleModal } from '@/hooks/useHandleModal';
 import { createColumn } from '@/utils/api/createColumn';
 import { getColumnList } from '@/utils/api/getColumnList';
