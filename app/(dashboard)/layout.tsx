@@ -16,9 +16,6 @@ const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
   const path = usePathname();
   const dashboardId = path.split('/')[2];
 
-  console.log('어렵네')
-  console.log(dashboardInfo);
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -32,7 +29,6 @@ const DashboardLayoutProfile = ({ children }: PropsWithChildren) => {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setDashboardInfo(data);
         } else {
           throw new Error('Failed to fetch dashboard details');
