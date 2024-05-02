@@ -25,6 +25,7 @@ const InviteModal = ({
   const { inputValue, onChange } = useInputValue();
 
   const handlePostInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     try {
       await postInvitation({ email: inputValue, dashboardId: dashboardId });
       handleToggleToast();
