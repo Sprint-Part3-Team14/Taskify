@@ -18,7 +18,6 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
   const cancelInvite = useHandleToast();
-  const postInvitation = useHandleToast();
   const showCount = 5;
 
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -97,15 +96,6 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   return (
     <>
-      {postInvitation.isShowToast && (
-        <Toast
-          type={postInvitation.type}
-          message={postInvitation.message}
-          handleToast={postInvitation.handleToggleToast}
-          setShowToast={postInvitation.setIsShowToast}
-          isToast={postInvitation.isShowToast}
-        />
-      )}
       {cancelInvite.isShowToast && (
         <Toast
           type={cancelInvite.type}
@@ -115,16 +105,12 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
           handleToast={cancelInvite.handleToggleToast}
         />
       )}
-      {isShowModal && (
-        <InviteModal
-          handleToggleToast={postInvitation.handleToggleToast}
-          handleToastMessage={postInvitation.handleToastMessage}
-          handleToastType={postInvitation.handleToastType}
-          dashboardId={dashboardId}
-          handleModal={handleToggleModal}
-          dataHandler={handleLoadInvitations}
-        />
-      )}
+      <InviteModal
+        dashboardId={dashboardId}
+        handleModal={handleToggleModal}
+        dataHandler={handleLoadInvitations}
+        isShowModal={isShowModal}
+      />
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );
