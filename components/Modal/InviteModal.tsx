@@ -1,4 +1,7 @@
 import { MouseEvent } from 'react';
+
+import Toast from '../common/Toast/Toast';
+
 import ModalButton from './Button/ModalButton';
 import ModalLayout from './ModalLayout';
 import { I_ModalToggle } from './ModalType';
@@ -6,8 +9,6 @@ import { I_ModalToggle } from './ModalType';
 import { useInputValue } from '@/hooks/useInputValue';
 import { useHandleToast } from '@/hooks/usehandleToast';
 import { postInvitation } from '@/utils/api/postInvitation';
-
-import Toast from '../common/Toast/Toast';
 
 interface I_InviteModalProps extends I_ModalToggle {
   isShowModal: boolean;
