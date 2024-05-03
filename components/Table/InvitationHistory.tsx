@@ -17,22 +17,21 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
   const { isShowModal, handleToggleModal } = useHandleModal();
   const { pageNation, setPageNation, handleCurrentPage } = usePageNation();
   const [invitations, setInvitations] = useState(null);
-  const { isShowToast, handleToggleToast, setIsShowToast, type, handleToastType, message, handleToastMessage } =
-    useHandleToast();
+  const cancelInvite = useHandleToast();
   const showCount = 5;
 
   const handleDeleteInvitation = async (event: MouseEvent<HTMLButtonElement>) => {
     const invitationId = Number(event.currentTarget.id);
     try {
       await deletePostInvitation({ dashboardId: dashboardId, invitationId: invitationId });
-      handleToggleToast();
-      handleToastMessage('대시보드 초대가 취소되었습니다.');
-      handleToastType('complete');
+      cancelInvite.handleToggleToast();
+      cancelInvite.handleToastMessage('대시보드 초대가 취소되었습니다.');
+      cancelInvite.handleToastType('complete');
       handleLoadInvitations();
     } catch (error: any) {
-      handleToggleToast();
-      handleToastMessage(error.message);
-      handleToastType('error');
+      cancelInvite.handleToggleToast();
+      cancelInvite.handleToastMessage(error.message);
+      cancelInvite.handleToastType('error');
     }
   };
 
@@ -97,18 +96,21 @@ const InvitationHistory = ({ dashboardId }: { dashboardId: number }) => {
 
   return (
     <>
-      {isShowToast && (
+      {cancelInvite.isShowToast && (
         <Toast
-          type={type}
-          message={message}
-          isToast={isShowToast}
-          setShowToast={setIsShowToast}
-          handleToast={handleToggleToast}
+          type={cancelInvite.type}
+          message={cancelInvite.message}
+          isToast={cancelInvite.isShowToast}
+          setShowToast={cancelInvite.setIsShowToast}
+          handleToast={cancelInvite.handleToggleToast}
         />
       )}
-      {isShowModal && (
-        <InviteModal dashboardId={dashboardId} handleModal={handleToggleModal} dataHandler={handleLoadInvitations} />
-      )}
+      <InviteModal
+        dashboardId={dashboardId}
+        handleModal={handleToggleModal}
+        dataHandler={handleLoadInvitations}
+        isShowModal={isShowModal}
+      />
       <TableLayout title='초대 내역' headerContent={invitationHeader} tableContent={InvitationList} />
     </>
   );
