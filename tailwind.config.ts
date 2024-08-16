@@ -1,12 +1,4 @@
-import type { Config } from 'tailwindcss';
-
 const { fontFamily } = require('tailwindcss/defaultTheme');
-
-const BACKGROUND_WIDTH = {
-  mb: '375px',
-  tb: '768px',
-  pc: '1024px',
-};
 
 module.exports = {
   content: [
@@ -17,9 +9,25 @@ module.exports = {
     './utils/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      mb: '375px',
+      tb: '768px',
+      pc: '1024px',
+    },
     extend: {
+      keyframes: {
+        showToast: {
+          from: { opacity: '0', top: '0' },
+          to: { opacity: '1', top: '5rem' },
+        },
+        closeToast: {
+          from: { opacity: '1', top: '5rem' },
+          to: { opacity: '0', top: '0' },
+        },
+      },
       animation: {
-        buttonHover: 'buttonHover 0.3s ease forwards',
+        showToast: 'showToast 1.1s ease-in-out',
+        closeToast: 'closeToast 1.1s ease-in-out',
       },
       colors: {
         tp: {
@@ -43,27 +51,13 @@ module.exports = {
           pink: '#E876EA',
         },
       },
-      keyframes: (props: { theme: any }) => {
-        const { theme } = props;
-        return {
-          buttonHover: {
-            '0%': {
-              backgroundColor: theme('colors.tp.blue300'),
-              boxShadow: theme('boxShadow.none'),
-            },
-            '100%': {
-              backgroundColor: theme('colors.tp.blue400'),
-              boxShadow: theme('boxShadow.lg'),
-            },
-          },
-        };
+      screens: {
+        mb: '375px',
+        tb: '768px',
+        pc: '1024px',
       },
-      maxWidth: { ...BACKGROUND_WIDTH },
-      minWidth: { ...BACKGROUND_WIDTH },
-      width: { ...BACKGROUND_WIDTH },
     },
     fontFamily: {
-      GS: ['GS'],
       pretendard: ['Pretendard', ...fontFamily.sans],
     },
   },

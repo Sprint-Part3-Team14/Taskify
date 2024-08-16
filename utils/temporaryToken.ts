@@ -1,0 +1,1 @@
+export const ACCESS_TOKEN = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY4MCwidGVhbUlkIjoiMTQiLCJpYXQiOjE3MTM5NTY3MzUsImlzcyI6InNwLXRhc2tpZnkifQ.IIojfSQ8DgZ5QFgsZqpWA5OFJo5xqoFBhfe7Vld0hsg`;
